@@ -11,6 +11,7 @@ public abstract class Entity {
         this.id = nextId++;
         this.createdAt = LocalDateTime.now();
     }
+
     public int getId(){return id;}
     public LocalDateTime getTime(){return createdAt;}
     public abstract String getInfo();
