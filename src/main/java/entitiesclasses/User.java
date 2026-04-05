@@ -26,4 +26,15 @@ public abstract class User extends Entity{
     public boolean isLogin(){return isLogin;}
     //tu them ham getter sau
 
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }
