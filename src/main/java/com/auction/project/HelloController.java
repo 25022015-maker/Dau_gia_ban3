@@ -1,4 +1,4 @@
-package com.example.dau_gia_ban3;
+package com.auction.project;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

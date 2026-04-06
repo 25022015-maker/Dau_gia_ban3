@@ -1,4 +1,4 @@
-package entitiesclasses;
+package com.auction.project.entitiesclasses;
 import java.time.LocalDateTime;
 
 public abstract class Entity {
@@ -11,6 +11,8 @@ public abstract class Entity {
         this.id = nextId++;
         this.createdAt = LocalDateTime.now();
     }
+
     public int getId(){return id;}
     public LocalDateTime getTime(){return createdAt;}
+    public abstract String getInfo();
 }

@@ -1,4 +1,4 @@
-package entitiesclasses;
+package com.auction.project.entitiesclasses;
 
 public abstract class User extends Entity{
     private String username;
@@ -26,4 +26,13 @@ public abstract class User extends Entity{
     public boolean isLogin(){return isLogin;}
     //tu them ham getter sau
 
+    public String getUsername() {
+        return username;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public String getEmail() {
+        return email;
+    }
 }

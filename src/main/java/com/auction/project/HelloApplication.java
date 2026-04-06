@@ -1,4 +1,4 @@
-package com.example.dau_gia_ban3;
+package com.auction.project;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
