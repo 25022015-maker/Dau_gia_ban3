@@ -14,5 +14,5 @@ public abstract class Entity {
 
     public int getId(){return id;}
     public LocalDateTime getTime(){return createdAt;}
-    public abstract String getInfo();
+    public abstract T getInfo<T>();
 }
