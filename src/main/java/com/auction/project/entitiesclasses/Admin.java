@@ -5,6 +5,8 @@ public class Admin extends User {
         super(id,username,password);
     }
 
+    Admin(){}
+
     @Override
     public String getInfo(){
         return "Admin: "+ getUsername() +" - id:  "+getId();
