@@ -6,6 +6,7 @@ public abstract class Entity {
     private static int nextId = 1;
     private final int id;
     private final LocalDateTime createdAt;
+
     //constructor
     public Entity(){
         this.id = nextId++;
@@ -13,6 +14,8 @@ public abstract class Entity {
     }
 
     public int getId(){return id;}
-    public LocalDateTime getTime(){return createdAt;}
+
+    public LocalDateTime getCreateTime(){return createdAt;}
+
     public abstract <T> T getInfo();
 }
