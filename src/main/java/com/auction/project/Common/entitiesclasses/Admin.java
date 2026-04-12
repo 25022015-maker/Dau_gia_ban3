@@ -1,4 +1,4 @@
-package com.auction.project.entitiesclasses;
+package com.auction.project.Common.entitiesclasses;
 
 public class Admin extends User {
     public Admin(String id,String username,String password){
