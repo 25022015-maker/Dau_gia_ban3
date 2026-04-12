@@ -1,9 +1,11 @@
 package com.auction.project.Common.entitiesclasses;
 
 public class Admin extends User {
-    public Admin(String id,String username,String password){
+    private Admin(String id,String username,String password){
         super(id,username,password);
     }
+
+    Admin(){}
 
     @Override
     public String getInfo(){
@@ -12,7 +14,8 @@ public class Admin extends User {
     public void banUser(User user){
         System.out.println("Da cam nguoi dung: "+user.getUsername());
     }
-    public void monitorAuction(int auctionId){
+
+    private void monitorAuction(int auctionId){ //ngăn mod kiểm soát phiên
         //quan sat phien dau gia cu the
     }
 
