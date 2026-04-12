@@ -15,7 +15,7 @@ public class Admin extends User {
         System.out.println("Da cam nguoi dung: "+user.getUsername());
     }
 
-    public void monitorAuction(int auctionId){
+    private void monitorAuction(int auctionId){ //ngăn mod kiểm soát phiên
         //quan sat phien dau gia cu the
     }
 

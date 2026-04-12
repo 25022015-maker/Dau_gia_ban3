@@ -2,11 +2,12 @@ package com.auction.project.entitiesclasses;
 import java.util.*;
 
 public class Bidder extends User {
+
     List<BidTransaction> biddingHistory = new ArrayList<>();
 
     public void addTransaction(BidTransaction t) {
         biddingHistory.add(t);
-    }
+    }//với mỗi lần bidder này bid
 
     public void placeBid(Auction auction, double amount){}
 

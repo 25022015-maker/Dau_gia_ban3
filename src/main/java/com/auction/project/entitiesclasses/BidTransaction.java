@@ -1,5 +1,4 @@
 package com.auction.project.entitiesclasses;
-
 import java.time.LocalDateTime;
 
 public class BidTransaction extends Entity {
@@ -7,9 +6,10 @@ public class BidTransaction extends Entity {
     private Bidder bidder;
     private LocalDateTime timestamp; // được khởi tạo mỗi thời điểm đặt một bid mới
 
-    public BidTransaction(double amount, LocalDateTime timestamp){
+    public BidTransaction(double amount, LocalDateTime timestamp, Bidder bidder){
         this.amount = amount;
         this.timestamp = timestamp;
+        this.bidder = bidder;
     }
 
     public double getAmount() {return this.amount;}
