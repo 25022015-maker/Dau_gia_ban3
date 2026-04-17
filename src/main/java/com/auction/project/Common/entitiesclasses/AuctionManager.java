@@ -1,4 +1,4 @@
-package com.auction.project.entitiesclasses;
+package com.auction.project.Common.entitiesclasses;
 
 import java.util.ArrayList;
 import java.util.List;

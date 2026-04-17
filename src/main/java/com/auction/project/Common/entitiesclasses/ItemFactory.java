@@ -1,4 +1,4 @@
-package com.auction.project.entitiesclasses;
+package com.auction.project.Common.entitiesclasses;
 
 import org.controlsfx.control.PropertySheet;
 
@@ -17,5 +17,17 @@ public class ItemFactory {
             default:
                 throw new IllegalArgumentException("Unknown item type: " + type);
         }
+    }
+
+    public abstract static class Item extends Entity {
+        private String name;
+        private double startingPrice;
+
+        public Item(String name, double startingPrice) {
+            this.name = name;
+            this.startingPrice = startingPrice;
+        }
+
+        public String getName() {return name; }
     }
 }

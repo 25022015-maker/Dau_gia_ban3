@@ -1,4 +1,4 @@
-package com.auction.project.entitiesclasses;
+package com.auction.project.Common.entitiesclasses;
 
 public class Modder extends Admin{
 

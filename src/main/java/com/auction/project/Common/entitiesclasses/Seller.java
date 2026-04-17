@@ -1,5 +1,6 @@
-package com.auction.project.entitiesclasses;
+package com.auction.project.Common.entitiesclasses;
 
+import com.auction.project.Common.entitiesclasses.User;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,4 +34,5 @@ public class Seller extends User {
     public void setRating(double rating) {
         this.rating = rating;
     }
+    public String getInfo(){return "Seller: "+getUsername();}
 }

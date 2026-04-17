@@ -1,4 +1,4 @@
-package com.auction.project.entitiesclasses;
+package com.auction.project.Common.entitiesclasses;
 import java.util.*;
 import java.time.LocalDateTime;
 import java.util.concurrent.locks.ReentrantLock;
