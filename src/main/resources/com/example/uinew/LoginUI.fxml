@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="sideBar" prefHeight="760.0" prefWidth="1202.0" style="-fx-background-image: &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;?import javafx.scene.Cursor?&gt;&lt;?import javafx.scene.control.Accordion?&gt;&lt;?import javafx.scene.control.Button?&gt;&lt;?import javafx.scene.control.Label?&gt;&lt;?import javafx.scene.control.PasswordField?&gt;&lt;?import javafx.scene.control.TextField?&gt;&lt;?import javafx.scene.control.TitledPane?&gt;&lt;?import javafx.scene.layout.AnchorPane?&gt;&lt;?import javafx.scene.layout.StackPane?&gt;&lt;?import javafx.scene.layout.VBox?&gt;&lt;?import javafx.scene.text.Font?&gt;&lt;AnchorPane id=&quot;sideBar&quot; prefHeight=&quot;760.0&quot; prefWidth=&quot;1202.0&quot; style=&quot;-fx-background-image: img.png; -fx-background-color: rgba(0,0,0,0.3); &quot; xmlns=&quot;http: //javafx.com/javafx/25&quot; xmlns:fx=&quot;http://javafx.com/fxml/1&quot; fx:controller=&quot;com.example.uinew.LoginController&quot;&gt;   &lt;children&gt;      &lt;Button layoutX=&quot;57.333333333333336&quot; layoutY=&quot;1.0&quot; mnemonicParsing=&quot;false&quot; prefHeight=&quot;28.0&quot; prefWidth=&quot;1145.0&quot; style=&quot;-fx-background-color: C9D7FF; &quot; AnchorPane.leftAnchor=&quot;57.0&quot; AnchorPane.rightAnchor=&quot;0.0&quot; AnchorPane.topAnchor=&quot;0.0&quot; /&gt;      &lt;Button fx: id=&quot;btnMenu&quot; alignment=&quot;TOP_LEFT&quot; maxWidth=&quot;-Infinity&quot; mnemonicParsing=&quot;false&quot; onAction=&quot;#toggleSidebar&quot; prefHeight=&quot;28.0&quot; prefWidth=&quot;60.0&quot; style=&quot;-fx-background-color: C9D7FF; &quot; text=&quot;Menu&quot; AnchorPane.leftAnchor=&quot;0.0&quot; AnchorPane.topAnchor=&quot;0.0&quot;&gt;         &lt;font&gt;            &lt;Font name=&quot;System Bold&quot; size=&quot;12.0&quot; /&gt;         &lt;/font&gt;      &lt;/Button&gt;      &lt;StackPane layoutX=&quot;2.0&quot; layoutY=&quot;28.0&quot; prefHeight=&quot;734.0&quot; prefWidth=&quot;1199.0&quot; style=&quot;-fx-background-image: url(&amp;quot; &quot; AnchorPane.bottomAnchor=&quot;2.6666666666667425&quot; AnchorPane.leftAnchor=&quot;2.0&quot; AnchorPane.rightAnchor=&quot;2.666666666666515&quot; AnchorPane.topAnchor=&quot;28.0&quot;&gt;         &lt;children&gt;            &lt;VBox alignment=&quot;CENTER&quot; maxHeight=&quot;-Infinity&quot; maxWidth=&quot;675.0&quot; prefHeight=&quot;429.0&quot; prefWidth=&quot;499.0&quot; spacing=&quot;15.0&quot;&gt;               &lt;children&gt;                  &lt;Label alignment=&quot;TOP_LEFT&quot; contentDisplay=&quot;TOP&quot; prefHeight=&quot;99.0&quot; prefWidth=&quot;641.0&quot; text=&quot; Welcome,&quot; textFill=&quot;#592566&quot;&gt;                     &lt;font&gt;                        &lt;Font name=&quot;MilkywayDEMO&quot; size=&quot;78.0&quot; /&gt;                     &lt;/font&gt;                  &lt;/Label&gt;                  &lt;TextField fx: id=&quot;txtUsername&quot; maxWidth=&quot;300.0&quot; onAction=&quot;#onUsernameEnter&quot; prefHeight=&quot;41.0&quot; prefWidth=&quot;241.0&quot; promptText=&quot;Username&quot; /&gt;                  &lt;PasswordField fx:id=&quot;txtPassword&quot; maxWidth=&quot;300.0&quot; onAction=&quot;#onPasswordEnter&quot; prefHeight=&quot;41.0&quot; prefWidth=&quot;549.0&quot; promptText=&quot;Password&quot; /&gt;                  &lt;Button mnemonicParsing=&quot;false&quot; onAction=&quot;#handleLogin&quot; style=&quot;-fx-background-color: C9D7FF; &quot; text=&quot;Log in&quot; /&gt;                  &lt;Label text=&quot;No account yet?&quot; textFill=&quot;#682c86&quot;&gt;                     &lt;font&gt;                        &lt;Font name=&quot;MilkywayDEMO&quot; size=&quot;19.0&quot; /&gt;                     &lt;/font&gt;                  &lt;/Label&gt;                  &lt;Button mnemonicParsing=&quot;false&quot; onAction=&quot;#goToSignUp&quot; style=&quot;-fx-background-color: C9D7FF; &quot; text=&quot;Sign up &quot; /&gt;               &lt;/children&gt;            &lt;/VBox&gt;         &lt;/children&gt;      &lt;/StackPane&gt;      &lt;VBox fx: id=&quot;vboxSidebar&quot; layoutY=&quot;26.0&quot; prefWidth=&quot;211.0&quot; style=&quot;-fx-background-color: C9D7FF; &quot; AnchorPane.bottomAnchor=&quot;0.0&quot; AnchorPane.leftAnchor=&quot;0.0&quot; AnchorPane.topAnchor=&quot;26.0&quot;&gt;         &lt;children&gt;            &lt;Accordion&gt;              &lt;panes&gt;                  &lt;TitledPane prefHeight=&quot;84.0&quot; prefWidth=&quot;211.0&quot; style=&quot;-fx-background-color: C9D7FF; -fx-body-color: C9D7FF; &quot; text=&quot;Dashboard&quot;&gt;                    &lt;content&gt;                      &lt;AnchorPane minHeight=&quot;0.0&quot; minWidth=&quot;0.0&quot; prefHeight=&quot;180.0&quot; prefWidth=&quot;200.0&quot;&gt;                           &lt;children&gt;                              &lt;Button layoutY=&quot;-3.0&quot; mnemonicParsing=&quot;false&quot; text=&quot;Button&quot;&gt;                                 &lt;graphic&gt;                                    &lt;Label prefHeight=&quot;25.0&quot; prefWidth=&quot;211.0&quot; text=&quot;Sản phẩm &quot; /&gt;                                 &lt;/graphic&gt;                              &lt;/Button&gt;                              &lt;Button layoutY=&quot;22.0&quot; mnemonicParsing=&quot;false&quot; text=&quot;Button&quot;&gt;                                 &lt;graphic&gt;                                    &lt;Label prefHeight=&quot;25.0&quot; prefWidth=&quot;211.0&quot; text=&quot;Điều khoản &quot; /&gt;                                 &lt;/graphic&gt;                              &lt;/Button&gt;                           &lt;/children&gt;                        &lt;/AnchorPane&gt;                    &lt;/content&gt;                  &lt;/TitledPane&gt;                  &lt;TitledPane prefHeight=&quot;89.0&quot; prefWidth=&quot;211.0&quot; style=&quot;-fx-body-color: C9D7FF; &quot; text=&quot;Account&quot;&gt;                     &lt;content&gt;                        &lt;AnchorPane minHeight=&quot;0.0&quot; minWidth=&quot;0.0&quot; prefHeight=&quot;180.0&quot; prefWidth=&quot;200.0&quot;&gt;                           &lt;children&gt;                              &lt;Button mnemonicParsing=&quot;false&quot; text=&quot;Button&quot;&gt;                                 &lt;graphic&gt;                                    &lt;Label prefHeight=&quot;25.0&quot; prefWidth=&quot;211.0&quot; text=&quot;Đăng nhập&quot; /&gt;                                 &lt;/graphic&gt;                              &lt;/Button&gt;                              &lt;Button layoutY=&quot;27.0&quot; mnemonicParsing=&quot;false&quot; text=&quot;Button&quot;&gt;                                 &lt;graphic&gt;                                    &lt;Label prefHeight=&quot;25.0&quot; prefWidth=&quot;211.0&quot; text=&quot;Đăng kí&quot; /&gt;                                 &lt;/graphic&gt;                              &lt;/Button&gt;                           &lt;/children&gt;                        &lt;/AnchorPane&gt;                     &lt;/content&gt;                  &lt;/TitledPane&gt;                  &lt;TitledPane prefHeight=&quot;89.0&quot; prefWidth=&quot;211.0&quot; style=&quot;-fx-body-color: C9D7FF; &quot; text=&quot;About Us&quot;&gt;                     &lt;content&gt;                        &lt;AnchorPane minHeight=&quot;0.0&quot; minWidth=&quot;0.0&quot; prefHeight=&quot;125.0&quot; prefWidth=&quot;209.0&quot;&gt;                           &lt;children&gt;                              &lt;Button mnemonicParsing=&quot;false&quot; text=&quot;Button&quot;&gt;                                 &lt;graphic&gt;                                    &lt;Label prefHeight=&quot;25.0&quot; prefWidth=&quot;211.0&quot; text=&quot;Chính sách và bảo mật&quot; /&gt;                                 &lt;/graphic&gt;                              &lt;/Button&gt;                              &lt;Button layoutY=&quot;27.0&quot; mnemonicParsing=&quot;false&quot; text=&quot;Button&quot;&gt;                                 &lt;graphic&gt;                                    &lt;Label prefHeight=&quot;25.0&quot; prefWidth=&quot;211.0&quot; text=&quot;Giấy phép&quot; /&gt;                                 &lt;/graphic&gt;                              &lt;/Button&gt;                           &lt;/children&gt;                        &lt;/AnchorPane&gt;                     &lt;/content&gt;                  &lt;/TitledPane&gt;              &lt;/panes&gt;            &lt;/Accordion&gt;         &lt;/children&gt;         &lt;cursor&gt;            &lt;Cursor fx: constant=&quot;HAND&quot; /&gt;         &lt;/cursor&gt;      &lt;/VBox&gt;   &lt;/children&gt;&lt;/AnchorPane&gt;;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uinew.LoginController">
+   <children>
+      <Button layoutX="57.333333333333336" layoutY="1.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="1145.0" style="-fx-background-color: C9D7FF;" AnchorPane.leftAnchor="57.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Button fx:id="btnMenu" alignment="TOP_LEFT" maxWidth="-Infinity" mnemonicParsing="false" onAction="#toggleSidebar" prefHeight="28.0" prefWidth="60.0" style="-fx-background-color: C9D7FF;" text="Menu" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <font>
+            <Font name="MilkywayDEMO" size="12.0" />
+         </font>
+      </Button>
+      <StackPane layoutX="2.0" layoutY="28.0" prefHeight="734.0" prefWidth="1199.0" style="-fx-background-image: url(&quot;/img.png&quot;); -fx-background-color: rgba(0,0,0,0.3);" AnchorPane.bottomAnchor="2.6666666666666288" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.6666666666667425" AnchorPane.topAnchor="28.0">
+         <children>
+            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="675.0" prefHeight="429.0" prefWidth="499.0" spacing="15.0">
+               <children>
+                  <Label alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="99.0" prefWidth="641.0" text=" Welcome," textFill="#592566">
+                     <font>
+                        <Font name="MilkywayDEMO" size="96.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="txtUsername" maxWidth="300.0" onAction="#onUsernameEnter" prefHeight="41.0" prefWidth="241.0" promptText="Username" />
+                  <PasswordField fx:id="txtPassword" maxWidth="300.0" onAction="#onPasswordEnter" prefHeight="41.0" prefWidth="549.0" promptText="Password" />
+                  <Label fx:id="lblError" text="Oops, sai tên người dùng hoặc mật khẩu" textFill="#ffcdcd" visible="false">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Button mnemonicParsing="false" onAction="#handleLogin" style="-fx-background-color: C9D7FF;" text="Log in">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Button>
+                  <Label text="No account yet?" textFill="#ecc9ff">
+                     <font>
+                        <Font name="MilkywayDEMO" size="19.0" />
+                     </font>
+                  </Label>
+                  <Button mnemonicParsing="false" onAction="#goToSignUp" style="-fx-background-color: C9D7FF;" text="Sign up ">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </StackPane>
+      <VBox fx:id="vboxSidebar" layoutY="26.0" prefWidth="211.0" style="-fx-background-color: C9D7FF;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="26.0">
+         <children>
+            <Accordion>
+              <panes>
+                  <TitledPane prefHeight="100.0" prefWidth="211.0" style="-fx-background-color: C9D7FF; -fx-body-color: C9D7FF;" text="Dashboard">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Button layoutY="-3.0" mnemonicParsing="false" text="Button">
+                                 <graphic>
+                                    <Label prefHeight="25.0" prefWidth="211.0" text="Sản phẩm " />
+                                 </graphic>
+                              </Button>
+                              <Button layoutY="22.0" mnemonicParsing="false" text="Button">
+                                 <graphic>
+                                    <Label prefHeight="25.0" prefWidth="211.0" text="Điều khoản " />
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                     <font>
+                        <Font name="MilkywayDEMO" size="12.0" />
+                     </font>
+                  </TitledPane>
+                  <TitledPane prefHeight="110.0" prefWidth="211.0" style="-fx-body-color: C9D7FF;" text="Account">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Button mnemonicParsing="false" text="Button">
+                                 <graphic>
+                                    <Label prefHeight="25.0" prefWidth="211.0" text="Đăng nhập" />
+                                 </graphic>
+                              </Button>
+                              <Button layoutY="27.0" mnemonicParsing="false" text="Button">
+                                 <graphic>
+                                    <Label prefHeight="25.0" prefWidth="211.0" text="Đăng kí" />
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                     <font>
+                        <Font name="MilkywayDEMO" size="12.0" />
+                     </font>
+                  </TitledPane>
+                  <TitledPane prefHeight="83.0" prefWidth="211.0" style="-fx-body-color: C9D7FF;" text="About Us">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="125.0" prefWidth="209.0">
+                           <children>
+                              <Button mnemonicParsing="false" text="Button">
+                                 <graphic>
+                                    <Label prefHeight="25.0" prefWidth="211.0" text="Chính sách và bảo mật" />
+                                 </graphic>
+                              </Button>
+                              <Button layoutY="27.0" mnemonicParsing="false" text="Button">
+                                 <graphic>
+                                    <Label prefHeight="25.0" prefWidth="211.0" text="Giấy phép" />
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                     <font>
+                        <Font name="MilkywayDEMO" size="12.0" />
+                     </font>
+                  </TitledPane>
+              </panes>
+            </Accordion>
+         </children>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </VBox>
+   </children>
+</AnchorPane>
