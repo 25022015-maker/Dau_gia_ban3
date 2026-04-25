@@ -10,7 +10,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-image: url(&quot;/img_1.png&quot;); -fx-background-position: center; -fx-background-size: cover;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <VBox maxHeight="0.0" maxWidth="212.0" prefHeight="115.0" prefWidth="212.0" spacing="20.0" style="-fx-background-color: FFC8BD;" BorderPane.alignment="CENTER">
+      <VBox maxHeight="0.0" maxWidth="212.0" prefHeight="115.0" prefWidth="212.0" spacing="20.0" style="-fx-background-color: FFC8BD; -fx-background-color: rgba(0, 0, 0, 0.3);" BorderPane.alignment="CENTER">
          <children>
             <TextField VBox.vgrow="ALWAYS" />
             <TextField layoutX="10.0" layoutY="10.0" VBox.vgrow="ALWAYS" />

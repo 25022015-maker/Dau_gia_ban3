@@ -22,31 +22,31 @@
       </Button>
       <StackPane layoutX="2.0" layoutY="28.0" prefHeight="734.0" prefWidth="1199.0" style="-fx-background-image: url(&quot;/img.png&quot;); -fx-background-color: rgba(0,0,0,0.3); -fx-background-size: cover; -fx-background-position: center;" AnchorPane.bottomAnchor="2.6666666666666288" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.6666666666667425" AnchorPane.topAnchor="28.0">
          <children>
-            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="675.0" prefHeight="429.0" prefWidth="499.0" spacing="15.0">
+            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="675.0" prefHeight="458.0" prefWidth="534.0" spacing="15.0" style="-fx-background-color: D7DBFC; -fx-background-color: rgba(0, 0, 0, 0.3); -fx-background-radius: 20;">
                <children>
-                  <Label alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="99.0" prefWidth="641.0" text=" Welcome," textFill="#592566">
+                  <Label alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="99.0" prefWidth="641.0" text=" Welcome," textFill="#f5cdff">
                      <font>
                         <Font name="MilkywayDEMO" size="96.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtUsername" maxWidth="300.0" onAction="#onUsernameEnter" prefHeight="41.0" prefWidth="241.0" promptText="Username" />
-                  <PasswordField fx:id="txtPassword" maxWidth="300.0" onAction="#onPasswordEnter" prefHeight="41.0" prefWidth="549.0" promptText="Password" />
+                  <TextField fx:id="txtUsername" maxWidth="300.0" onAction="#onUsernameEnter" prefHeight="41.0" prefWidth="241.0" promptText="Username" style="-fx-background-radius: 20;" />
+                  <PasswordField fx:id="txtPassword" maxWidth="300.0" onAction="#onPasswordEnter" prefHeight="41.0" prefWidth="549.0" promptText="Password" style="-fx-background-radius: 20;" />
                   <Label fx:id="lblError" text="Oops, sai tên người dùng hoặc mật khẩu" textFill="#ffcdcd" visible="false">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Button mnemonicParsing="false" onAction="#handleLogin" style="-fx-background-color: C9D7FF;" text="Log in">
+                  <Button mnemonicParsing="false" onAction="#handleLogin" style="-fx-background-color: C9D7FF; -fx-background-radius: 20;" text="Log in">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Button>
-                  <Label text="No account yet?" textFill="#ecc9ff">
+                  <Label text="No account yet?" textFill="#eccdff">
                      <font>
                         <Font name="MilkywayDEMO" size="19.0" />
                      </font>
                   </Label>
-                  <Button mnemonicParsing="false" onAction="#goToSignUp" style="-fx-background-color: C9D7FF;" text="Sign up ">
+                  <Button mnemonicParsing="false" onAction="#goToSignUp" style="-fx-background-color: C9D7FF; -fx-background-radius: 20;" text="Sign up ">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
