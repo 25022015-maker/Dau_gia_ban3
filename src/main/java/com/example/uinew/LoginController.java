@@ -32,10 +32,12 @@ public class LoginController {
         System.out.println("Đã nhấn Enter ở ô Password!"); //check xem nhấn enter có tự bật login không
     }
 
+
     @FXML private Label lblError;
 
     @FXML
     void handleLogin(ActionEvent event) {
+        System.out.println("LOGIN CALLED"); //xem có chuyển tới handle login sau khi enter password không
         String user = txtUsername.getText();
         String pass = txtPassword.getText();
 
@@ -45,6 +47,7 @@ public class LoginController {
             changeScene(event, "Dashboard.fxml", "Trang chủ");
         } else {
             lblError.setVisible(true);
+            txtPassword.requestFocus(); //quay lại focus về ô password để laanf sau nhập sai vẫn enter login được
 
         }
     }
@@ -56,9 +59,15 @@ public class LoginController {
     }
 
     // 3. Chuyển sang trang Đăng ký (Sign Up)
+
     @FXML
     void goToSignUp(ActionEvent event) {
         changeScene(event, "SignupUI.fxml", "Đăng ký");
+    }
+
+    @FXML
+    void goToLogin(ActionEvent event) {
+        changeScene(event, "LoginUI.fxml", "Đăng nhập");
     }
 
     // 4. Chuyển sang trang Về chúng tôi (About Us)

@@ -20,7 +20,7 @@
             <Font name="MilkywayDEMO" size="12.0" />
          </font>
       </Button>
-      <StackPane layoutX="2.0" layoutY="28.0" prefHeight="734.0" prefWidth="1199.0" style="-fx-background-image: url(&quot;/img.png&quot;); -fx-background-color: rgba(0,0,0,0.3);" AnchorPane.bottomAnchor="2.6666666666666288" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.6666666666667425" AnchorPane.topAnchor="28.0">
+      <StackPane layoutX="2.0" layoutY="28.0" prefHeight="734.0" prefWidth="1199.0" style="-fx-background-image: url(&quot;/img.png&quot;); -fx-background-color: rgba(0,0,0,0.3); -fx-background-size: cover; -fx-background-position: center;" AnchorPane.bottomAnchor="2.6666666666666288" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.6666666666667425" AnchorPane.topAnchor="28.0">
          <children>
             <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="675.0" prefHeight="429.0" prefWidth="499.0" spacing="15.0">
                <children>
@@ -84,12 +84,12 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Button">
+                              <Button mnemonicParsing="false" onAction="#goToLogin" text="Button">
                                  <graphic>
                                     <Label prefHeight="25.0" prefWidth="211.0" text="Đăng nhập" />
                                  </graphic>
                               </Button>
-                              <Button layoutY="27.0" mnemonicParsing="false" text="Button">
+                              <Button layoutY="27.0" mnemonicParsing="false" onAction="#goToSignUp" text="Button">
                                  <graphic>
                                     <Label prefHeight="25.0" prefWidth="211.0" text="Đăng kí" />
                                  </graphic>
