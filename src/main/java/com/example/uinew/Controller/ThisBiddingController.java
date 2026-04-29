@@ -1,9 +1,9 @@
-package com.example.uinew;
+package com.example.uinew.Controller;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class ProductListController extends Application {
+public class ThisBiddingController extends Application {
 
     public static void main(String[] args) {
         launch(args);

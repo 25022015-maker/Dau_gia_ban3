@@ -1,42 +1,36 @@
-package com.example.uinew;
+package com.example.uinew.Controller;
 
+import com.example.uinew.HandleLog;
+import com.example.uinew.Initialize;
+import com.example.uinew.OnEnter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import java.io.IOException;
 import javafx.scene.layout.VBox;
 
-public class LoginController {
+public class LoginController extends MainController implements OnEnter, HandleLog, Initialize {
 
-    @FXML private TextField txtUsername;
-    @FXML private PasswordField txtPassword;
 
-    // 1. Nhấn Enter ở ô Username -> Nhảy xuống ô Password
-    @FXML
-    void onUsernameEnter(ActionEvent event) {
-        txtPassword.requestFocus();
-    }
+
 
     // 2. Nhấn Enter ở ô Password hoặc nhấn nút Login -> Xử lý đăng nhập
     @FXML
-    void onPasswordEnter(ActionEvent event) {
+    public void onPasswordEnter(ActionEvent event) {
         handleLogin(event);
         System.out.println("Đã nhấn Enter ở ô Password!"); //check xem nhấn enter có tự bật login không
     }
 
+    // 1. Nhấn Enter ở ô Username -> Nhảy xuống ô Password
+    @FXML
+    public void onUsernameEnter(ActionEvent event) {
+        txtPassword.requestFocus();
+    }
 
     @FXML private Label lblError;
 
     @FXML
-    void handleLogin(ActionEvent event) {
+    public void handleLogin(ActionEvent event) {
         System.out.println("LOGIN CALLED"); //xem có chuyển tới handle login sau khi enter password không
         String user = txtUsername.getText();
         String pass = txtPassword.getText();
@@ -58,17 +52,6 @@ public class LoginController {
         txtPassword.setOnKeyTyped(e -> lblError.setVisible(false));
     }
 
-    // 3. Chuyển sang trang Đăng ký (Sign Up)
-
-    @FXML
-    void goToSignUp(ActionEvent event) {
-        changeScene(event, "SignupUI.fxml", "Đăng ký");
-    }
-
-    @FXML
-    void goToLogin(ActionEvent event) {
-        changeScene(event, "LoginUI.fxml", "Đăng nhập");
-    }
 
     // 4. Chuyển sang trang Về chúng tôi (About Us)
     @FXML
@@ -76,19 +59,6 @@ public class LoginController {
         changeScene(event, "AboutUs.fxml", "Thông tin về chúng tôi");
     }
 
-    // Hàm tiện ích để chuyển trang (tránh viết lặp code)
-    private void changeScene(ActionEvent event, String fxmlFile, String title) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle(title);
-            stage.show();
-        } catch (IOException e) {
-            System.err.println("Không tìm thấy file: " + fxmlFile);
-            e.printStackTrace();
-        }
-    }
 
     @FXML
     private Button btnMenu;
