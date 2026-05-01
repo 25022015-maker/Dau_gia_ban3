@@ -13,12 +13,13 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public abstract class MainController {
-    @FXML public TextField txtUsername;
-    @FXML public PasswordField txtPassword;
+    @FXML protected TextField txtUsername;
+    @FXML protected PasswordField txtPassword;
+    private static User currentUser;
 
 
     // Hàm tiện ích để chuyển trang (tránh viết lặp code)
-        void changeScene(ActionEvent event, String fxmlFile, String title) {
+        protected void changeScene(ActionEvent event, String fxmlFile, String title) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -31,17 +32,10 @@ public abstract class MainController {
         }
     }
 
-    @FXML
-    public void goToLogin(ActionEvent event) {
-        changeScene(event, "LoginUI.fxml", "Đăng nhập");
-    }
 
+     public static void setCurrentUser(User user){
+            currentUser = user;
 
-    // 3. Chuyển sang trang Đăng ký (Sign Up)
-
-    @FXML
-    void goToSignUp(ActionEvent event) {
-        changeScene(event, "SignupUI.fxml", "Đăng ký");
-    }
+     }
 
 }

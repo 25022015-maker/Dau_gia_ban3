@@ -1,18 +1,25 @@
 package com.example.uinew.Controller;
 
-import com.example.uinew.HandleLog;
-import com.example.uinew.Initialize;
-import com.example.uinew.OnEnter;
+import com.example.uinew.Interface.Initialize;
+import com.example.uinew.Interface.OnEnter;
+import com.example.uinew.Interface.ToSignUp;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
-public class LoginController extends MainController implements OnEnter, HandleLog, Initialize {
+public class LoginController extends MainController implements OnEnter, Initialize, ToSignUp {
 
 
+    @FXML
+    public void goToSignUp(ActionEvent event) {
+        changeScene(event, "SignupUI.fxml", "Đăng ký");
+    }
 
+    public void goToLogin(ActionEvent event){
+        changeScene(event, "LoginUI.fxml", "Đăng nhập");
+    }
 
     // 2. Nhấn Enter ở ô Password hoặc nhấn nút Login -> Xử lý đăng nhập
     @FXML
@@ -53,31 +60,10 @@ public class LoginController extends MainController implements OnEnter, HandleLo
     }
 
 
-    // 4. Chuyển sang trang Về chúng tôi (About Us)
-    @FXML
-    void goToAboutUs(ActionEvent event) {
-        changeScene(event, "AboutUs.fxml", "Thông tin về chúng tôi");
-    }
-
-
     @FXML
     private Button btnMenu;
     @FXML
     private VBox vboxSidebar; // Đảm bảo fx:id trong Scene Builder cũng là vboxSidebar
 
-    @FXML
-    private void toggleSidebar(ActionEvent event) {
-        if (vboxSidebar.isVisible()) {
-            vboxSidebar.setVisible(false);
-            vboxSidebar.setManaged(false); // Thu hồi không gian
-        } else {
-            vboxSidebar.setVisible(true);
-            vboxSidebar.setManaged(true);  // Hiển thị lại không gian
-        }
-        // 1. Kiểm tra xem biến có bị null không (nếu null là do chưa đặt fx:id)
-        if (vboxSidebar == null) {
-            System.out.println("LỖI: Chưa đặt fx:id cho vboxSidebar trong Scene Builder!");
-            return;
-        }
-    }
+
 }

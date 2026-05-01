@@ -1,9 +1,9 @@
-package com.example.uinew;
+package com.example.uinew.View;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class Sidebar extends Application {
+public class ProductList extends Application {
 
     public static void main(String[] args) {
         launch(args);

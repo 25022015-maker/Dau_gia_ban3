@@ -1,4 +1,4 @@
-package com.example.uinew;
+package com.example.uinew.Interface;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,5 +9,5 @@ public interface OnEnter {
     void onUsernameEnter(ActionEvent event);
 
     @FXML
-    public void onPasswordEnter(ActionEvent event);
+     void onPasswordEnter(ActionEvent event);
 }

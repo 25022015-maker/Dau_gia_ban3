@@ -9,4 +9,8 @@ module com.example.uinew {
     exports com.example.uinew;
     exports com.example.uinew.Controller;
     opens com.example.uinew.Controller to javafx.fxml;
+    exports com.example.uinew.View;
+    opens com.example.uinew.View to javafx.fxml;
+    exports com.example.uinew.Interface;
+    opens com.example.uinew.Interface to javafx.fxml;
 }

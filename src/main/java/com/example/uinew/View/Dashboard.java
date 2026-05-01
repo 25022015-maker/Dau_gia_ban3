@@ -1,9 +1,9 @@
-package com.example.uinew;
+package com.example.uinew.View;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class ThisBidding extends Application {
+public class Dashboard extends Application {
 
     public static void main(String[] args) {
         launch(args);
