@@ -1,6 +1,5 @@
-package com.example.uinew;
+package com.example.uinew.View;
 
-import com.example.uinew.View.SignupUI;
 import javafx.application.Application;
 
 public class Launcher {
