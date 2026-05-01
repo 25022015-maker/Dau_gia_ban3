@@ -1,4 +1,4 @@
-package com.example.uinew.Controller;
+package com.example.uinew.model;
 
 public class User { //thu nghiem
    String username;

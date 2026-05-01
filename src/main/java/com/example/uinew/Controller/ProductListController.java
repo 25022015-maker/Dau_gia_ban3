@@ -1,8 +1,9 @@
 package com.example.uinew.Controller;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
+import com.example.uinew.model.Product;
 import com.example.uinew.Interface.IProductListView;
+import com.example.uinew.service.ProductService;
+
 import java.util.*;
 
 public class ProductListController extends MainController {
@@ -24,13 +25,15 @@ public class ProductListController extends MainController {
                     view.showLoading(false);
                     view.displayProducts(products);
                 }
-            });
+            }
         }
 
-
-        // Xử lý khi nhấn vào một sản phẩm để sang LiveBiddingView
         public void onProductClick(Product product) {
-            MainController.getInstance().changeScene(ViewType.LIVE_BIDDING, product.getId());
-        }
+        MainController.setSelectedProduct(product);
+        // Chuyển sang trang đấu giá của sản phẩm đó
+        setView("/com/example/uinew/View/ThisBidding.fxml");
+    }
+    // Xử lý khi nhấn vào một sản phẩm để sang LiveBiddingView
+
     }
 

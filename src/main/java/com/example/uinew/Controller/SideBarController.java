@@ -31,6 +31,10 @@ public class SideBarController extends MainController implements ToLogin, ToSign
         changeScene(event, "AboutUs.fxml", "Thông tin về chúng tôi");
     }
 
+    @FXML void goToDashBoard(ActionEvent event){
+        changeScene(event, "DashBoard.FXML", "Trang chu");
+    }
+
     @FXML
     public void goToSignUp(ActionEvent event) {
         changeScene(event, "SignupUI.fxml", "Đăng ký");

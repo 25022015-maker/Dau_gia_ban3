@@ -2,11 +2,7 @@ package com.example.uinew.Controller;
 
 import com.example.uinew.Interface.OnLogout;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.stage.Stage;
-
-import java.util.EventListener;
 
 public class DashboardController extends MainController implements OnLogout {
 

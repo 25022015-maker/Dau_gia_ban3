@@ -2,6 +2,7 @@ package com.example.uinew.Controller;
 
 import com.example.uinew.Interface.ToLogin;
 import com.example.uinew.Interface.OnEnter;
+import com.example.uinew.model.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -42,7 +43,7 @@ public class SignupController extends MainController implements OnEnter, ToLogin
 
         // 2. Gọi Service/Database để tạo tài khoản mới
         // Giả sử database.register trả về đối tượng User sau khi tạo xong ->ket noi voi database
-        User newUser = database.register(username, password);
+        User newUser = database.register(username, password); //database backend
 
         if (newUser != null) {
             // 3. KẾT NỐI ĐÂY NÈ: Lưu user mới tạo vào MainController

@@ -13,4 +13,8 @@ module com.example.uinew {
     opens com.example.uinew.View to javafx.fxml;
     exports com.example.uinew.Interface;
     opens com.example.uinew.Interface to javafx.fxml;
+    exports com.example.uinew.model;
+    opens com.example.uinew.model to javafx.fxml;
+    exports com.example.uinew.service;
+    opens com.example.uinew.service to javafx.fxml;
 }
