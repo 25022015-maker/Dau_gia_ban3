@@ -1,18 +1,14 @@
 package com.auction.project.Entities;
 
-public abstract class Item {
-    protected String id;
+public abstract class Item extends Entity {
     protected String name;
-    protected double startingPrice;
+    protected String description;
+    protected double startPrice;
 
-    public Item(String id, String name, double startingPrice) {
-        this.id = id;
+    public Item(String name, double startPrice) {
+        super();
         this.name = name;
-        this.startingPrice = startingPrice;
+        this.startPrice = startPrice;
     }
-
-    public abstract String getItemType();
-
-    public double getStartingPrice() { return startingPrice; }
-    public String getName() { return name; }
+    public abstract String getDetails();
 }

@@ -1,16 +1,20 @@
 package com.auction.project.Server;
 
-import com.auction.project.Common.entitiesclasses.BidTransaction;
-import java.io.*;
-import java.net.Socket;
+import com.auction.project.Entities.*;
+import com.auction.project.Exception.AuctionClosedException;
+import com.auction.project.Exception.InvalidBidException;
+import com.auction.project.Manager.*;
+import com.auction.project.Observer.Observer;
 
-/**
- * Lớp xử lý từng Client riêng biệt (Tuần 10: Xử lý đa luồng)
- */
-public class ClientHandler extends Thread {
-    private Socket socket;
+import java.io.*;
+import java.net.*;
+import java.util.concurrent.*;
+
+public class ClientHandler implements Runnable, Observer {
+    private final Socket socket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
+    private User currentUser;
 
     public ClientHandler(Socket socket) {
         this.socket = socket;
@@ -19,46 +23,83 @@ public class ClientHandler extends Thread {
     @Override
     public void run() {
         try {
-            // Thiết lập luồng gửi/nhận đối tượng (Tuần 9: Serialization) [cite: 11]
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
 
             while (true) {
-                // 1. Đọc đối tượng gửi từ Client
-                Object obj = in.readObject();
-
-                // 2. Kiểm tra nếu đối tượng nhận được là một giao dịch đấu giá
-                if (obj instanceof BidTransaction) {
-                    BidTransaction bid = (BidTransaction) obj;
-
-                    // 3. Sử dụng các phương thức đã định nghĩa trong BidTransaction
-                    double bidPrice = bid.getAmount();      // Lấy số tiền từ getAmount()
-                    String bidderInfo = bid.getBidder();    // Lấy thông tin người đấu giá từ bidder.getInfo()
-
-                    // Ghi chú: bid.getInfo() trả về LocalDateTime (timestamp)
-                    System.out.println("--- GIAO DỊCH MỚI ---");
-                    System.out.println("Người đặt: " + bidderInfo);
-                    System.out.println("Mức giá: " + bidPrice);
-                    System.out.println("Thời gian: " + bid.getInfo());
-
-                    // 4. Phản hồi lại cho Client (đáp ứng yêu cầu thông báo realtime cơ bản)
-                    out.writeObject("Hệ thống: Đã ghi nhận mức giá " + bidPrice + " từ " + bidderInfo);
-                    out.flush();// du lieu chuyen tu may minh sang may khac
-                }
+                String command = (String) in.readObject();
+                handleCommand(command);
             }
-        } catch (IOException | ClassNotFoundException e) {
-            // Xử lý khi người dùng tắt ứng dụng hoặc lỗi kết nối [cite: 56, 60]
-            System.err.println("Lỗi kết nối với Client: " + e.getMessage());
-        } finally {
-            closeConnection();
+        } catch (Exception e) {
+            System.out.println("Thiết bị ngắt kết nối .");
         }
     }
 
-    private void closeConnection() {
+    private void handleCommand(String command) throws IOException, ClassNotFoundException {
+        AuctionManager manager = AuctionManager.getInstance();
+
+        switch (command) {
+            case "LOGIN":
+                String username = (String) in.readObject();
+                this.currentUser = new Bidder(username, username + "@auction.com");
+                out.writeObject("SUCCESS");
+                break;
+
+            case "PLACE_BID":
+                int auctionId = (int) in.readObject();
+                double amount = (double) in.readObject();
+                Auction auction = manager.getAuction(auctionId);
+
+                synchronized (auction) {
+                    boolean success = auction.placeBid((Bidder) currentUser, amount);
+                    out.writeObject(success ? "BID_ACCEPTED" : "BID_REJECTED");
+                    auction.registerObserver(this);
+                }
+                break;
+
+            case "GET_ALL_AUCTIONS":
+                out.writeObject(manager.getAllAuctions());
+                break;
+        }
+        out.flush();
+    }
+
+    @Override
+    public void update(int auctionId, double newPrice, String bidderName) {
         try {
-            if (socket != null) socket.close();
+            out.writeObject("UPDATE_PRICE");
+            out.writeObject(auctionId);
+            out.writeObject(newPrice);
+            out.writeObject(bidderName);
+            out.flush();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    private void handleBid(int auctionId, double amount) {
+        try {
+            Auction auction = AuctionManager.getInstance().getAuction(auctionId);
+            if (auction == null) {
+                out.writeObject("ERROR: Không tìm thấy phiên đấu giá.");
+                return;
+            }
+
+            auction.placeBid((Bidder) this.currentUser, amount);
+
+            out.writeObject("SUCCESS: Đặt giá thành công.");
+
+        } catch (InvalidBidException | AuctionClosedException e) {
+            try {
+                out.writeObject("BID_FAILED: " + e.getMessage());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        } catch (Exception e) {
+            try {
+                out.writeObject("ERROR: Lỗi hệ thống.");
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         }
     }
 }

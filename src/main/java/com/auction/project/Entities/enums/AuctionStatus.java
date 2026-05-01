@@ -1,5 +1,5 @@
 package com.auction.project.Entities.enums;
 
-public enum AuctionState {
+public enum AuctionStatus {
     OPEN, RUNNING, FINISHED, PAID, CANCELED
 }

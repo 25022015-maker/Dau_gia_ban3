@@ -1,7 +1,8 @@
 package com.auction.project.Client;
 
-import com.auction.project.Common.entitiesclasses.BidTransaction;
-import com.auction.project.Common.entitiesclasses.Bidder;
+import com.auction.project.Entities.Bidder;
+import com.auction.project.Manager.*;
+
 import java.io.*;
 import java.net.Socket;
 import java.time.LocalDateTime;

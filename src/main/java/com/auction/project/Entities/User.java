@@ -1,13 +1,16 @@
 package com.auction.project.Entities;
 
-public abstract class User {
-    protected String id;
-    protected String name;
+public abstract class User extends Entity {
+    protected String username;
+    protected String passwordHash;
+    protected String email;
 
-    public User(String id, String name) {
-        this.id = id;
-        this.name = name;
+    public User(String username, String email) {
+        super();
+        this.username = username;
+        this.email = email;
     }
 
-    public String getName() { return name; }
+    public boolean login() { return true; }
+    public void logout() { }
 }
