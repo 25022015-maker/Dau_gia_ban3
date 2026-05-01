@@ -1,17 +1,21 @@
 package com.auction.project.Entities;
 
+import com.auction.project.Exception.AuctionClosedException;
+import com.auction.project.Exception.InvalidBidException;
 import com.auction.project.Manager.BidTransaction;
+import com.auction.project.Observer.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observer;
 
 public class Bidder extends User implements Observer {
     private List<BidTransaction> biddingHistory = new ArrayList<>();
 
     public Bidder(String username, String email) { super(username, email); }
 
-    public void placeBid(Auction auction, double amount) {
+
+    public void placeBid(Auction auction, double amount)
+            throws InvalidBidException, AuctionClosedException { // Thêm dòng này vào
         auction.placeBid(this, amount);
     }
 

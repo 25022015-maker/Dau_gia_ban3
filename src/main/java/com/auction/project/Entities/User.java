@@ -10,7 +10,9 @@ public abstract class User extends Entity {
         this.username = username;
         this.email = email;
     }
-
+    public String getUsername() {
+        return this.username;
+    }
     public boolean login() { return true; }
     public void logout() { }
 }

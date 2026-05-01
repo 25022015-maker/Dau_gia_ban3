@@ -5,7 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import com.auction.project.entitiesclasses.User;
+import com.auction.project.Entities.User;
 
 public class LoginUI extends Application {
 

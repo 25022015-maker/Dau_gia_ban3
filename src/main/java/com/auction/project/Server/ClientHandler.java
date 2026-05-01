@@ -51,8 +51,13 @@ public class ClientHandler implements Runnable, Observer {
                 Auction auction = manager.getAuction(auctionId);
 
                 synchronized (auction) {
-                    boolean success = auction.placeBid((Bidder) currentUser, amount);
-                    out.writeObject(success ? "BID_ACCEPTED" : "BID_REJECTED");
+                    try {
+                        auction.placeBid((Bidder) currentUser, amount);
+                        out.writeObject("BID_SUCCESS");
+                    } catch (InvalidBidException | AuctionClosedException e) {
+                        out.writeObject("BID_FAILED: " + e.getMessage());
+                    }
+
                     auction.registerObserver(this);
                 }
                 break;
