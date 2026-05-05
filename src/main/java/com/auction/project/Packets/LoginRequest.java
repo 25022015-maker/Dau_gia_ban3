@@ -8,17 +8,14 @@ public class LoginRequest implements Serializable {
     private String username;
     private String password;
 
-    // Constructor mặc định
+    // Constructor mặc định (cần cho deserialization)
     public LoginRequest() {}
 
-    // Constructor có kiểm tra
     public LoginRequest(String username, String password) {
-        if (username == null || username.isEmpty()) {
+        if (username == null || username.isBlank())
             throw new IllegalArgumentException("Username cannot be empty");
-        }
-        if (password == null || password.isEmpty()) {
+        if (password == null || password.isBlank())
             throw new IllegalArgumentException("Password cannot be empty");
-        }
         this.username = username;
         this.password = password;
     }
@@ -28,6 +25,7 @@ public class LoginRequest implements Serializable {
 
     @Override
     public String toString() {
-        return "LoginRequest{username='" + username + "', password='" + password + "'}";
+        // FIX: không in password ra log — tránh lộ thông tin
+        return "LoginRequest{username='" + username + "', password='***'}";
     }
 }

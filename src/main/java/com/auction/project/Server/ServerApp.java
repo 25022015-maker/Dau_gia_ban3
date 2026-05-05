@@ -13,8 +13,27 @@ public class ServerApp {
 
         try {
             SocketServer server = new SocketServer(port);
+
+            // ── Bật auto-save mỗi 60 giây ────────────────────────────────
+            DataStorage.startAutoSave(
+                    ClientHandler.getUsers(),
+                    ClientHandler.getBidHistory(),
+                    60
+            );
+
+            // ── Lưu lần cuối khi server tắt (Ctrl+C) ─────────────────────
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                System.out.println("\n[Shutdown] Đang lưu dữ liệu...");
+                DataStorage.stopAutoSave(
+                        ClientHandler.getUsers(),
+                        ClientHandler.getBidHistory()
+                );
+                System.out.println("[Shutdown] Hoàn tất. Server đã tắt.");
+            }, "shutdown-hook"));
+
             System.out.println("Server started on port " + port);
             server.start();
+
         } catch (Exception e) {
             System.err.println("Không thể khởi động server: " + e.getMessage());
             e.printStackTrace();
