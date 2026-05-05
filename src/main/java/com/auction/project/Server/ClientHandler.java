@@ -1,110 +1,134 @@
 package com.auction.project.Server;
 
-import com.auction.project.Entities.*;
-import com.auction.project.Exception.AuctionClosedException;
-import com.auction.project.Exception.InvalidBidException;
-import com.auction.project.Manager.*;
-import com.auction.project.Observer.Observer;
+import com.auction.project.Packets.*;
 
 import java.io.*;
-import java.net.*;
-import java.util.concurrent.*;
+import java.net.Socket;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-public class ClientHandler implements Runnable, Observer {
-    private final Socket socket;
-    private ObjectOutputStream out;
+public class ClientHandler extends Thread {
+
+    private Socket socket;
     private ObjectInputStream in;
-    private User currentUser;
+    private ObjectOutputStream out;
+
+    // ── Shared state (static = dùng chung giữa tất cả ClientHandler) ─────────
+    private static final ConcurrentHashMap<String, String> users = DataStorage.loadUsers();
+
+    // dùng volatile để các thread luôn đọc giá trị mới nhất
+    private static volatile double currentBid = 0;
+
+    // Lưu lịch sử bid để có thể serialize xuống file
+    private static final List<BidRequest> bidHistory = new CopyOnWriteArrayList<>(DataStorage.loadBids());
+
+    //  lock dùng chung cho TẤT CẢ ClientHandler (class-level lock)
+    private static final Object BID_LOCK = new Object();
+
+    // ── Constructor ───────────────────────────────────────────────────────────
 
     public ClientHandler(Socket socket) {
         this.socket = socket;
     }
 
+    // ── Getter để ServerApp/SocketServer truy cập cho auto-save ──────────────
+
+    public static ConcurrentHashMap<String, String> getUsers() {
+        return users;
+    }
+
+    public static List<BidRequest> getBidHistory() {
+        return bidHistory;
+    }
+
+    public static double getCurrentBid() {
+        return currentBid;
+    }
+
+    // ── Main loop ─────────────────────────────────────────────────────────────
+
     @Override
     public void run() {
         try {
             out = new ObjectOutputStream(socket.getOutputStream());
-            in = new ObjectInputStream(socket.getInputStream());
+            in  = new ObjectInputStream(socket.getInputStream());
 
-            while (true) {
-                String command = (String) in.readObject();
-                handleCommand(command);
-            }
-        } catch (Exception e) {
-            System.out.println("Thiết bị ngắt kết nối .");
-        }
-    }
-
-    private void handleCommand(String command) throws IOException, ClassNotFoundException {
-        AuctionManager manager = AuctionManager.getInstance();
-
-        switch (command) {
-            case "LOGIN":
-                String username = (String) in.readObject();
-                this.currentUser = new Bidder(username, username + "@auction.com");
-                out.writeObject("SUCCESS");
-                break;
-
-            case "PLACE_BID":
-                int auctionId = (int) in.readObject();
-                double amount = (double) in.readObject();
-                Auction auction = manager.getAuction(auctionId);
-
-                synchronized (auction) {
-                    try {
-                        auction.placeBid((Bidder) currentUser, amount);
-                        out.writeObject("BID_SUCCESS");
-                    } catch (InvalidBidException | AuctionClosedException e) {
-                        out.writeObject("BID_FAILED: " + e.getMessage());
-                    }
-
-                    auction.registerObserver(this);
+            Object obj;
+            while ((obj = in.readObject()) != null) {
+                if (obj instanceof LoginRequest req) {
+                    handleLogin(req);
+                } else if (obj instanceof BidRequest req) {
+                    handleBid(req);
                 }
-                break;
+            }
 
-            case "GET_ALL_AUCTIONS":
-                out.writeObject(manager.getAllAuctions());
-                break;
+        } catch (Exception e) {
+            System.out.println("Client disconnected: " + socket.getRemoteSocketAddress());
+        } finally {
+            SocketServer.clients.remove(this);
+            closeResources();
         }
-        out.flush();
     }
 
-    @Override
-    public void update(int auctionId, double newPrice, String bidderName) {
+    // ── Xử lý login ──────────────────────────────────────────────────────────
+
+    private void handleLogin(LoginRequest req) {
+        String username = req.getUsername();
+        String password = req.getPassword();
+
+        if (users.containsKey(username)) {
+            if (users.get(username).equals(password)) {
+                send(new Response("LOGIN", "Xin chào " + username));
+            } else {
+                send(new Response("ERROR", "Sai mật khẩu"));
+            }
+        } else {
+            users.put(username, password);
+            DataStorage.saveUsers(users);   // lưu ngay khi có user mới
+            send(new Response("LOGIN", "Tạo mới tài khoản: " + username));
+        }
+    }
+
+    // ── Xử lý bid ─────────────────────────────────────────────────────────────
+    //
+    //  FIX: synchronized trên BID_LOCK (static) thay vì 'this'
+    //  → đảm bảo chỉ 1 thread xử lý bid tại một thời điểm dù có nhiều client
+    //
+    private void handleBid(BidRequest req) {
+        synchronized (BID_LOCK) {
+            if (req.getAmount() > currentBid) {
+                currentBid = req.getAmount();
+                bidHistory.add(req);        // lưu vào lịch sử
+
+                Response res = new Response("BID", "Giá mới: " + currentBid);
+                SocketServer.broadcast(res);
+            } else {
+                send(new Response("ERROR", "Giá phải lớn hơn " + currentBid));
+            }
+        }
+    }
+
+    // ── Gửi object về client ──────────────────────────────────────────────────
+
+    public void send(Object msg) {
         try {
-            out.writeObject("UPDATE_PRICE");
-            out.writeObject(auctionId);
-            out.writeObject(newPrice);
-            out.writeObject(bidderName);
+            out.writeObject(msg);
             out.flush();
+        } catch (Exception e) {
+            System.err.println("Lỗi gửi dữ liệu: " + e.getMessage());
+        }
+    }
+
+    // ── Đóng tài nguyên ───────────────────────────────────────────────────────
+
+    private void closeResources() {
+        try {
+            if (in  != null) in.close();
+            if (out != null) out.close();
+            if (socket != null) socket.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-    private void handleBid(int auctionId, double amount) {
-        try {
-            Auction auction = AuctionManager.getInstance().getAuction(auctionId);
-            if (auction == null) {
-                out.writeObject("ERROR: Không tìm thấy phiên đấu giá.");
-                return;
-            }
-
-            auction.placeBid((Bidder) this.currentUser, amount);
-
-            out.writeObject("SUCCESS: Đặt giá thành công.");
-
-        } catch (InvalidBidException | AuctionClosedException e) {
-            try {
-                out.writeObject("BID_FAILED: " + e.getMessage());
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        } catch (Exception e) {
-            try {
-                out.writeObject("ERROR: Lỗi hệ thống.");
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
         }
     }
 }

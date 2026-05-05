@@ -1,38 +1,42 @@
 package com.auction.project.Server;
 
-import com.auction.project.Entities.Auction;
-import com.auction.project.Entities.Item;
-
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.time.LocalDateTime;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 public class ServerApp {
-    private static final int PORT = 12345;
-
-    private final ExecutorService threadPool = Executors.newCachedThreadPool();
-
-    public void startServer() {
-        System.out.println("--- HỆ THỐNG ĐẤU GIÁ TRỰC TUYẾN (SERVER) ---");
-
-        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
-            System.out.println("[INFO] Server đang lắng nghe tại cổng: " + PORT);
-
-            while (true) {
-                Socket clientSocket = serverSocket.accept();
-                System.out.println("[CONNECT] Thiết bị mới: " + clientSocket.getInetAddress());
-                threadPool.execute(new ClientHandler(clientSocket));
-            }
-        } catch (IOException e) {
-            System.err.println("[ERROR] Lỗi Server: " + e.getMessage());
-        } finally {
-            threadPool.shutdown();
-        }
-    }
     public static void main(String[] args) {
-        new ServerApp().startServer();
+        int port = 1234;
+        if (args.length > 0) {
+            try {
+                port = Integer.parseInt(args[0]);
+            } catch (NumberFormatException e) {
+                System.err.println("Port không hợp lệ, dùng mặc định: 1234");
+            }
+        }
+
+        try {
+            SocketServer server = new SocketServer(port);
+
+            // ── Bật auto-save mỗi 60 giây ────────────────────────────────
+            DataStorage.startAutoSave(
+                    ClientHandler.getUsers(),
+                    ClientHandler.getBidHistory(),
+                    60
+            );
+
+            // ── Lưu lần cuối khi server tắt (Ctrl+C) ─────────────────────
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                System.out.println("\n[Shutdown] Đang lưu dữ liệu...");
+                DataStorage.stopAutoSave(
+                        ClientHandler.getUsers(),
+                        ClientHandler.getBidHistory()
+                );
+                System.out.println("[Shutdown] Hoàn tất. Server đã tắt.");
+            }, "shutdown-hook"));
+
+            System.out.println("Server started on port " + port);
+            server.start();
+
+        } catch (Exception e) {
+            System.err.println("Không thể khởi động server: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

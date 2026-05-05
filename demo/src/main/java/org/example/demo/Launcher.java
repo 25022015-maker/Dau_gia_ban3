@@ -1,4 +1,4 @@
-package com.auction.project;
+package org.example.demo;
 
 import javafx.application.Application;
 
