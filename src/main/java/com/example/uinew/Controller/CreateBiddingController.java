@@ -21,7 +21,7 @@ public class CreateBiddingController extends MainController {
         MainController.setSelectedProduct(newProduct);
 
         System.out.println("Tạo phiên đấu giá thành công!");
-        //Chuyển sang trang chi tiết đấu giá ngay sau khi taoj
-        setView("/com/example/uinew/View/ThisBidding.fxml");
+        //Chuyển sang trang chi tiết đấu giá ngay sau khi taoj'
+        changeScene(event,"/com/example/uinew/View/ThisBidding.fxml", "Current Bidding");
     }
 }

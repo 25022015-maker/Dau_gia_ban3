@@ -28,7 +28,7 @@ public class SideBarController extends MainController implements ToLogin, ToSign
     // 4. Chuyển sang trang Về chúng tôi (About Us)
     @FXML
     void goToAboutUs(ActionEvent event) {
-        changeScene(event, "AboutUs.fxml", "Thông tin về chúng tôi");
+        changeScene(event, "AboutUs.FXML", "Thông tin về chúng tôi");
     }
 
     @FXML void goToDashBoard(ActionEvent event){

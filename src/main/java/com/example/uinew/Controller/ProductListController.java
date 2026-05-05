@@ -4,8 +4,6 @@ import com.example.uinew.model.Product;
 import com.example.uinew.Interface.IProductListView;
 import com.example.uinew.service.ProductService;
 
-import java.util.*;
-
 public class ProductListController extends MainController {
 
         private IProductListView view;      // Kết nối với UI thông qua Interface
@@ -16,17 +14,6 @@ public class ProductListController extends MainController {
             this.service = new ProductService();
         }
 
-        // Hàm chính để load dữ liệu
-        public void loadProducts() {
-            view.showLoading(true);
-            service.getAllProducts(new Callback<List<Product>>() {
-                @Override
-                public void onSuccess(List<Product> products) {
-                    view.showLoading(false);
-                    view.displayProducts(products);
-                }
-            }
-        }
 
         public void onProductClick(Product product) {
         MainController.setSelectedProduct(product);

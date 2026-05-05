@@ -7,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 
 public class LoginController extends MainController implements OnEnter, Initialize, ToSignUp {
 
@@ -62,8 +61,13 @@ public class LoginController extends MainController implements OnEnter, Initiali
 
     @FXML
     private Button btnMenu;
+
     @FXML
-    private VBox vboxSidebar; // Đảm bảo fx:id trong Scene Builder cũng là vboxSidebar
+    private Button signUp;
+
+    public void goToCreateBidding(ActionEvent event){
+        changeScene(event, "/com/example/uinew/CreateBidding.fxml", "Tạo phiên đấu giá");
+    }
 
 
 }

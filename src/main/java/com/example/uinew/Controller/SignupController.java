@@ -41,21 +41,11 @@ public class SignupController extends MainController implements OnEnter, ToLogin
         String username = txtUsername.getText();
         String password = txtPassword.getText();
 
-        // 2. Gọi Service/Database để tạo tài khoản mới
-        // Giả sử database.register trả về đối tượng User sau khi tạo xong ->ket noi voi database
-        User newUser = database.register(username, password); //database backend
-
-        if (newUser != null) {
-            // 3. KẾT NỐI ĐÂY NÈ: Lưu user mới tạo vào MainController
-            MainController.setCurrentUser(newUser);
 
             // 4. Chuyển thẳng vào Dashboard (không bắt user login lại lần nữa)
-            changeScene(event, "/com/example/uinew/View/DashboardView.fxml", "Chào mừng bạn!");
+            changeScene(event, "/com/example/uinew/View/DashboardView.fxml", "Chào mừng bạn!");}
 
-            System.out.println("Đăng ký và đăng nhập thành công!");
-        } else {
-            // Hiển thị thông báo lỗi nếu trùng username/email
-            lblMessage.setText("Đăng ký thất bại, vui lòng thử lại!");
         }
-    }
-}
+
+
+
