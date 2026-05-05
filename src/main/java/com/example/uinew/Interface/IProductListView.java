@@ -1,5 +1,6 @@
 package com.example.uinew.Interface;
 import java.util.List;
+import com.example.uinew.model.Product;
 
 public interface IProductListView {
 
