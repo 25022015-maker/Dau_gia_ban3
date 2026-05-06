@@ -35,7 +35,7 @@ public class DashboardController extends MainController implements OnLogout {
     }
 
     @FXML
-    Button createAuction;
+    Button createAuction; //nút đẻ tạo auction/bidding
 
     //hàm setview sang trang createAuction
     public void setCreateAuction(){
