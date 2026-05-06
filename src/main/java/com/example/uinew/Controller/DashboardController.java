@@ -3,6 +3,7 @@ package com.example.uinew.Controller;
 import com.example.uinew.Interface.OnLogout;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 
 public class DashboardController extends MainController implements OnLogout {
 
@@ -32,10 +33,12 @@ public class DashboardController extends MainController implements OnLogout {
         }
 
     }
-    //tạo sản phẩm để đấu giá nếu là bidder
-    //thông báo thông tin người tham gia
 
+    @FXML
+    Button createAuction;
 
-    //chọn sản phẩm để tham gia đấu giá nếu là seller
-    //ặt bid hoặc dùng auto bid
+    //hàm setview sang trang createAuction
+    public void setCreateAuction(){
+        setView("CreateBidding.fxml");
+    }
 }
