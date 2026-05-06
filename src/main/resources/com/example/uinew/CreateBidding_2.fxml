@@ -19,7 +19,7 @@
          <children>
             <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="594.0" prefWidth="767.0" spacing="10.0">
                <children>
-                  <Label prefHeight="75.0" prefWidth="670.0" text="Thông tin sản phẩm" textFill="#ff9f9f">
+                  <Label prefHeight="75.0" prefWidth="670.0" text="Thông tin sản phẩm" textFill="#4d3b9a">
                      <font>
                         <Font name="System Bold" size="35.0" />
                      </font>
