@@ -28,7 +28,7 @@ public abstract class MainController {
     public static void setSelectedProduct(Product product) { selectedProduct = product; }
     public static Product getSelectedProduct() { return selectedProduct; }
 
-    // Dùng để đổi toàn bộ cửa sổ (Login/Logout)
+    //đổi toàn bộ cửa sổ (Login/Logout)
     protected void changeScene(ActionEvent event, String fxmlFile, String title) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));
@@ -39,7 +39,7 @@ public abstract class MainController {
         } catch (IOException e) { e.printStackTrace(); }
     }
 
-    // Dùng để đổi nội dung vùng giữa (Dashboard/Bidding)
+    //đổi nội dung vùng giữa (Dashboard/Bidding)
     public void setView(String fxmlFile) {
         try {
             Node node = FXMLLoader.load(getClass().getResource(fxmlFile));
