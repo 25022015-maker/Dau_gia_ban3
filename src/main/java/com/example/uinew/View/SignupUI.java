@@ -11,7 +11,7 @@ public class SignupUI extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SignupUI.class.getResource("SignupUI.fxml")); //nạp file fxml
+        FXMLLoader fxmlLoader = new FXMLLoader(SignupUI.class.getResource("/com/example/uinew/SignupUI.fxml")); //nạp file fxml
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root, 600, 400);
         stage.setTitle("ĐĂNG KÝ");

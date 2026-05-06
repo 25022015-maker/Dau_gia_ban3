@@ -9,15 +9,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 public class LoginController extends MainController implements OnEnter, Initialize, ToSignUp {
-
+    @FXML
+    private Button signUp;
 
     @FXML
     public void goToSignUp(ActionEvent event) {
-        changeScene(event, "SignupUI.fxml", "Đăng ký");
-    }
-
-    public void goToLogin(ActionEvent event){
-        changeScene(event, "LoginUI.fxml", "Đăng nhập");
+        changeScene(event, "/com/example/uinew/SignupUI.fxml", "Đăng ký");
     }
 
     // 2. Nhấn Enter ở ô Password hoặc nhấn nút Login -> Xử lý đăng nhập
@@ -33,7 +30,7 @@ public class LoginController extends MainController implements OnEnter, Initiali
         txtPassword.requestFocus();
     }
 
-    @FXML private Label lblError;
+    @FXML private Label lblError; //hiển thị báo sai tài khoản mật khẩu
 
     @FXML
     public void handleLogin(ActionEvent event) {
@@ -44,7 +41,7 @@ public class LoginController extends MainController implements OnEnter, Initiali
         if (user.equals("admin") && pass.equals("123")) {
             System.out.println("Đăng nhập thành công!");
             // Chuyển sang trang Dashboard hoặc Home sau khi login
-            changeScene(event, "Dashboard.fxml", "Trang chủ");
+            changeScene(event, "/com/example/uinew/Dashboard.fxml", "Trang chủ");
         } else {
             lblError.setVisible(true);
             txtPassword.requestFocus(); //quay lại focus về ô password để laanf sau nhập sai vẫn enter login được
@@ -62,12 +59,6 @@ public class LoginController extends MainController implements OnEnter, Initiali
     @FXML
     private Button btnMenu;
 
-    @FXML
-    private Button signUp;
-
-    public void goToCreateBidding(ActionEvent event){
-        changeScene(event, "/com/example/uinew/CreateBidding.fxml", "Tạo phiên đấu giá");
-    }
 
 
 }

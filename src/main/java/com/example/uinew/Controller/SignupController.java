@@ -14,13 +14,13 @@ public class SignupController extends MainController implements OnEnter, ToLogin
         System.out.println("CALLED"); //xem có chuyển tới handle login sau khi enter password không
         String user = txtUsername.getText();
         String pass = txtPassword.getText();
-
+        User newUser = new User(user, pass); //tạo user mới
     }
 
     @FXML
     public void onPasswordEnter(ActionEvent event) {
         handleLogin(event);
-        System.out.println("Đã nhấn Enter ở ô Password!"); //check xem nhấn enter có tự bật login không
+        System.out.println("Đã nhấn Enter ở ô Password!"); //check xem nhấn enter có tự bật signup không
     }
 
 
@@ -30,9 +30,9 @@ public class SignupController extends MainController implements OnEnter, ToLogin
         txtPassword.requestFocus();
     }
 
-
+    @FXML
     public void goToLogin(ActionEvent event){
-        changeScene(event, "LoginUI.fxml", "Đăng nhập");
+        changeScene(event, "/com/example/uinew/LoginUI.fxml", "Đăng nhập");
     }
 
     @FXML
@@ -43,7 +43,7 @@ public class SignupController extends MainController implements OnEnter, ToLogin
 
 
             // 4. Chuyển thẳng vào Dashboard (không bắt user login lại lần nữa)
-            changeScene(event, "/com/example/uinew/View/DashboardView.fxml", "Chào mừng bạn!");}
+            changeScene(event, "/com/example/uinew/View/Dashboard.fxml", "Chào mừng bạn!");}
 
         }
 
