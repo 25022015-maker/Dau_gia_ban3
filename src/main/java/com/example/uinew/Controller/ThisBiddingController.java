@@ -51,5 +51,9 @@ public class ThisBiddingController extends MainController implements Initializab
         int s = totalSeconds % 60;
         return String.format("%02d:%02d:%02d", h, m, s);
     }
+
+    public void BiddingHistory(ActionEvent event){
+
+    }
 }
 
