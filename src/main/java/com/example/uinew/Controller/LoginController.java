@@ -41,7 +41,7 @@ public class LoginController extends MainController implements OnEnter, ToSignUp
         if (user.equals("admin") && pass.equals("123")) {
             System.out.println("Đăng nhập thành công!");
             // Chuyển sang trang Dashboard hoặc Home sau khi login
-            changeScene(event, "/com/example/uinew/Dashboard.fxml", "Trang chủ");
+            changeScene(event, "/com/example/uinew/MainLayout.fxml", "Trang chủ");
         } else {
             lblError.setVisible(true);
             txtPassword.requestFocus(); //quay lại focus về ô password để laanf sau nhập sai vẫn enter login được

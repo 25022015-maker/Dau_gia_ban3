@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import java.io.IOException;
 
@@ -21,7 +22,7 @@ public abstract class MainController {
     @FXML protected TextField txtUsername;
     @FXML protected PasswordField txtPassword;
 
-    @FXML protected AnchorPane contentArea; // fx:id của vùng chứa trong MainLayout
+    @FXML protected StackPane contentArea; // fx:id của vùng chứa trong MainLayout
 
     public static void setCurrentUser(User user) { currentUser = user; }
     public static User getCurrentUser() { return currentUser; }
@@ -41,7 +42,7 @@ public abstract class MainController {
         } catch (IOException e) { e.printStackTrace(); }
     }
 
-    //đổi nội dung vùng giữa (Dashboard/Bidding)
+    //đổi nội dung vùng giữa
     @FXML
     public void setView(String fxmlFile) {
         try {
