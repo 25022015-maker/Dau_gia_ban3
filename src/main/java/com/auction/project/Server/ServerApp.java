@@ -1,42 +1,41 @@
 package com.auction.project.Server;
 
+import com.auction.project.Controllers.ServerController;
+import java.util.logging.Logger;
+
+/**
+ * Entry point của Server ứng dụng đấu giá.
+ *
+ * <p><b>Thứ tự khởi động:</b>
+ * <ol>
+ *   <li>Khởi tạo {@code ServerController} — nạp dữ liệu từ DAO vào AuctionManager</li>
+ *   <li>Khởi tạo {@code SocketServer} với controller</li>
+ *   <li>Gọi {@code server.start()} — blocking loop chờ client</li>
+ * </ol>
+ *
+ * <p>Chạy ServerApp và ClientApp trên cùng máy hoặc khác máy trong cùng mạng LAN.
+ */
 public class ServerApp {
+
+    private static final Logger logger = Logger.getLogger(ServerApp.class.getName());
+    private static final int SERVER_PORT = 9090;
+
     public static void main(String[] args) {
-        int port = 1234;
-        if (args.length > 0) {
-            try {
-                port = Integer.parseInt(args[0]);
-            } catch (NumberFormatException e) {
-                System.err.println("Port không hợp lệ, dùng mặc định: 1234");
-            }
-        }
+        logger.info("Đang khởi động Hệ thống Đấu Giá Trực Tuyến...");
 
-        try {
-            SocketServer server = new SocketServer(port);
+        // 1. Controller — cũng khởi tạo DAO và nạp dữ liệu vào AuctionManager
+        ServerController controller = new ServerController();
 
-            // ── Bật auto-save mỗi 60 giây ────────────────────────────────
-            DataStorage.startAutoSave(
-                    ClientHandler.getUsers(),
-                    ClientHandler.getBidHistory(),
-                    60
-            );
+        // 2. Socket server
+        SocketServer server = new SocketServer(SERVER_PORT, controller);
 
-            // ── Lưu lần cuối khi server tắt (Ctrl+C) ─────────────────────
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                System.out.println("\n[Shutdown] Đang lưu dữ liệu...");
-                DataStorage.stopAutoSave(
-                        ClientHandler.getUsers(),
-                        ClientHandler.getBidHistory()
-                );
-                System.out.println("[Shutdown] Hoàn tất. Server đã tắt.");
-            }, "shutdown-hook"));
+        // 3. Đăng ký shutdown hook để dọn dẹp khi Ctrl+C
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            logger.info("Nhận tín hiệu dừng — đang shutdown server...");
+            server.stop();
+        }));
 
-            System.out.println("Server started on port " + port);
-            server.start();
-
-        } catch (Exception e) {
-            System.err.println("Không thể khởi động server: " + e.getMessage());
-            e.printStackTrace();
-        }
+        // 4. Start — blocking tại đây cho đến khi server dừng
+        server.start();
     }
 }

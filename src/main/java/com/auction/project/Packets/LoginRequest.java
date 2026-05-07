@@ -1,31 +1,57 @@
 package com.auction.project.Packets;
 
-import java.io.Serializable;
+/**
+ * Packet gửi từ Client lên Server khi người dùng thực hiện đăng nhập.
+ *
+ * <p>Server nhận packet này, kiểm tra thông tin qua {@code AuctionDAO},
+ * rồi trả về {@code ResponseType.LOGIN_SUCCESS} hoặc {@code LOGIN_FAILURE}.
+ */
+public class LoginRequest {
 
-public class LoginRequest implements Serializable {
-    private static final long serialVersionUID = 1L;
+  /** Loại action — luôn là "LOGIN" */
+  private String action;
 
-    private String username;
-    private String password;
+  /** Tên đăng nhập */
+  private String username;
 
-    // Constructor mặc định (cần cho deserialization)
-    public LoginRequest() {}
+  /** Mật khẩu (nên hash phía client trước khi gửi trong thực tế) */
+  private String password;
 
-    public LoginRequest(String username, String password) {
-        if (username == null || username.isBlank())
-            throw new IllegalArgumentException("Username cannot be empty");
-        if (password == null || password.isBlank())
-            throw new IllegalArgumentException("Password cannot be empty");
-        this.username = username;
-        this.password = password;
-    }
+  // ── Constructor ───────────────────────────────────────────────────────────
 
-    public String getUsername() { return username; }
-    public String getPassword() { return password; }
+  public LoginRequest() {
+    this.action = "LOGIN";
+  }
 
-    @Override
-    public String toString() {
-        // FIX: không in password ra log — tránh lộ thông tin
-        return "LoginRequest{username='" + username + "', password='***'}";
-    }
+  public LoginRequest(String username, String password) {
+    this.action = "LOGIN";
+    this.username = username;
+    this.password = password;
+  }
+
+  // ── Getters & Setters ─────────────────────────────────────────────────────
+
+  public String getAction() {
+    return action;
+  }
+
+  public void setAction(String action) {
+    this.action = action;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
 }

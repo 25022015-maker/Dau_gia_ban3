@@ -1,25 +1,30 @@
 package com.auction.project.Server;
 
-import com.auction.project.Packets.BidRequest;
+import com.auction.project.Models.Auction;
+import com.auction.project.Models.AuctionManager;
 
 import java.io.*;
 import java.nio.file.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Quản lý lưu trữ dữ liệu bằng Java Serialization.
+ * Tầng lưu trữ dữ liệu xuống file cho Server.
  *
- * Tính năng nâng cấp so với phiên bản cũ:
- *  - Atomic write: ghi ra .tmp rồi rename → không mất dữ liệu khi crash
- *  - Tự động tạo backup có timestamp trước mỗi lần ghi
- *  - Auto-save: background thread tự lưu mỗi N giây
- *  - Thread-safe: dùng ReentrantLock cho thao tác ghi file
+ * <p><b>Thay đổi so với phiên bản cũ:</b>
+ * <ul>
+ *   <li>Xóa dependency vào {@code ClientHandler.getCurrentBid()} — không còn tồn tại</li>
+ *   <li>Thay {@code BidRequest} bằng {@code Auction} làm đơn vị lưu trữ chính</li>
+ *   <li>Lấy dữ liệu từ {@code AuctionManager.getInstance()} thay vì từ ClientHandler</li>
+ *   <li>Giữ nguyên cơ chế atomic write + backup + auto-save</li>
+ * </ul>
+ *
+ * <p><b>Nguyên tắc:</b> CHỈ Server mới được dùng class này.
  */
 public class DataStorage {
 
@@ -27,205 +32,218 @@ public class DataStorage {
     private static final DateTimeFormatter BACKUP_FMT =
             DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 
-    // ── Đường dẫn file ────────────────────────────────────────────────────────
+    // ── FILE PATHS ────────────────────────────────────────────────────────────
     private static final Path DATA_DIR   = Paths.get("server-data");
     private static final Path BACKUP_DIR = DATA_DIR.resolve("backups");
-    private static final Path USER_FILE  = DATA_DIR.resolve("users.dat");
-    private static final Path BID_FILE   = DATA_DIR.resolve("bids.dat");
 
-    // ── Lock để tránh 2 thread ghi file cùng lúc ─────────────────────────────
-    private static final java.util.concurrent.locks.ReentrantLock LOCK =
-            new java.util.concurrent.locks.ReentrantLock();
+    private static final Path USER_FILE    = DATA_DIR.resolve("users.dat");
+    private static final Path AUCTION_FILE = DATA_DIR.resolve("auctions.dat");
 
-    // ── Auto-save ─────────────────────────────────────────────────────────────
+    // ── LOCK ──────────────────────────────────────────────────────────────────
+    private static final ReentrantLock LOCK = new ReentrantLock();
+
+    // ── AUTO SAVE ─────────────────────────────────────────────────────────────
     private static ScheduledExecutorService autoSaveScheduler;
 
-    // ─────────────────────────────────────────────────────────────────────────
-    //  USERS
-    // ─────────────────────────────────────────────────────────────────────────
+    // =========================================================
+    // USERS
+    // =========================================================
 
     /**
-     * Lưu danh sách users xuống file (atomic write + backup).
+     * Lưu map users xuống file (dùng Java serialization + atomic write).
      *
-     * @param users map username → passwordHash
+     * @param users map username → password cần lưu
      */
-    public static void saveUsers(java.util.concurrent.ConcurrentHashMap<String, String> users) {
+    public static void saveUsers(ConcurrentHashMap<String, String> users) {
         LOCK.lock();
         try {
             ensureDirs();
             backupIfExists(USER_FILE);
             atomicWrite(USER_FILE, users);
-            LOG.info("Đã lưu " + users.size() + " users → " + USER_FILE);
+            LOG.info("Saved users: " + users.size());
         } catch (IOException e) {
-            LOG.log(Level.SEVERE, "Lỗi khi lưu users: " + e.getMessage(), e);
+            LOG.log(Level.SEVERE, "Save users error", e);
         } finally {
             LOCK.unlock();
         }
     }
 
     /**
-     * Tải danh sách users từ file. Trả về map rỗng nếu chưa có file.
+     * Load map users từ file. Trả về map rỗng nếu file chưa tồn tại.
+     *
+     * @return ConcurrentHashMap username → password
      */
     @SuppressWarnings("unchecked")
-    public static java.util.concurrent.ConcurrentHashMap<String, String> loadUsers() {
+    public static ConcurrentHashMap<String, String> loadUsers() {
         if (!Files.exists(USER_FILE)) {
-            LOG.info("Chưa có file users, khởi tạo mới.");
-            return new java.util.concurrent.ConcurrentHashMap<>();
+            return new ConcurrentHashMap<>();
         }
         try (ObjectInputStream ois = new ObjectInputStream(
                 new BufferedInputStream(Files.newInputStream(USER_FILE)))) {
-            java.util.concurrent.ConcurrentHashMap<String, String> users =
-                    (java.util.concurrent.ConcurrentHashMap<String, String>) ois.readObject();
-            LOG.info("Đã tải " + users.size() + " users từ " + USER_FILE);
-            return users;
+            return (ConcurrentHashMap<String, String>) ois.readObject();
         } catch (Exception e) {
-            LOG.log(Level.SEVERE, "Lỗi khi đọc users: " + e.getMessage(), e);
-            return new java.util.concurrent.ConcurrentHashMap<>();
+            LOG.log(Level.SEVERE, "Load users error", e);
+            return new ConcurrentHashMap<>();
         }
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    //  BIDS
-    // ─────────────────────────────────────────────────────────────────────────
+    // =========================================================
+    // AUCTIONS
+    // =========================================================
 
     /**
-     * Lưu danh sách bids xuống file (atomic write + backup).
+     * Lưu danh sách phiên đấu giá xuống file.
      *
-     * @param bids danh sách BidRequest cần lưu
+     * <p>Lấy trực tiếp từ {@code AuctionManager} — không cần truyền tham số.
+     * Gọi phương thức này để persist trạng thái hiện tại của toàn bộ phiên.
      */
-    public static void saveBids(List<BidRequest> bids) {
+    public static void saveAuctions() {
         LOCK.lock();
         try {
             ensureDirs();
-            backupIfExists(BID_FILE);
-            atomicWrite(BID_FILE, (Serializable) new ArrayList<>(bids));
-            LOG.info("Đã lưu " + bids.size() + " bids → " + BID_FILE);
+            backupIfExists(AUCTION_FILE);
+
+            // Lấy dữ liệu từ AuctionManager (Singleton) — nguồn sự thật duy nhất
+            List<Auction> auctions = new ArrayList<>(
+                    AuctionManager.getInstance().getAllAuctions());
+
+            atomicWrite(AUCTION_FILE, (Serializable) auctions);
+            LOG.info("Saved auctions: " + auctions.size());
         } catch (IOException e) {
-            LOG.log(Level.SEVERE, "Lỗi khi lưu bids: " + e.getMessage(), e);
+            LOG.log(Level.SEVERE, "Save auctions error", e);
         } finally {
             LOCK.unlock();
         }
     }
 
     /**
-     * Tải danh sách bids từ file. Trả về list rỗng nếu chưa có file.
+     * Lưu danh sách phiên đấu giá được truyền vào trực tiếp.
+     * Dùng khi cần lưu một snapshot cụ thể (không lấy từ AuctionManager).
+     *
+     * @param auctions danh sách phiên cần lưu
+     */
+    public static void saveAuctions(List<Auction> auctions) {
+        LOCK.lock();
+        try {
+            ensureDirs();
+            backupIfExists(AUCTION_FILE);
+            atomicWrite(AUCTION_FILE, (Serializable) new ArrayList<>(auctions));
+            LOG.info("Saved auctions: " + auctions.size());
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, "Save auctions error", e);
+        } finally {
+            LOCK.unlock();
+        }
+    }
+
+    /**
+     * Load danh sách phiên đấu giá từ file.
+     * Trả về list rỗng nếu file chưa tồn tại.
+     *
+     * @return List&lt;Auction&gt; đã lưu trước đó
      */
     @SuppressWarnings("unchecked")
-    public static List<BidRequest> loadBids() {
-        if (!Files.exists(BID_FILE)) {
-            LOG.info("Chưa có file bids, khởi tạo mới.");
+    public static List<Auction> loadAuctions() {
+        if (!Files.exists(AUCTION_FILE)) {
             return new ArrayList<>();
         }
         try (ObjectInputStream ois = new ObjectInputStream(
-                new BufferedInputStream(Files.newInputStream(BID_FILE)))) {
-            List<BidRequest> bids = (List<BidRequest>) ois.readObject();
-            LOG.info("Đã tải " + bids.size() + " bids từ " + BID_FILE);
-            return bids;
+                new BufferedInputStream(Files.newInputStream(AUCTION_FILE)))) {
+            return (List<Auction>) ois.readObject();
         } catch (Exception e) {
-            LOG.log(Level.SEVERE, "Lỗi khi đọc bids: " + e.getMessage(), e);
+            LOG.log(Level.SEVERE, "Load auctions error", e);
             return new ArrayList<>();
         }
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    //  AUTO-SAVE
-    // ─────────────────────────────────────────────────────────────────────────
+    // =========================================================
+    // AUTO SAVE
+    // =========================================================
 
     /**
-     * Bật auto-save: cứ mỗi {@code intervalSeconds} giây, tự động lưu dữ liệu.
+     * Bắt đầu tự động lưu định kỳ.
      *
-     * Gọi trong ServerApp khi server khởi động:
-     * <pre>
-     *   DataStorage.startAutoSave(server.getUsers(), server.getBids(), 60);
-     * </pre>
+     * <p>Lấy dữ liệu từ {@code AuctionManager} tại thời điểm save —
+     * không cần truyền tham số snapshot cố định.
      *
-     * @param users           tham chiếu đến map users đang dùng trên server
-     * @param bids            tham chiếu đến list bids đang dùng trên server
+     * @param users           map users cần lưu định kỳ
      * @param intervalSeconds chu kỳ lưu (giây)
      */
     public static void startAutoSave(
-            java.util.concurrent.ConcurrentHashMap<String, String> users,
-            List<BidRequest> bids,
+            ConcurrentHashMap<String, String> users,
             long intervalSeconds) {
 
         if (autoSaveScheduler != null && !autoSaveScheduler.isShutdown()) {
-            LOG.warning("AutoSave đã chạy rồi, bỏ qua.");
-            return;
+            return; // Đã chạy rồi, không khởi động lại
         }
 
         autoSaveScheduler = Executors.newSingleThreadScheduledExecutor(r -> {
-            Thread t = new Thread(r, "auto-save-thread");
-            t.setDaemon(true);  // không chặn JVM tắt
+            Thread t = new Thread(r, "auto-save");
+            t.setDaemon(true);
             return t;
         });
 
         autoSaveScheduler.scheduleAtFixedRate(() -> {
-            LOG.info("[Auto-save] Đang lưu dữ liệu...");
+            LOG.info("[AutoSave] Đang lưu...");
             saveUsers(users);
-            saveBids(bids);
+            saveAuctions(); // Lấy trực tiếp từ AuctionManager
         }, intervalSeconds, intervalSeconds, TimeUnit.SECONDS);
 
-        LOG.info("Auto-save đã bật – chu kỳ " + intervalSeconds + " giây.");
+        LOG.info("[AutoSave] Đã bắt đầu, chu kỳ: " + intervalSeconds + "s");
     }
 
     /**
-     * Tắt auto-save và thực hiện lưu lần cuối trước khi tắt server.
+     * Dừng auto-save và thực hiện lưu lần cuối trước khi shutdown.
      *
-     * Gọi trong shutdown hook của ServerApp:
-     * <pre>
-     *   Runtime.getRuntime().addShutdownHook(new Thread(() ->
-     *       DataStorage.stopAutoSave(users, bids)));
-     * </pre>
+     * @param users map users cần lưu lần cuối
      */
-    public static void stopAutoSave(
-            java.util.concurrent.ConcurrentHashMap<String, String> users,
-            List<BidRequest> bids) {
-
+    public static void stopAutoSave(ConcurrentHashMap<String, String> users) {
         if (autoSaveScheduler != null) {
             autoSaveScheduler.shutdown();
         }
-        // Lưu lần cuối khi tắt server
-        LOG.info("[Auto-save] Lưu lần cuối trước khi tắt...");
+
+        LOG.info("[AutoSave] Final save trước khi shutdown...");
         saveUsers(users);
-        saveBids(bids);
-        LOG.info("[Auto-save] Đã dừng.");
+        saveAuctions(); // Lưu trạng thái cuối cùng của tất cả phiên
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    //  PRIVATE HELPERS
-    // ─────────────────────────────────────────────────────────────────────────
+    // =========================================================
+    // HELPERS
+    // =========================================================
 
-    /** Tạo thư mục data/ và backups/ nếu chưa tồn tại. */
+    /** Tạo thư mục data và backup nếu chưa tồn tại */
     private static void ensureDirs() throws IOException {
         Files.createDirectories(DATA_DIR);
         Files.createDirectories(BACKUP_DIR);
     }
 
     /**
-     * Nếu file đã tồn tại, copy vào backups/ với tên có timestamp.
-     * Ví dụ: users_20250505_143022.bak
+     * Tạo bản backup có timestamp trước khi ghi đè file.
+     * Ví dụ: {@code auctions_20250916_153045.bak}
      */
     private static void backupIfExists(Path target) throws IOException {
         if (!Files.exists(target)) return;
-        String ts       = LocalDateTime.now().format(BACKUP_FMT);
-        String baseName = target.getFileName().toString().replace(".dat", "");
-        Path   backup   = BACKUP_DIR.resolve(baseName + "_" + ts + ".bak");
+
+        String ts   = LocalDateTime.now().format(BACKUP_FMT);
+        String name = target.getFileName().toString().replace(".dat", "");
+        Path backup = BACKUP_DIR.resolve(name + "_" + ts + ".bak");
+
         Files.copy(target, backup, StandardCopyOption.REPLACE_EXISTING);
-        LOG.info("Backup → " + backup);
     }
 
     /**
-     * Ghi object ra file một cách atomic:
-     * 1. Ghi vào file tạm (.tmp)
-     * 2. Rename sang tên thật → nếu crash ở bước 1, file cũ vẫn còn nguyên
+     * Ghi file theo kiểu atomic: ghi vào file .tmp trước, sau đó rename.
+     * Đảm bảo file gốc không bị corrupt nếu JVM crash giữa chừng.
      */
     private static void atomicWrite(Path target, Serializable data) throws IOException {
-        Path tmp = target.getParent().resolve(target.getFileName() + ".tmp");
+        Path tmp = target.resolveSibling(target.getFileName() + ".tmp");
+
         try (ObjectOutputStream oos = new ObjectOutputStream(
                 new BufferedOutputStream(Files.newOutputStream(tmp)))) {
             oos.writeObject(data);
             oos.flush();
         }
+
         Files.move(tmp, target,
                 StandardCopyOption.REPLACE_EXISTING,
                 StandardCopyOption.ATOMIC_MOVE);

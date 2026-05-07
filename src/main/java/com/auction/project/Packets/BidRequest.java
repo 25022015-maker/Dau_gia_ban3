@@ -1,35 +1,87 @@
 package com.auction.project.Packets;
 
-import java.io.Serializable;
-import java.time.Instant;
+/**
+ * Packet gửi từ Client lên Server khi người dùng thực hiện đặt giá.
+ *
+ * <p>Server sẽ kiểm tra tính hợp lệ của request này trước khi xử lý:
+ * <ul>
+ *   <li>bidAmount phải lớn hơn giá hiện tại của phiên</li>
+ *   <li>auctionId phải tồn tại và đang ở trạng thái RUNNING</li>
+ *   <li>bidderId phải là người dùng đã đăng nhập</li>
+ * </ul>
+ */
+public class BidRequest {
 
-public class BidRequest implements Serializable {
-    private static final long serialVersionUID = 1L;
+    /** Loại action — luôn là "BID" để Server phân biệt với các request khác */
+    private String action;
 
-    private double amount;
-    private String username;   // ai đặt giá
-    private Instant timestamp; // khi nào đặt
+    /** ID của phiên đấu giá muốn tham gia */
+    private String auctionId;
 
-    // Constructor mặc định (cần cho deserialization)
-    public BidRequest() {}
+    /** ID của người đặt giá (lấy từ session sau khi đăng nhập) */
+    private String bidderId;
 
-    public BidRequest(double amount, String username) {
-        if (amount <= 0) throw new IllegalArgumentException("Bid amount must be positive");
-        this.amount    = amount;
-        this.username  = username;
-        this.timestamp = Instant.now();
+    /** Số tiền đặt giá — phải > giá hiện tại của phiên */
+    private double bidAmount;
+
+    // ── Constructor ───────────────────────────────────────────────────────────
+
+    public BidRequest() {
+        this.action = "BID";
     }
 
-    public double  getAmount()    { return amount; }
-    public String  getUsername()  { return username; }
-    public Instant getTimestamp() { return timestamp; }
+    public BidRequest(String auctionId, String bidderId, double bidAmount) {
+        this.action = "BID";
+        this.auctionId = auctionId;
+        this.bidderId = bidderId;
+        this.bidAmount = bidAmount;
+    }
 
-    // Setter cho amount (phòng khi cần deserialize thủ công)
-    public void setAmount(double amount) { this.amount = amount; }
+    // ── Getters & Setters ─────────────────────────────────────────────────────
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public String getAuctionId() {
+        return auctionId;
+    }
+
+    public void setAuctionId(String auctionId) {
+        this.auctionId = auctionId;
+    }
+
+    public String getBidderId() {
+        return bidderId;
+    }
+
+    public void setBidderId(String bidderId) {
+        this.bidderId = bidderId;
+    }
+
+    public double getBidAmount() {
+        return bidAmount;
+    }
+
+    public void setBidAmount(double bidAmount) {
+        this.bidAmount = bidAmount;
+    }
 
     @Override
     public String toString() {
-        return String.format("BidRequest{amount=%.2f, user='%s', time=%s}",
-                amount, username, timestamp);
+        return "BidRequest{"
+                + "auctionId='"
+                + auctionId
+                + '\''
+                + ", bidderId='"
+                + bidderId
+                + '\''
+                + ", bidAmount="
+                + bidAmount
+                + '}';
     }
 }

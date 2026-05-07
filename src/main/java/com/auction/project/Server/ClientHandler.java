@@ -1,134 +1,243 @@
 package com.auction.project.Server;
 
-import com.auction.project.Packets.*;
-
-import java.io.*;
+import com.auction.project.Controllers.ServerController;
+import com.auction.project.Models.Auction;
+import com.auction.project.Packets.BidRequest;
+import com.auction.project.Packets.LoginRequest;
+import com.auction.project.Packets.Response;
+import com.auction.project.Packets.ResponseType;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.UUID;
+import java.util.logging.Logger;
 
-public class ClientHandler extends Thread {
+/**
+ * Mỗi instance của lớp này quản lý kết nối với MỘT client cụ thể.
+ *
+ * <p><b>Vòng đời:</b> SocketServer tạo một ClientHandler mới và chạy nó
+ * trong Thread riêng cho mỗi client kết nối. Thread này kết thúc khi client
+ * ngắt kết nối.
+ *
+ * <p><b>Giao thức:</b> Mỗi message là một dòng JSON (newline-delimited JSON).
+ * Field "action" trong JSON xác định loại request để Controller xử lý.
+ *
+ * <p><b>Vai trò Observer:</b> Khi AuctionManager cần broadcast BID_UPDATE,
+ * nó gọi {@code sendBidUpdate()} trên tất cả ClientHandler đã đăng ký.
+ * Phương thức này thread-safe nhờ {@code synchronized}.
+ */
+public class ClientHandler implements Runnable {
 
-    private Socket socket;
-    private ObjectInputStream in;
-    private ObjectOutputStream out;
+    private static final Logger logger = Logger.getLogger(ClientHandler.class.getName());
 
-    // ── Shared state (static = dùng chung giữa tất cả ClientHandler) ─────────
-    private static final ConcurrentHashMap<String, String> users = DataStorage.loadUsers();
+    // ── Gson instance (thread-safe — dùng chung được) ─────────────────────────
+    private static final Gson gson = new Gson();
 
-    // dùng volatile để các thread luôn đọc giá trị mới nhất
-    private static volatile double currentBid = 0;
+    // ── Socket & I/O ──────────────────────────────────────────────────────────
+    private final Socket socket;
+    private final BufferedReader reader;
+    private final PrintWriter writer;
 
-    // Lưu lịch sử bid để có thể serialize xuống file
-    private static final List<BidRequest> bidHistory = new CopyOnWriteArrayList<>(DataStorage.loadBids());
+    // ── Identity ──────────────────────────────────────────────────────────────
+    /** ID ngẫu nhiên để phân biệt các client trong log */
+    private final String clientId;
+    /** Username sau khi client đăng nhập thành công */
+    private String loggedInUser;
 
-    //  lock dùng chung cho TẤT CẢ ClientHandler (class-level lock)
-    private static final Object BID_LOCK = new Object();
+    // ── Controller ────────────────────────────────────────────────────────────
+    private final ServerController controller;
 
     // ── Constructor ───────────────────────────────────────────────────────────
 
-    public ClientHandler(Socket socket) {
+    public ClientHandler(Socket socket, ServerController controller) throws IOException {
         this.socket = socket;
+        this.controller = controller;
+        this.clientId = UUID.randomUUID().toString().substring(0, 8); // ID ngắn gọn
+
+        // Khởi tạo stream đọc/ghi — UTF-8 để hỗ trợ tiếng Việt
+        this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+        this.writer = new PrintWriter(socket.getOutputStream(), true); // autoFlush = true
+
+        logger.info("Client kết nối | ID: " + clientId + " | IP: " + socket.getInetAddress());
     }
 
-    // ── Getter để ServerApp/SocketServer truy cập cho auto-save ──────────────
+    // ── Main Loop ─────────────────────────────────────────────────────────────
 
-    public static ConcurrentHashMap<String, String> getUsers() {
-        return users;
-    }
-
-    public static List<BidRequest> getBidHistory() {
-        return bidHistory;
-    }
-
-    public static double getCurrentBid() {
-        return currentBid;
-    }
-
-    // ── Main loop ─────────────────────────────────────────────────────────────
-
+    /**
+     * Vòng lặp chính: đọc JSON từ client → parse → dispatch tới Controller → gửi Response.
+     *
+     * <p>Chạy trong thread riêng do SocketServer tạo, kết thúc khi client ngắt kết nối.
+     */
     @Override
     public void run() {
         try {
-            out = new ObjectOutputStream(socket.getOutputStream());
-            in  = new ObjectInputStream(socket.getInputStream());
-
-            Object obj;
-            while ((obj = in.readObject()) != null) {
-                if (obj instanceof LoginRequest req) {
-                    handleLogin(req);
-                } else if (obj instanceof BidRequest req) {
-                    handleBid(req);
-                }
+            String rawMessage;
+            // Đọc từng dòng (mỗi dòng = một request JSON)
+            while ((rawMessage = reader.readLine()) != null) {
+                logger.fine("RECV [" + clientId + "]: " + rawMessage);
+                handleMessage(rawMessage);
             }
-
-        } catch (Exception e) {
-            System.out.println("Client disconnected: " + socket.getRemoteSocketAddress());
-        } finally {
-            SocketServer.clients.remove(this);
-            closeResources();
-        }
-    }
-
-    // ── Xử lý login ──────────────────────────────────────────────────────────
-
-    private void handleLogin(LoginRequest req) {
-        String username = req.getUsername();
-        String password = req.getPassword();
-
-        if (users.containsKey(username)) {
-            if (users.get(username).equals(password)) {
-                send(new Response("LOGIN", "Xin chào " + username));
-            } else {
-                send(new Response("ERROR", "Sai mật khẩu"));
-            }
-        } else {
-            users.put(username, password);
-            DataStorage.saveUsers(users);   // lưu ngay khi có user mới
-            send(new Response("LOGIN", "Tạo mới tài khoản: " + username));
-        }
-    }
-
-    // ── Xử lý bid ─────────────────────────────────────────────────────────────
-    //
-    //  FIX: synchronized trên BID_LOCK (static) thay vì 'this'
-    //  → đảm bảo chỉ 1 thread xử lý bid tại một thời điểm dù có nhiều client
-    //
-    private void handleBid(BidRequest req) {
-        synchronized (BID_LOCK) {
-            if (req.getAmount() > currentBid) {
-                currentBid = req.getAmount();
-                bidHistory.add(req);        // lưu vào lịch sử
-
-                Response res = new Response("BID", "Giá mới: " + currentBid);
-                SocketServer.broadcast(res);
-            } else {
-                send(new Response("ERROR", "Giá phải lớn hơn " + currentBid));
-            }
-        }
-    }
-
-    // ── Gửi object về client ──────────────────────────────────────────────────
-
-    public void send(Object msg) {
-        try {
-            out.writeObject(msg);
-            out.flush();
-        } catch (Exception e) {
-            System.err.println("Lỗi gửi dữ liệu: " + e.getMessage());
-        }
-    }
-
-    // ── Đóng tài nguyên ───────────────────────────────────────────────────────
-
-    private void closeResources() {
-        try {
-            if (in  != null) in.close();
-            if (out != null) out.close();
-            if (socket != null) socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            // Client ngắt kết nối đột ngột (đóng ứng dụng, mất mạng, v.v.)
+            logger.info("Client ngắt kết nối | ID: " + clientId + " | Lý do: " + e.getMessage());
+        } finally {
+            cleanup();
         }
+    }
+
+    // ── Message Dispatcher ────────────────────────────────────────────────────
+
+    /**
+     * Parse JSON và dispatch tới handler phù hợp dựa trên field "action".
+     *
+     * <p>Giao thức action:
+     * <ul>
+     *   <li>"LOGIN"       → xử lý đăng nhập</li>
+     *   <li>"BID"         → xử lý đặt giá</li>
+     *   <li>"GET_AUCTIONS"→ lấy danh sách phiên</li>
+     *   <li>"SUBSCRIBE"   → đăng ký theo dõi realtime một phiên</li>
+     *   <li>"UNSUBSCRIBE" → hủy theo dõi</li>
+     * </ul>
+     *
+     * @param rawMessage chuỗi JSON nhận được từ client
+     */
+    private void handleMessage(String rawMessage) {
+        try {
+            // Parse JSON để lấy field "action" trước
+            JsonObject json = JsonParser.parseString(rawMessage).getAsJsonObject();
+            String action = json.get("action").getAsString();
+
+            Response response;
+
+            switch (action) {
+                case "LOGIN":
+                    LoginRequest loginRequest = gson.fromJson(rawMessage, LoginRequest.class);
+                    response = controller.handleLogin(loginRequest, this);
+                    // Lưu username vào session nếu đăng nhập thành công
+                    if (response.getType() == ResponseType.LOGIN_SUCCESS) {
+                        this.loggedInUser = loginRequest.getUsername();
+                    }
+                    sendResponse(response);
+                    break;
+
+                case "GET_AUCTIONS":
+                    // Không cần body — chỉ cần action
+                    response = controller.handleGetAuctionList();
+                    sendResponse(response);
+                    break;
+
+                case "BID":
+                    // Yêu cầu đăng nhập trước khi đặt giá
+                    if (loggedInUser == null) {
+                        sendResponse(Response.error("Bạn cần đăng nhập trước khi đặt giá."));
+                        break;
+                    }
+                    BidRequest bidRequest = gson.fromJson(rawMessage, BidRequest.class);
+                    // Đảm bảo bidderId khớp với user đang đăng nhập (chống giả mạo)
+                    bidRequest.setBidderId(loggedInUser);
+                    response = controller.handleBid(bidRequest, this);
+                    sendResponse(response);
+                    break;
+
+                case "SUBSCRIBE":
+                    String auctionId = json.get("auctionId").getAsString();
+                    response = controller.handleSubscribeAuction(auctionId, this);
+                    sendResponse(response);
+                    break;
+
+                case "UNSUBSCRIBE":
+                    String unsubAuctionId = json.get("auctionId").getAsString();
+                    controller.handleUnsubscribeAuction(unsubAuctionId, this);
+                    break;
+
+                default:
+                    logger.warning("Action không xác định từ client " + clientId + ": " + action);
+                    sendResponse(Response.error("Action không được hỗ trợ: " + action));
+            }
+
+        } catch (Exception e) {
+            // JSON malformed hoặc thiếu field bắt buộc
+            logger.warning("Lỗi parse message từ [" + clientId + "]: " + e.getMessage());
+            sendResponse(Response.error("Dữ liệu không hợp lệ: " + e.getMessage()));
+        }
+    }
+
+    // ── Send Methods ──────────────────────────────────────────────────────────
+
+    /**
+     * Gửi một Response object về cho client dưới dạng JSON.
+     *
+     * <p><b>synchronized</b> để đảm bảo không có hai thread cùng ghi vào
+     * socket của client này đồng thời (ví dụ: thread xử lý request của client này
+     * và thread broadcast BID_UPDATE từ AuctionManager).
+     *
+     * @param response object cần gửi
+     */
+    public synchronized void sendResponse(Response response) {
+        try {
+            String json = gson.toJson(response);
+            writer.println(json); // println tự thêm newline — phía client dùng readLine()
+            logger.fine("SEND [" + clientId + "]: " + response.getType());
+        } catch (Exception e) {
+            logger.warning("Không thể gửi response tới [" + clientId + "]: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Gửi thông báo BID_UPDATE khi có giá mới trong phiên mà client đang theo dõi.
+     *
+     * <p>Được gọi bởi {@code AuctionManager} từ thread bất kỳ — do đó phải synchronized.
+     * Đây là điểm mấu chốt của Observer Pattern: Server CHỦ ĐỘNG push dữ liệu,
+     * không phải Client polling.
+     *
+     * @param auction phiên vừa được cập nhật giá mới
+     */
+    public void sendBidUpdate(Auction auction) {
+        Response update = new Response(
+                ResponseType.BID_UPDATE,
+                String.format(
+                        "💰 %s vừa đặt %.0f VNĐ cho '%s'",
+                        auction.getLeadingBidder(),
+                        auction.getCurrentPrice(),
+                        auction.getItemName()),
+                auction);
+        sendResponse(update); // sendResponse đã synchronized
+    }
+
+    // ── Cleanup ───────────────────────────────────────────────────────────────
+
+    /**
+     * Dọn dẹp tài nguyên khi client ngắt kết nối.
+     * Đảm bảo xóa khỏi tất cả observer list để tránh memory leak và NPE khi broadcast.
+     */
+    private void cleanup() {
+        try {
+            // Xóa khỏi tất cả observer (rất quan trọng — tránh broadcast tới socket đã đóng)
+            controller.handleClientDisconnect(this);
+
+            if (!socket.isClosed()) {
+                socket.close();
+            }
+            logger.info("Đã cleanup | Client: " + clientId);
+        } catch (IOException e) {
+            logger.warning("Lỗi khi cleanup client " + clientId + ": " + e.getMessage());
+        }
+    }
+
+    // ── Getters ───────────────────────────────────────────────────────────────
+
+    /** @return ID định danh client (dùng trong log) */
+    public String getClientId() {
+        return clientId;
+    }
+
+    /** @return username của client đang đăng nhập, null nếu chưa đăng nhập */
+    public String getLoggedInUser() {
+        return loggedInUser;
     }
 }
