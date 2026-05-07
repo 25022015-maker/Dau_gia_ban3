@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="645.0" prefWidth="817.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="645.0" prefWidth="817.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uinew.Controller.SignupController">
    <children>
       <StackPane layoutX="-8.0" prefHeight="647.0" prefWidth="826.0">
          <children>

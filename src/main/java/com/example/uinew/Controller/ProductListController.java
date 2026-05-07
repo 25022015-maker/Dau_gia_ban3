@@ -14,7 +14,6 @@ public class ProductListController extends MainController {
             this.service = new ProductService();
         }
 
-
         public void onProductClick(Product product) {
         MainController.setSelectedProduct(product);
         // Chuyển sang trang đấu giá của sản phẩm đó

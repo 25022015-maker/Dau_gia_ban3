@@ -17,6 +17,7 @@ import java.io.IOException;
 public abstract class MainController {
     protected static User currentUser;
     protected static Product selectedProduct;
+
     @FXML protected TextField txtUsername;
     @FXML protected PasswordField txtPassword;
 
@@ -29,6 +30,7 @@ public abstract class MainController {
     public static Product getSelectedProduct() { return selectedProduct; }
 
     //đổi toàn bộ cửa sổ (Login/Logout)
+    @FXML
     protected void changeScene(ActionEvent event, String fxmlFile, String title) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));
@@ -40,6 +42,7 @@ public abstract class MainController {
     }
 
     //đổi nội dung vùng giữa (Dashboard/Bidding)
+    @FXML
     public void setView(String fxmlFile) {
         try {
             Node node = FXMLLoader.load(getClass().getResource(fxmlFile));

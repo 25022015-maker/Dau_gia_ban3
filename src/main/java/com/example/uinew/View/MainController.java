@@ -8,15 +8,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Sidebar extends Application {
-
-    public static void main(String[] args) {
-        launch(args);
-    }
+public class MainController  extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SignupUI.class.getResource("/com/example/uinew/Sidebar.fxml")); //nạp file fxml
+        FXMLLoader fxmlLoader = new FXMLLoader(SignupUI.class.getResource("/com/example/uinew/MainLayout.fxml")); //nạp file fxml
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root, 600, 400);
         stage.setTitle(" ");

@@ -8,7 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-public class LoginController extends MainController implements OnEnter, Initialize, ToSignUp {
+public class LoginController extends MainController implements OnEnter, ToSignUp {
     @FXML
     private Button signUp;
 
@@ -58,7 +58,5 @@ public class LoginController extends MainController implements OnEnter, Initiali
 
     @FXML
     private Button btnMenu;
-
-
 
 }
