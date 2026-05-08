@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.io.IOException;
 
@@ -50,4 +51,30 @@ public abstract class MainController {
             contentArea.getChildren().setAll(node);
         } catch (IOException e) { e.printStackTrace(); }
     }
+
+    @FXML
+    AnchorPane vboxSidebar;
+
+    public void initialize() {
+
+        vboxSidebar.setVisible(false);
+        vboxSidebar.setManaged(false);
+    }
+
+    @FXML //hàm ẩn hiện sideBar
+    private void toggleSidebar(ActionEvent event) {
+        if (vboxSidebar.isVisible()) {
+            vboxSidebar.setVisible(false);
+            vboxSidebar.setManaged(false); // Thu hồi không gian
+        } else {
+            vboxSidebar.setVisible(true);
+            vboxSidebar.setManaged(true);  // Hiển thị lại không gian
+        }
+        // 1. Kiểm tra xem biến có bị null không (nếu null là do chưa đặt fx:id)
+        if (vboxSidebar == null) {
+            System.out.println("LỖI: Chưa đặt fx:id cho vboxSidebar trong Scene Builder!");
+            ;
+        }
+    }
+
 }
