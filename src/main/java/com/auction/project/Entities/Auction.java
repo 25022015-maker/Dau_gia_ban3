@@ -95,7 +95,7 @@ public class Auction extends Entity implements Subject, Serializable {
     public void removeObserver(Observer o) {
         if (observers != null) observers.remove(o);
     }
-    public int getCurrentPrice() { return this.currentPrice; }
+    public double getCurrentPrice() { return this.currentPrice; }
 
     public void setStatus(AuctionStatus s) { this.status = s; }
 
