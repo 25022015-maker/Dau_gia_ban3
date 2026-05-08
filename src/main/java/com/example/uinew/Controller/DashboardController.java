@@ -19,7 +19,7 @@ public class DashboardController extends HomeController{
     Button createAuction; //nút đẻ tạo auction/bidding
     
     @FXML
-    public void setCreateAuction(){
+    public void createAuction(){
         setView("CreateBidding.fxml");
     }
 }

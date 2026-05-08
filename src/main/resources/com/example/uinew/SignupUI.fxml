@@ -10,22 +10,26 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="635.0" prefWidth="893.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="635.0" prefWidth="893.0" style="-fx-background-image: url(&quot;img_1.png&quot;); -fx-background-size: cover;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uinew.Controller.SignupController">
    <children>
-      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="499.0" prefWidth="672.0" spacing="20.0" style="-fx-background-color: FFC8BD; -fx-background-radius: 20; -fx-background-color: rgba(0, 0, 0, 0.3);">
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="458.0" prefWidth="623.0" spacing="20.0" style="-fx-background-color: FFC8BD; -fx-background-radius: 20; -fx-background-color: rgba(0, 0, 0, 0.3);">
          <children>
-            <Label prefHeight="157.0" prefWidth="496.0" text=" Greetings!" textFill="#c3dbff">
+            <Label prefHeight="74.0" prefWidth="571.0" text=" Greetings!" textFill="#c3dbff">
                <font>
                   <Font name="MilkywayDEMO" size="72.0" />
                </font>
             </Label>
-            <TextField fx:id="txtUsername" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" onAction="#onUsernameEnter" prefHeight="47.0" prefWidth="345.0" promptText="Username" style="-fx-background-radius: 20;">
+            <Label prefHeight="20.0" prefWidth="184.0" text="Đăng kí thông tin tài khoản" textFill="#f6cfff">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtUsername" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" onAction="#onUsernameEnter" prefHeight="39.0" prefWidth="295.0" promptText="Username" style="-fx-background-radius: 20;">
                <padding>
                   <Insets left="20.0" />
                </padding>
             </TextField>
-            <PasswordField fx:id="txtPassword" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onPasswordEnter" prefHeight="48.0" prefWidth="345.0" promptText="Password" style="-fx-background-radius: 20;">
+            <PasswordField fx:id="txtPassword" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onPasswordEnter" prefHeight="38.0" prefWidth="300.0" promptText="Password" style="-fx-background-radius: 20;">
                <padding>
                   <Insets left="20.0" />
                </padding>
@@ -41,12 +45,12 @@
             </StackPane>
             <AnchorPane prefHeight="28.0" prefWidth="274.0">
                <children>
-                  <Label layoutX="208.0" prefHeight="27.0" prefWidth="151.0" text="Đã có tài khoản? " textFill="#d1e0ff">
+                  <Label layoutX="199.0" prefHeight="27.0" prefWidth="151.0" text="Đã có tài khoản? " textFill="#d1e0ff">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Button layoutX="360.0" layoutY="1.0" mnemonicParsing="false" onAction="#goToLogin" prefHeight="25.0" prefWidth="57.0" style="-fx-background-color: BADDFF; -fx-background-radius: 20;" text="Log in">
+                  <Button layoutX="344.0" layoutY="1.0" mnemonicParsing="false" onAction="#goToLogin" prefHeight="25.0" prefWidth="57.0" style="-fx-background-color: BADDFF; -fx-background-radius: 20;" text="Log in">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>

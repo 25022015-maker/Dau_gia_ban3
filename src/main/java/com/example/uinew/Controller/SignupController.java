@@ -36,7 +36,7 @@ public class SignupController extends MainController implements OnEnter, ToLogin
 
 
             // 4. Chuyển thẳng vào Dashboard (không bắt user login lại lần nữa)
-            changeScene(event, "/com/example/uinew/Dashboard.fxml", "Chào mừng bạn!");}
+            changeScene(event, "/com/example/uinew/MainLayout.fxml", "Chào mừng bạn!");}
 
         }
 
