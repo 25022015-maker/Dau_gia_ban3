@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Auction extends Entity implements Subject, Serializable {
     private static final long serialVersionUID = 1L;
@@ -17,11 +18,12 @@ public class Auction extends Entity implements Subject, Serializable {
     private LocalDateTime endTime;
     private double currentPrice;
     private AuctionStatus status;
+    private Item item;
 
-    // transient vì danh sách observer (thường là ClientHandler) không thể bị Serialize/gửi qua mạng
     private transient List<Observer> observers = new ArrayList<>();
     private List<BidTransaction> transactions = new ArrayList<>();
-    private Item item;
+
+    private final transient ReentrantLock lock = new ReentrantLock();
 
     public Auction(LocalDateTime start, LocalDateTime end, double startPrice, Item item) {
         super();
@@ -32,52 +34,68 @@ public class Auction extends Entity implements Subject, Serializable {
         this.status = AuctionStatus.OPEN;
     }
 
-    public synchronized void placeBid(Bidder bidder, double amount)
+    public void placeBid(Bidder bidder, double amount)
             throws InvalidBidException, AuctionClosedException {
 
-        if (this.status != AuctionStatus.OPEN && this.status != AuctionStatus.RUNNING) {
-            throw new AuctionClosedException("Phiên đấu giá hiện không chấp nhận đặt giá (Trạng thái: " + status + ")");
-        }
+        lock.lock();
+        try {
+            checkAndUpdateStatus();
 
-        if (LocalDateTime.now().isAfter(endTime)) {
+            if (this.status != AuctionStatus.RUNNING) {
+                throw new AuctionClosedException("Phiên đấu giá đang ở trạng thái: " + status);
+            }
+
+            if (amount <= currentPrice) {
+                throw new InvalidBidException("Giá đặt phảI cao hơn giá hiện tại!");
+            }
+
+            // Ghi nhận đặt giá thành công
+            this.currentPrice = amount;
+            BidTransaction bt = new BidTransaction(bidder, amount);
+            transactions.add(bt);
+
+            //(Anti-sniping)
+            if (LocalDateTime.now().isAfter(endTime.minusMinutes(1))) {
+                this.endTime = this.endTime.plusMinutes(5);
+            }
+            notifyObservers();
+
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    //Logic chuyển trạng thái tự động
+    public void checkAndUpdateStatus() {
+        LocalDateTime now = LocalDateTime.now();
+        if (status == AuctionStatus.OPEN && now.isAfter(startTime) && now.isBefore(endTime)) {
+            this.status = AuctionStatus.RUNNING;
+        } else if ((status == AuctionStatus.RUNNING || status == AuctionStatus.OPEN) && now.isAfter(endTime)) {
             this.status = AuctionStatus.FINISHED;
-            throw new AuctionClosedException("Phiên đấu giá đã kết thúc vào lúc " + endTime);
         }
-
-        if (amount <= currentPrice) {
-            throw new InvalidBidException("Giá đặt (" + amount + ") phải cao hơn giá hiện tại (" + currentPrice + ")");
-        }
-
-        this.currentPrice = amount;
-        BidTransaction bt = new BidTransaction(bidder, amount);
-        transactions.add(bt);
-        bidder.addTransaction(bt);
-
-        if (LocalDateTime.now().isAfter(endTime.minusMinutes(1))) {
-            this.endTime = this.endTime.plusMinutes(5);
-        }
-        notifyObservers();
     }
-
-    public void setStatus(AuctionStatus s) { this.status = s; }
-    public int getId() { return this.id; }
-    public double getCurrentPrice() { return currentPrice; }
-
-    @Override
-    public void registerObserver(Observer o) {
-        if (observers == null) observers = new ArrayList<>(); // Đề phòng trường hợp Deserialize ra null
-        observers.add(o);
-    }
-
-    @Override
-    public void removeObserver(Observer o) { observers.remove(o); }
 
     @Override
     public void notifyObservers() {
         if (observers == null) return;
         for (Observer o : observers) {
-            String name = transactions.isEmpty() ? "None" : transactions.get(transactions.size()-1).getBidder().username;
-            o.update(this.id, this.currentPrice, name);
+            String bidderName = transactions.isEmpty() ? "None" :
+                    transactions.get(transactions.size()-1).getBidder().username;
+            o.update(this.id, this.currentPrice, bidderName);
         }
     }
+
+    @Override
+    public void registerObserver(Observer o) {
+        if (observers == null) observers = new ArrayList<>();
+        observers.add(o);
+    }
+
+    @Override
+    public void removeObserver(Observer o) {
+        if (observers != null) observers.remove(o);
+    }
+
+    public void setStatus(AuctionStatus s) { this.status = s; }
+
 }
