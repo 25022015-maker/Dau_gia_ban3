@@ -8,7 +8,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
-public class CreateBiddingController extends MainController{
+public class CreateBiddingController extends HomeController{
     @FXML private TextField txtName, txtStartPrice, txtDescription, txtProductType; //thong tin san pham
     @FXML private DatePicker dateEnd;
     @FXML private DatePicker dateStart;

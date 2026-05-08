@@ -4,7 +4,7 @@ import com.example.uinew.model.Product;
 import com.example.uinew.Interface.IProductListView;
 import com.example.uinew.service.ProductService;
 
-public class ProductListController extends MainController {
+public class ProductListController extends HomeController {
 
         private IProductListView view;      // Kết nối với UI thông qua Interface
         private ProductService service;    // Kết nối với Backend/API

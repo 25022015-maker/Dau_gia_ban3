@@ -6,20 +6,26 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-image: url(&quot;/img_1.png&quot;); -fx-background-position: center; -fx-background-size: cover;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uinew.Controller.SignupController">
-   <center>
-      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="225.0" prefWidth="351.0" spacing="20.0" style="-fx-background-color: FFC8BD; -fx-background-radius: 20; -fx-background-color: rgba(0, 0, 0, 0.3);" BorderPane.alignment="CENTER">
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="635.0" prefWidth="893.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="499.0" prefWidth="672.0" spacing="20.0" style="-fx-background-color: FFC8BD; -fx-background-radius: 20; -fx-background-color: rgba(0, 0, 0, 0.3);">
          <children>
-            <TextField fx:id="txtUsername" maxWidth="-Infinity" minWidth="-Infinity" onAction="#onUsernameEnter" prefHeight="49.0" prefWidth="309.0" promptText="Username" style="-fx-background-radius: 20;" VBox.vgrow="ALWAYS">
+            <Label prefHeight="157.0" prefWidth="496.0" text=" Greetings!" textFill="#c3dbff">
+               <font>
+                  <Font name="MilkywayDEMO" size="72.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtUsername" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" onAction="#onUsernameEnter" prefHeight="47.0" prefWidth="345.0" promptText="Username" style="-fx-background-radius: 20;">
                <padding>
                   <Insets left="20.0" />
-               </padding></TextField>
-            <PasswordField fx:id="txtPassword" onAction="#onPasswordEnter" prefHeight="48.0" prefWidth="320.0" promptText="Password" style="-fx-background-radius: 20;">
+               </padding>
+            </TextField>
+            <PasswordField fx:id="txtPassword" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onPasswordEnter" prefHeight="48.0" prefWidth="345.0" promptText="Password" style="-fx-background-radius: 20;">
                <padding>
                   <Insets left="20.0" />
                </padding>
@@ -29,17 +35,18 @@
                   <Button mnemonicParsing="false" onAction="#handleSignup" prefHeight="25.0" prefWidth="65.0" style="-fx-background-radius: 20; -fx-background-color: BADDFF;" text="Sign up">
                      <font>
                         <Font name="System Bold" size="12.0" />
-                     </font></Button>
+                     </font>
+                  </Button>
                </children>
             </StackPane>
             <AnchorPane prefHeight="28.0" prefWidth="274.0">
                <children>
-                  <Label layoutX="64.0" prefHeight="27.0" prefWidth="155.0" text="Đã có tài khoản? " textFill="#d1e0ff">
+                  <Label layoutX="208.0" prefHeight="27.0" prefWidth="151.0" text="Đã có tài khoản? " textFill="#d1e0ff">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Button layoutX="213.0" layoutY="1.0" mnemonicParsing="false" onAction="#goToLogin" style="-fx-background-color: BADDFF; -fx-background-radius: 20;" text="Log in">
+                  <Button layoutX="360.0" layoutY="1.0" mnemonicParsing="false" onAction="#goToLogin" prefHeight="25.0" prefWidth="57.0" style="-fx-background-color: BADDFF; -fx-background-radius: 20;" text="Log in">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
@@ -51,5 +58,5 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
       </VBox>
-   </center>
-</BorderPane>
+   </children>
+</StackPane>

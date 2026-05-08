@@ -7,10 +7,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import java.io.IOException;
 
 public class LoginController extends MainController implements OnEnter, ToSignUp {
-    @FXML
-    private Button signUp;
 
     @FXML
     public void goToSignUp(ActionEvent event) {
@@ -41,7 +45,7 @@ public class LoginController extends MainController implements OnEnter, ToSignUp
         if (user.equals("admin") && pass.equals("123")) {
             System.out.println("Đăng nhập thành công!");
             // Chuyển sang trang Dashboard hoặc Home sau khi login
-            changeScene(event, "/com/example/uinew/MainLayout.fxml", "Trang chủ");
+            goToMainLayout(event);
         } else {
             lblError.setVisible(true);
             txtPassword.requestFocus(); //quay lại focus về ô password để laanf sau nhập sai vẫn enter login được
@@ -50,13 +54,24 @@ public class LoginController extends MainController implements OnEnter, ToSignUp
     }
 
     @FXML
+    private void goToMainLayout(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(
+                    getClass().getResource("/com/example/uinew/MainLayout.fxml")
+            );
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Dashboard");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     public void initialize() {
         txtUsername.setOnKeyTyped(e -> lblError.setVisible(false));
         txtPassword.setOnKeyTyped(e -> lblError.setVisible(false));
     }
-
-
-    @FXML
-    private Button btnMenu;
 
 }

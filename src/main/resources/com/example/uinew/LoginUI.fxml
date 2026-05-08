@@ -22,7 +22,7 @@
                         <Font name="MilkywayDEMO" size="96.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtUsername" maxWidth="300.0" onAction="#onUsernameEnter" prefHeight="41.0" prefWidth="241.0" promptText="Username" style="-fx-background-radius: 20;">
+                  <TextField fx:id="txtUsername" maxWidth="306.0" onAction="#onUsernameEnter" prefHeight="41.0" prefWidth="306.0" promptText="Username" style="-fx-background-radius: 20;">
                      <padding>
                         <Insets left="20.0" />
                      </padding></TextField>

@@ -6,18 +6,18 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="" maxHeight="1.7976931348623157E308" prefHeight="400.0" prefWidth="681.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uinew.Controller.MainController">
+<BorderPane fx:id="" maxHeight="1.7976931348623157E308" prefHeight="400.0" prefWidth="681.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uinew.Controller.HomeController">
 
     <left>
         <fx:include fx:id="vboxSidebar" source="Sidebar.fxml" />
     </left>
    <center>
-      <StackPane prefHeight="400.0" prefWidth="671.0" BorderPane.alignment="CENTER" />
+      <StackPane fx:id="contentArea" prefHeight="400.0" prefWidth="671.0" BorderPane.alignment="CENTER" />
    </center>
    <top>
-      <AnchorPane prefHeight="50.0" prefWidth="681.0" style="-fx-background-color: BACBFF;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="45.0" prefWidth="681.0" style="-fx-background-color: BACBFF;" BorderPane.alignment="CENTER">
          <children>
-            <Button layoutX="615.0" layoutY="4.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="60.0" style="-fx-background-color: BACBFF;" text="Log out" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Button layoutX="615.0" layoutY="4.0" mnemonicParsing="false" onAction="#onLogout" prefHeight="47.0" prefWidth="60.0" style="-fx-background-color: BACBFF;" text="Log out" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
