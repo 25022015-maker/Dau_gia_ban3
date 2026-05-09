@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+
+<HBox prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #0f172a;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <!-- Main Auction Area -->
+        <VBox alignment="CENTER" spacing="30.0" HBox.hgrow="ALWAYS">
+            <children>
+                <Text fill="#60a5fa" text="DANG ĐẤU GIÁ TRỰC TIẾP" style="-fx-font-weight: bold;"/>
+                <Text fill="WHITE" text="Rolex Submariner 2024" style="-fx-font-weight: bold; -fx-font-size: 36;"/>
+
+                <StackPane prefHeight="400.0" prefWidth="400.0">
+                    <children>
+                        <Rectangle arcHeight="50.0" arcWidth="50.0" fill="#1e293b" height="400.0" stroke="rgba(255,255,255,0.1)" width="400.0"/>
+                        <Text fill="WHITE" text="PRODUCT IMAGE"/>
+                    </children>
+                </StackPane>
+
+                <HBox alignment="CENTER" spacing="50.0">
+                    <children>
+                        <VBox alignment="CENTER">
+                            <children>
+                                <Text fill="#94a3b8" text="GIÁ CAO NHẤT"/>
+                                <Text fill="WHITE" text="15,500" style="-fx-font-weight: bold; -fx-font-size: 48;"/>
+                            </children>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                            <children>
+                                <Text fill="#ef4444" text="KẾT THÚC TRONG"/>
+                                <Text fill="WHITE" text="05:42:12" style="-fx-font-weight: bold; -fx-font-size: 32;"/>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <!-- Bidding Sidebar -->
+        <VBox prefWidth="350.0" style="-fx-background-color: #1e293b; -fx-padding: 30;" spacing="20.0">
+            <children>
+                <Text fill="WHITE" text="Lịch sử đấu giá" style="-fx-font-weight: bold; -fx-font-size: 20;"/>
+                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+                    <content>
+                        <VBox spacing="10.0">
+                            <!-- Sample Bid Item -->
+                            <HBox style="-fx-background-color: rgba(255,255,255,0.05); -fx-padding: 15; -fx-background-radius: 15;">
+                                <children>
+                                    <VBox HBox.hgrow="ALWAYS">
+                                        <children>
+                                            <Text fill="WHITE" text="Hoàng Anh" style="-fx-font-weight: bold;"/>
+                                            <Text fill="#94a3b8" text="2 phút trước" style="-fx-font-size: 10;"/>
+                                        </children>
+                                    </VBox>
+                                    <Text fill="WHITE" text="15,500" style="-fx-font-weight: bold;"/>
+                                </children>
+                            </HBox>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+
+                <Separator opacity="0.1"/>
+
+                <VBox spacing="15.0">
+                    <children>
+                        <TextField prefHeight="50.0" promptText="Nhập mức giá của bạn" style="-fx-background-color: #0f172a; -fx-text-fill: white; -fx-background-radius: 15; -fx-border-color: #2563eb; -fx-border-radius: 15;"/>
+                        <Button prefHeight="55.0" prefWidth="300.0" style="-fx-background-color: #2563eb; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 15;" text="XÁC NHẬN ĐẶT GIÁ"/>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </children>
+</HBox>
