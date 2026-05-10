@@ -20,12 +20,12 @@ public class CreateBiddingController extends HomeController{
 
         System.out.println("Tạo phiên đấu giá thành công!");
         //Chuyển sang trang chi tiết đấu giá ngay sau khi taoj'
-        changeScene(event,"/com/example/uinew/View/ThisBidding.fxml", "Current Bidding");
+        changeScene(event,"/com/example/uinew/ThisBidding.fxml", "Current Bidding");
 
     }
 
     @FXML public void backToDashboard(){
-        setView("DashBoard.fxml");
+        setView("/com/example/uinew/DashBoard.fxml");
     }
 
    @FXML

@@ -1,20 +1,26 @@
 package com.example.uinew.Controller;
 
-import com.example.uinew.Interface.Initialize;
 import com.example.uinew.Interface.OnEnter;
+import com.example.uinew.Interface.ToLayOut;
 import com.example.uinew.Interface.ToSignUp;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-public class LoginController extends MainController implements OnEnter, ToSignUp {
+public class LoginController extends MainController implements OnEnter, ToSignUp, ToLayOut {
+
+    @FXML protected TextField txtUsername;
+    @FXML protected PasswordField txtPassword; //input thông tin người dùng
+
+    @FXML private Label lblError; //hiển thị báo sai tài khoản mật khẩu
 
     @FXML
     public void goToSignUp(ActionEvent event) {
@@ -25,16 +31,16 @@ public class LoginController extends MainController implements OnEnter, ToSignUp
     @FXML
     public void onPasswordEnter(ActionEvent event) {
         handleLogin(event);
-        System.out.println("Đã nhấn Enter ở ô Password!"); //check xem nhấn enter có tự bật login không
+        System.out.println("Đã nhấn Enter ở ô Password!"); //test xem nhấn enter có tự bật login không
     }
 
-    // 1. Nhấn Enter ở ô Username -> Nhảy xuống ô Password
+    //Nhấn Enter ở ô Username -> Nhảy xuống ô Password
     @FXML
     public void onUsernameEnter(ActionEvent event) {
         txtPassword.requestFocus();
     }
 
-    @FXML private Label lblError; //hiển thị báo sai tài khoản mật khẩu
+
 
     @FXML
     public void handleLogin(ActionEvent event) {
@@ -54,11 +60,9 @@ public class LoginController extends MainController implements OnEnter, ToSignUp
     }
 
     @FXML
-    private void goToMainLayout(ActionEvent event) {
+    public void goToMainLayout(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(
-                    getClass().getResource("/com/example/uinew/MainLayout.fxml")
-            );
+            Parent root = FXMLLoader.load( getClass().getResource("/com/example/uinew/MainLayout.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Dashboard");

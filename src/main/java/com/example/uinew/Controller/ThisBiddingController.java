@@ -12,7 +12,7 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ThisBiddingController extends MainController implements Initializable {
+public class ThisBiddingController extends HomeController implements Initializable {
     @FXML private Label lblProductName, lblCurrentPrice, lblTimer;
     @FXML private TextField txtBidAmount;
 

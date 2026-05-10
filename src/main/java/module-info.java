@@ -2,6 +2,8 @@ module com.example.uinew {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.graphics;
+    requires java.management;
+    requires com.almasb.fxgl.core;
 
 
     opens com.example.uinew to javafx.fxml;

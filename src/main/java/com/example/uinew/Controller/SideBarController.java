@@ -6,16 +6,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 
-public class SideBarController extends MainController implements ToLogin, ToSignUp {
+public class SideBarController extends HomeController implements ToLogin, ToSignUp {
+
+    @FXML protected VBox vboxSidebar;
 
     // 4. Chuyển sang trang Về chúng tôi (About Us)
     @FXML
     void goToAboutUs(ActionEvent event) {
-        changeScene(event, "com/example/uinew/AboutUs.FXML", "Thông tin về chúng tôi");
+        setView("com/example/uinew/AboutUs.FXML");
     }
 
     @FXML void goToDashBoard(ActionEvent event){
-        changeScene(event, "/com/example/uinew/Dashboard.FXML", "Trang chu");
+        setView("/com/example/uinew/Dashboard.FXML");
     }
 
     @FXML

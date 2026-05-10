@@ -1,29 +1,23 @@
 package com.example.uinew.Controller;
 
+import com.example.uinew.Interface.SceneLoader;
+import com.example.uinew.Interface.ViewLoader;
 import com.example.uinew.model.Product;
 import com.example.uinew.model.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
-import javafx.scene.control.PasswordField;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-public abstract class MainController {
-    protected static User currentUser;
-    protected static Product selectedProduct;
+public abstract class MainController implements SceneLoader {
+    private static User currentUser;
+    private static Product selectedProduct;
 
-    @FXML protected TextField txtUsername;
-    @FXML protected PasswordField txtPassword;
 
-    @FXML protected StackPane contentArea; // fx:id của vùng chứa trong MainLayout
 
     public static void setCurrentUser(User user) { currentUser = user; }
     public static User getCurrentUser() { return currentUser; }
@@ -33,7 +27,7 @@ public abstract class MainController {
 
     //đổi toàn bộ cửa sổ (Login/Logout)
     @FXML
-    protected void changeScene(ActionEvent event, String fxmlFile, String title) {
+    public void changeScene(ActionEvent event, String fxmlFile, String title) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -42,9 +36,4 @@ public abstract class MainController {
             stage.show();
         } catch (IOException e) { e.printStackTrace(); }
     }
-
-
-
-
-
 }
