@@ -5,7 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
-public class DashboardController extends HomeController{
+public class DashboardController extends HomeController {
 
     @FXML
     public void goToCurrentBidding(ActionEvent event) {
@@ -14,12 +14,7 @@ public class DashboardController extends HomeController{
     //vao lai san pham dang dau gia do
 
 
-
     @FXML
     Button createAuction; //nút đẻ tạo auction/bidding
-    
-    @FXML
-    public void createAuction(){
-        setView("CreateBidding.fxml");
-    }
+
 }

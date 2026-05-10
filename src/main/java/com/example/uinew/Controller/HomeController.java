@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import javax.management.ValueExp;
 import java.io.IOException;
@@ -17,12 +18,20 @@ import java.io.IOException;
 //Dashboard controller de load view dong, chua sidebar va topbar
 public class HomeController extends MainController implements OnLogout, ViewLoader {
 
-    @FXML protected AnchorPane vboxSidebar;
+    @FXML protected VBox vboxSidebar;
     @FXML protected StackPane contentArea;
+
+    private static HomeController instance;
+
     public void initialize() {
+        instance = this;
         vboxSidebar.setVisible(false);
         vboxSidebar.setManaged(false);
         setView("/com/example/uinew/Dashboard.fxml");
+    }
+
+    public static HomeController getInstance() {
+        return instance;
     }
 
     @FXML //hàm ẩn hiện sideBar
@@ -49,7 +58,7 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
             // 2. Nếu có Socket đang chạy (cho việc đấu giá), hãy đóng nó
             // SocketManager.getInstance().disconnect();
 
-            changeScene(event, "LoginUI.fxml", "Đăng nhập hệ thống");
+            changeScene(event, "/com/example/uinew/LoginUI.fxml", "Đăng nhập");
             System.out.println("Đăng xuất thành công!");
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,6 +66,12 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
         }
 
     }
+
+    @FXML
+    public void createAuction(){
+        setView("/com/example/uinew/CreateBidding.fxml");
+    }
+
     //đổi nội dung vùng giữa
     @FXML
     public void setView(String fxmlFile) {
