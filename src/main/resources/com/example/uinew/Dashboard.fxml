@@ -10,9 +10,20 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-
 <VBox maxHeight="0.0" maxWidth="0.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="900.0" style="-fx-background-color: #1a1a2e;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uinew.Controller.DashboardController">
    <children>
+      <HBox prefHeight="70.0" prefWidth="200.0" spacing="16.0" style="-fx-background-color: #16213e; -fx-border-color: #2d2d4e; -fx-border-width: 0 0 1 0;">
+         <VBox.margin>
+            <Insets left="24.0" right="24.0" />
+         </VBox.margin>
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="lblWelcome" prefHeight="55.0" prefWidth="328.0" style="-fx-text-fill: #f8f0ff; -fx-font-size: 20px; -fx-font-weight: bold;" text="Chào mừng trở lại, kuromi_chan 🖤" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
       <HBox maxWidth="1.7976931348623157E308" prefHeight="80.0" spacing="1.0" style="-fx-background-color: #16213e;" VBox.vgrow="NEVER">
          <children>
             <VBox alignment="CENTER" prefHeight="100.0" prefWidth="172.0" style="-fx-background-color: #16213e; -fx-padding: 14 16;" HBox.hgrow="ALWAYS">
