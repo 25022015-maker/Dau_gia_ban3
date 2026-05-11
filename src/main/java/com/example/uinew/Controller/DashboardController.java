@@ -5,16 +5,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
-public class DashboardController extends HomeController {
-
-    @FXML
-    public void goToCurrentBidding(ActionEvent event) {
-        changeScene(event, "ThisBidding.fxml", "Đăng nhập");
-    }
-    //vao lai san pham dang dau gia do
+public class DashboardController {
 
 
-    @FXML
-    Button createAuction; //nút đẻ tạo auction/bidding
+
 
 }

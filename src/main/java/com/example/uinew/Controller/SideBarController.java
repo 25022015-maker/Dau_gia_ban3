@@ -16,9 +16,7 @@ public class SideBarController extends HomeController implements ToLogin, ToSign
         setView("com/example/uinew/AboutUs.FXML");
     }
 
-    @FXML void goToDashBoard(ActionEvent event){
-        setView("/com/example/uinew/Dashboard.FXML");
-    }
+
 
     @FXML
     public void goToSignUp(ActionEvent event) {
