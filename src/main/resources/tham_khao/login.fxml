@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #0f172a;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Circle fill="#1e3a8a33" layoutX="100.0" layoutY="100.0" radius="150.0" stroke="TRANSPARENT" />
+        <Circle fill="#581c8733" layoutX="700.0" layoutY="500.0" radius="150.0" stroke="TRANSPARENT" />
+
+        <VBox alignment="CENTER" layoutX="250.0" layoutY="100.0" prefWidth="300.0" spacing="20.0" style="-fx-background-color: rgba(255, 255, 255, 0.05); -fx-background-radius: 20; -fx-padding: 40; -fx-border-color: rgba(255, 255, 255, 0.1); -fx-border-radius: 20;">
+            <children>
+                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Đăng nhập">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Text>
+                <VBox spacing="5.0">
+                    <children>
+                        <Label text="Email" textFill="#94a3b8" />
+                        <TextField prefHeight="40.0" promptText="email@example.com" style="-fx-background-color: #1e293b; -fx-text-fill: white; -fx-background-radius: 8;" />
+                    </children>
+                </VBox>
+                <VBox spacing="5.0">
+                    <children>
+                        <Label text="Mật khẩu" textFill="#94a3b8" />
+                        <PasswordField prefHeight="40.0" promptText="••••••••" style="-fx-background-color: #1e293b; -fx-text-fill: white; -fx-background-radius: 8;" />
+                    </children>
+                </VBox>
+                <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="250.0" style="-fx-background-color: linear-gradient(to right, #2563eb, #7c3aed); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10;" text="ĐĂNG NHẬP" />
+                <Hyperlink text="Chưa có tài khoản? Đăng ký ngay" textFill="#60a5fa" />
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="773.0" prefWidth="881.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uinew.Controller.CreateBiddingController">
+   <children>
+      <StackPane layoutX="3.0" layoutY="7.0" prefHeight="741.0" prefWidth="871.0">
+         <children>
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="731.0" prefWidth="795.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="103.0" prefWidth="670.0" text="Thông tin sản phẩm" textFill="#4d3b9a">
+                     <font>
+                        <Font name="System Bold" size="35.0" />
+                     </font>
+                  </Label>
+                  <Label text="Tên">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Label>
+                  <TextField maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="52.0" prefWidth="403.0" promptText="Nhập tên sản phẩm " style="-fx-background-radius: 20;">
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding></TextField>
+                  <Label layoutX="10.0" layoutY="85.0" prefHeight="17.0" prefWidth="160.0" text="Mô tả">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Label>
+                  <TextField alignment="TOP_LEFT" layoutX="10.0" layoutY="103.0" prefHeight="150.0" prefWidth="641.0" promptText="Nhập mô tả" style="-fx-background-radius: 20;">
+                     <VBox.margin>
+                        <Insets left="20.0" top="20.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="20.0" top="20.0" />
+                     </padding></TextField>
+                  <Label layoutX="10.0" layoutY="128.0" prefHeight="17.0" prefWidth="160.0" text="Loại">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Label>
+                  <ChoiceBox fx:id="choiceBox" prefWidth="150.0" style="-fx-background-color: CCE0FF; -fx-background-radius: 20;">
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin></ChoiceBox>
+                  <Label layoutX="10.0" layoutY="171.0" prefHeight="17.0" prefWidth="160.0" text="Giá khởi điểm">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Label>
+                  <TextField layoutX="10.0" layoutY="188.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="55.0" prefWidth="159.0" promptText="Thấp nhất" style="-fx-background-radius: 20;">
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding></TextField>
+                  <Label layoutX="10.0" layoutY="10.0" prefHeight="75.0" prefWidth="670.0" text="Thông tin đấu giá " textFill="#7958ba">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="85.0" text="Ngày bắt đầu">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Label>
+                  <DatePicker style="-fx-background-radius: 10;">
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin></DatePicker>
+                  <Label layoutX="10.0" layoutY="331.0" text="Ngày kết thúc">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Label>
+                  <DatePicker style="-fx-background-radius: 10;">
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin></DatePicker>
+                  <BorderPane prefHeight="48.0" prefWidth="415.0">
+                     <left>
+                        <Button mnemonicParsing="false" onAction="#handleCreate" prefHeight="25.0" prefWidth="91.0" style="-fx-background-color: CCE0FF; -fx-background-radius: 20;" text="Ok" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Button>
+                     </left>
+                     <right>
+                        <Button mnemonicParsing="false" onAction="#backToDashboard" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: CCE0FF; -fx-background-radius: 20;" text="Hủy" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Button>
+                     </right>
+                  </BorderPane>
+               </children>
+            </VBox>
+         </children>
+      </StackPane>
+      <ImageView fitHeight="255.0" fitWidth="205.0" layoutX="543.0" layoutY="409.0">
+         <image>
+            <Image url="@../../../Kuromi_PNG.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

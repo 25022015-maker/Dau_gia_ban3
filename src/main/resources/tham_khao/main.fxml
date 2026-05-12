@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.Rectangle?>
+
+<HBox prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <!-- Sidebar -->
+        <VBox prefWidth="240.0" spacing="20.0" style="-fx-background-color: #0f172a; -fx-padding: 30;">
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <children>
+                        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#2563eb" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0"/>
+                        <Text fill="WHITE" text="BidMaster" style="-fx-font-weight: bold; -fx-font-size: 20;"/>
+                    </children>
+                </HBox>
+                <VBox spacing="10.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #2563eb; -fx-text-fill: white; -fx-background-radius: 8;" text="Bảng điều khiển"/>
+                        <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: transparent; -fx-text-fill: #94a3b8;" text="Đấu giá của tôi"/>
+                        <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: transparent; -fx-text-fill: #94a3b8;" text="Thông báo"/>
+                        <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: transparent; -fx-text-fill: #94a3b8;" text="Cài đặt"/>
+                    </children>
+                </VBox>
+                <Button mnemonicParsing="false" prefWidth="200.0" style="-fx-background-color: transparent; -fx-text-fill: #ef4444;" text="Đăng xuất"/>
+            </children>
+        </VBox>
+
+        <!-- Main Content -->
+        <VBox prefHeight="200.0" prefWidth="100.0" spacing="30.0" style="-fx-background-color: #f8fafc; -fx-padding: 40;" HBox.hgrow="ALWAYS">
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="20.0">
+                    <children>
+                        <VBox HBox.hgrow="ALWAYS">
+                            <children>
+                                <Text text="Sản phẩm đấu giá" style="-fx-font-weight: bold; -fx-font-size: 28;"/>
+                                <Text fill="#64748b" text="Đang diễn ra trực tiếp"/>
+                            </children>
+                        </VBox>
+                        <TextField prefHeight="40.0" prefWidth="300.0" promptText="Tìm kiếm..." style="-fx-background-radius: 20; -fx-background-color: white; -fx-border-color: #e2e8f0; -fx-border-radius: 20;"/>
+                    </children>
+                </HBox>
+
+                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+                    <content>
+                        <FlowPane hgap="30.0" vgap="30.0">
+                            <!-- Sample Card -->
+                            <VBox prefWidth="280.0" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 25; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);">
+                                <children>
+                                    <StackPane prefHeight="200.0">
+                                        <children>
+                                            <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#f1f5f9" height="180.0" width="240.0"/>
+                                            <Text text="IMAGE"/>
+                                        </children>
+                                    </StackPane>
+                                    <Text text="Rolex Submariner 2024" style="-fx-font-weight: bold;"/>
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                        <children>
+                                            <VBox HBox.hgrow="ALWAYS">
+                                                <children>
+                                                    <Text fill="#94a3b8" text="GIÁ HIỆN TẠI"/>
+                                                    <Text text="15,500" style="-fx-font-weight: bold; -fx-font-size: 18;"/>
+                                                </children>
+                                            </VBox>
+                                            <Button style="-fx-background-color: #2563eb; -fx-text-fill: white; -fx-background-radius: 20;" text="Xem"/>
+                                        </children>
+                                    </HBox>
+                                </children>
+                            </VBox>
+                            <!-- End Card -->
+                        </FlowPane>
+                    </content>
+                </ScrollPane>
+            </children>
+        </VBox>
+    </children>
+</HBox>
