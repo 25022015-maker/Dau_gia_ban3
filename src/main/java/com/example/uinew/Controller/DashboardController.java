@@ -6,8 +6,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
 public class DashboardController {
-
-
-
+//them ham truy cap toi buoi dau gia mong muon dua tren cac the co tren dashboard
 
 }

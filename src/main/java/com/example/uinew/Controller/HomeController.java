@@ -50,8 +50,7 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
         }
     }
 
-
-    @FXML void goToDashBoard(ActionEvent event){
+     @FXML void goToDashBoard(ActionEvent event){
         setView("/com/example/uinew/Dashboard.fxml");
     }
 
