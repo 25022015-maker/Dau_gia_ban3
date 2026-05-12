@@ -20,6 +20,7 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
 
     @FXML protected VBox vboxSidebar;
     @FXML protected StackPane contentArea;
+    @FXML private Label loginStatusLabel;
 
     private static HomeController instance;
 
@@ -51,7 +52,9 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
     }
 
      @FXML void goToDashBoard(ActionEvent event){
+
         setView("/com/example/uinew/Dashboard.fxml");
+        loginStatusLabel.setText("Đăng nhập thành công! Chào mừng bạn.");
     }
 
     public void onLogout(ActionEvent event) {
@@ -64,6 +67,7 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
 
             changeScene(event, "/com/example/uinew/LoginUI.fxml", "Đăng nhập");
             System.out.println("Đăng xuất thành công!");
+
         } catch (Exception e) {
             e.printStackTrace();
             // Hiển thị thông báo lỗi nếu không chuyển được scene
