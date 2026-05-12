@@ -15,13 +15,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="807.0" prefWidth="1268.0" style="-fx-background-image: url(&quot;k.png&quot;); -fx-background-position: center; -fx-background-size: cover;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uinew.Controller.CreateBiddingController">
+<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="807.0" prefWidth="1268.0" style="-fx-background-image: url(&quot;k.png&quot;); -fx-background-position: center; -fx-background-size: cover;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uinew.Controller.CreateBiddingController">
    <children>
       <HBox alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="796.0" prefWidth="1096.0">
          <children>
             <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="782.0" prefWidth="927.0" spacing="10.0">
                <children>
-                  <Label prefHeight="103.0" prefWidth="670.0" text="Thông tin sản phẩm" textFill="#4d3b9a">
+                  <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="103.0" prefWidth="670.0" text="Thông tin sản phẩm" textFill="#4d3b9a">
                      <font>
                         <Font name="Agbalumo Regular" size="35.0" />
                      </font>

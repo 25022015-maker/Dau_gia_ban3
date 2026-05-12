@@ -18,9 +18,9 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="1018.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uinew.Controller.HomeController">
    <top>
-      <HBox alignment="CENTER_LEFT" prefHeight="97.0" prefWidth="1018.0" style="-fx-background-image: url(&quot;img_8.png&quot;);" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER_LEFT" prefHeight="129.0" prefWidth="1018.0" style="-fx-background-image: url(&quot;img_5.png&quot;);" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#toggleSidebar" prefHeight="97.0" prefWidth="224.0" style="-fx-background-color: DCBFFF;" text="Bidding With Kuro">
+            <Button mnemonicParsing="false" onAction="#toggleSidebar" prefHeight="129.0" prefWidth="349.0" style="-fx-background-color: DCBFFF;" text="Bidding With Kuro">
                <HBox.margin>
                   <Insets right="70.0" />
                </HBox.margin>
@@ -123,31 +123,34 @@
       </HBox>
    </top>
    <left>
-      <VBox fx:id="vboxSidebar" prefHeight="622.0" prefWidth="211.0" style="-fx-background-color: DCBFFF;" BorderPane.alignment="CENTER">
+      <VBox fx:id="vboxSidebar" prefHeight="590.0" prefWidth="321.0" style="-fx-background-color: DCBFFF; -fx-background-image: url(&quot;img_5.png&quot;);" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#goToDashBoard" prefHeight="63.0" prefWidth="229.0" style="-fx-background-color: F8F2FF;" text="Trang chủ">
+            <Button mnemonicParsing="false" onAction="#goToDashBoard" prefHeight="63.0" prefWidth="338.0" style="-fx-background-color: F8F2FF;" text="Trang chủ">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
                <font>
                   <Font name="Agbalumo Regular" size="12.0" />
                </font></Button>
-            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="229.0" style="-fx-background-color: DCBFFF;" text="Tài khoản">
+            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="333.0" style="-fx-background-color: DCBFFF;" text="Tài khoản">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
                <font>
                   <Font name="Agbalumo Regular" size="12.0" />
                </font></Button>
-            <Button layoutX="10.0" layoutY="137.0" mnemonicParsing="false" onAction="#createAuction" prefHeight="63.0" prefWidth="247.0" style="-fx-background-color: F8F2FF;" text="Hướng dẫn">
+            <Button layoutX="10.0" layoutY="137.0" mnemonicParsing="false" onAction="#createAuction" prefHeight="63.0" prefWidth="342.0" style="-fx-background-color: F8F2FF;" text="Hướng dẫn">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="Agbalumo Regular" size="12.0" />
+               </font></Button>
+            <Button layoutX="10.0" layoutY="137.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="368.0" style="-fx-background-color: DCBFFF;" text="Quản lý">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <Button layoutX="10.0" layoutY="137.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="245.0" style="-fx-background-color: DCBFFF;" text="Quản lý">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></Button>
-            <Button layoutX="10.0" layoutY="200.0" mnemonicParsing="false" onAction="#onLogout" prefHeight="63.0" prefWidth="228.0" style="-fx-background-color: F8F2FF;" text="Đăng xuất">
+            <Button layoutX="10.0" layoutY="200.0" mnemonicParsing="false" onAction="#onLogout" prefHeight="63.0" prefWidth="353.0" style="-fx-background-color: F8F2FF;" text="Đăng xuất">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
@@ -155,6 +158,6 @@
       </VBox>
    </left>
    <center>
-      <StackPane fx:id="contentArea" prefHeight="632.0" prefWidth="861.0" style="-fx-border-color: #FEA8FF; -fx-border-width: 10; -fx-border-style: dashed;" BorderPane.alignment="CENTER" />
+      <StackPane fx:id="contentArea" prefHeight="571.0" prefWidth="749.0" style="-fx-border-color: #FEA8FF; -fx-border-width: 10; -fx-border-style: dashed;" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>
