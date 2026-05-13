@@ -1,11 +1,13 @@
 package com.auction.project.Server;
 
 import com.auction.project.Controllers.ServerController;
-import com.auction.project.Models.Auction;
+import com.auction.project.Entities.Auction;
+
 import com.auction.project.Packets.BidRequest;
 import com.auction.project.Packets.LoginRequest;
 import com.auction.project.Packets.Response;
 import com.auction.project.Packets.ResponseType;
+import com.auction.project.Packets.GsonFactory;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -36,7 +38,7 @@ public class ClientHandler implements Runnable {
     private static final Logger logger = Logger.getLogger(ClientHandler.class.getName());
 
     // ── Gson instance (thread-safe — dùng chung được) ─────────────────────────
-    private static final Gson gson = new Gson();
+    private static final Gson gson = GsonFactory.create();
 
     // ── Socket & I/O ──────────────────────────────────────────────────────────
     private final Socket socket;
@@ -155,6 +157,11 @@ public class ClientHandler implements Runnable {
                     controller.handleUnsubscribeAuction(unsubAuctionId, this);
                     break;
 
+                case "CREATE_AUCTION":
+                    response = controller.handleCreateAuction(json, this);
+                    sendResponse(response);
+                    break;
+
                 default:
                     logger.warning("Action không xác định từ client " + clientId + ": " + action);
                     sendResponse(Response.error("Action không được hỗ trợ: " + action));
@@ -198,15 +205,16 @@ public class ClientHandler implements Runnable {
      * @param auction phiên vừa được cập nhật giá mới
      */
     public void sendBidUpdate(Auction auction) {
+        com.auction.project.Packets.AuctionDTO dto = com.auction.project.Packets.AuctionDTO.from(auction);
         Response update = new Response(
                 ResponseType.BID_UPDATE,
                 String.format(
                         "💰 %s vừa đặt %.0f VNĐ cho '%s'",
-                        auction.getLeadingBidder(),
-                        auction.getCurrentPrice(),
-                        auction.getItemName()),
-                auction);
-        sendResponse(update); // sendResponse đã synchronized
+                        dto.getLeadingBidder(),
+                        dto.getCurrentPrice(),
+                        dto.getItemName()),
+                dto);
+        sendResponse(update);
     }
 
     // ── Cleanup ───────────────────────────────────────────────────────────────

@@ -10,83 +10,114 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="638.0" prefWidth="631.0" style="-fx-background-image: url(&quot;img_2.png&quot;);" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="638.0" prefWidth="631.0"
+            style="-fx-background-image: url(&quot;img_2.png&quot;);"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.uinew.Controller.ThisBiddingController">
    <top>
-      <Label prefHeight="73.0" prefWidth="640.0" text="Product's name" BorderPane.alignment="CENTER">
-         <font>
-            <Font name="MilkywayDEMO" size="27.0" />
-         </font>
+      <!-- Tên sản phẩm — cập nhật từ server -->
+      <Label fx:id="lblProductName"
+             prefHeight="73.0" prefWidth="640.0"
+             text="Product's name"
+             BorderPane.alignment="CENTER">
+         <font><Font name="MilkywayDEMO" size="27.0" /></font>
       </Label>
    </top>
+
    <right>
-      <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="165.0" prefWidth="273.0" spacing="20.0" BorderPane.alignment="CENTER">
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity"
+            prefHeight="165.0" prefWidth="273.0"
+            spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <Label prefHeight="17.0" prefWidth="337.0" text="Giá hiện tại:">
-               <font>
-                  <Font size="18.0" />
-               </font>
+            <!-- Giá hiện tại — cập nhật realtime khi có BID_UPDATE -->
+            <Label fx:id="lblCurrentPrice"
+                   prefHeight="17.0" prefWidth="337.0"
+                   text="Giá hiện tại: --">
+               <font><Font size="18.0" /></font>
             </Label>
-            <Label prefHeight="17.0" prefWidth="535.0" text="Người giữ giá:">
-               <font>
-                  <Font size="18.0" />
-               </font>
+
+            <!-- Người đang dẫn đầu -->
+            <Label fx:id="lblLeader"
+                   prefHeight="17.0" prefWidth="535.0"
+                   text="Người giữ giá: --">
+               <font><Font size="18.0" /></font>
             </Label>
-            <Label prefHeight="17.0" prefWidth="444.0" text="Còn: ">
-               <font>
-                  <Font size="18.0" />
-               </font>
+
+            <!-- Đếm ngược thời gian -->
+            <Label fx:id="lblTimer"
+                   prefHeight="17.0" prefWidth="444.0"
+                   text="Còn: 01:00:00">
+               <font><Font size="18.0" /></font>
             </Label>
          </children>
       </VBox>
    </right>
+
    <bottom>
-      <VBox prefHeight="112.0" prefWidth="609.0" spacing="20.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="112.0" prefWidth="609.0"
+            spacing="20.0" BorderPane.alignment="CENTER">
          <children>
             <BorderPane prefHeight="33.0" prefWidth="642.0">
                <left>
-                  <TextField prefHeight="25.0" prefWidth="289.0" promptText="Giá muốn đặt" style="-fx-background-radius: 20;" BorderPane.alignment="CENTER">
+                  <!-- Ô nhập giá muốn đặt -->
+                  <TextField fx:id="txtBidAmount"
+                             prefHeight="25.0" prefWidth="289.0"
+                             promptText="Giá muốn đặt"
+                             style="-fx-background-radius: 20;"
+                             BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets left="20.0" right="20.0" />
                      </BorderPane.margin>
                   </TextField>
                </left>
                <right>
-                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="342.0" style="-fx-background-radius: 20; -fx-background-color: ADD1FF;" text="Đặt giá" BorderPane.alignment="CENTER">
+                  <!-- Nút đặt giá — gọi handlePlaceBid() -->
+                  <Button fx:id="btnPlaceBid"
+                          mnemonicParsing="false"
+                          prefHeight="25.0" prefWidth="342.0"
+                          style="-fx-background-radius: 20; -fx-background-color: ADD1FF;"
+                          text="Đặt giá"
+                          onAction="#handlePlaceBid"
+                          BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets right="20.0" />
                      </BorderPane.margin>
                   </Button>
                </right>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
                <bottom>
-                  <ListView maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="192.0" prefWidth="651.0" style="-fx-background-radius: 20;" BorderPane.alignment="CENTER">
-                     <padding>
-                        <Insets top="20.0" />
-                     </padding>
-                     <BorderPane.margin>
-                        <Insets top="20.0" />
-                     </BorderPane.margin>
+                  <!-- Lịch sử các lượt bid -->
+                  <ListView fx:id="bidHistoryList"
+                            maxHeight="-Infinity" maxWidth="-Infinity"
+                            prefHeight="192.0" prefWidth="651.0"
+                            style="-fx-background-radius: 20;"
+                            BorderPane.alignment="CENTER">
+                     <padding><Insets top="20.0" /></padding>
+                     <BorderPane.margin><Insets top="20.0" /></BorderPane.margin>
                   </ListView>
                </bottom>
             </BorderPane>
-            <Button mnemonicParsing="false" prefHeight="43.0" prefWidth="651.0" style="-fx-background-radius: 20; -fx-background-color: ADD1FF;" text="Lịch sử">
+
+            <!-- Nút xem lịch sử -->
+            <Button mnemonicParsing="false"
+                    prefHeight="43.0" prefWidth="651.0"
+                    style="-fx-background-radius: 20; -fx-background-color: ADD1FF;"
+                    text="Lịch sử"
+                    onAction="#BiddingHistory">
                <VBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" />
                </VBox.margin>
             </Button>
          </children>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
+         <BorderPane.margin><Insets /></BorderPane.margin>
       </VBox>
    </bottom>
+
    <center>
-      <ImageView fitHeight="273.0" fitWidth="317.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="20.0" />
-         </BorderPane.margin>
+      <ImageView fitHeight="273.0" fitWidth="317.0"
+                 pickOnBounds="true" preserveRatio="true"
+                 BorderPane.alignment="CENTER">
+         <BorderPane.margin><Insets bottom="20.0" /></BorderPane.margin>
       </ImageView>
    </center>
 </BorderPane>

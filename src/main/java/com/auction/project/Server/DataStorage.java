@@ -1,7 +1,7 @@
 package com.auction.project.Server;
 
-import com.auction.project.Models.Auction;
-import com.auction.project.Models.AuctionManager;
+import com.auction.project.Entities.Auction;
+import com.auction.project.Manager.AuctionManager;
 
 import java.io.*;
 import java.nio.file.*;

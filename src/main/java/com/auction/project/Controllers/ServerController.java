@@ -6,6 +6,11 @@ import com.auction.project.Entities.Bidder;
 import com.auction.project.Exception.AuctionClosedException;
 import com.auction.project.Exception.InvalidBidException;
 import com.auction.project.Manager.AuctionManager;
+import com.auction.project.Packets.AuctionDTO;
+import com.auction.project.Entities.enums.AuctionStatus;
+import com.auction.project.Factory.ItemFactory;
+import com.google.gson.JsonObject;
+import java.time.LocalDateTime;
 import com.auction.project.Packets.BidRequest;
 import com.auction.project.Packets.LoginRequest;
 import com.auction.project.Packets.Response;
@@ -99,11 +104,14 @@ public class ServerController {
 
     public Response handleGetAuctionList() {
         Collection<Auction> auctions = auctionManager.getAllAuctions();
-        // Cập nhật status OPEN→RUNNING→FINISHED trước khi trả về client
         auctions.forEach(Auction::checkAndUpdateStatus);
-        logger.info("AUCTION_LIST | " + auctions.size() + " phiên.");
+        // Convert sang DTO để tránh lỗi serialize LocalDateTime
+        List<AuctionDTO> dtos = auctions.stream()
+                .map(AuctionDTO::from)
+                .collect(java.util.stream.Collectors.toList());
+        logger.info("AUCTION_LIST | " + dtos.size() + " phiên.");
         return new Response(ResponseType.AUCTION_LIST,
-                "Danh sách phiên đấu giá.", new ArrayList<>(auctions));
+                "Danh sách phiên đấu giá.", dtos);
     }
 
     // ── Đặt giá ───────────────────────────────────────────────────────────────
@@ -156,7 +164,7 @@ public class ServerController {
             logger.info("BID SUCCESS | Phiên " + auctionId
                     + " | Giá mới: " + auction.getCurrentPrice());
 
-            return new Response(ResponseType.BID_SUCCESS, "Đặt giá thành công!", auction);
+            return new Response(ResponseType.BID_SUCCESS, "Đặt giá thành công!", AuctionDTO.from(auction));
 
         } catch (InvalidBidException e) {
             // Giá thấp hơn hiện tại — lỗi nghiệp vụ bình thường
@@ -179,6 +187,46 @@ public class ServerController {
      * Từ lúc này, mỗi lần Auction.notifyObservers() được gọi,
      * client này sẽ nhận BID_UPDATE qua socket.
      */
+    public Response handleCreateAuction(JsonObject json, ClientHandler handler) {
+        try {
+            String itemName   = json.get("itemName").getAsString();
+            String itemType   = json.has("itemType") ? json.get("itemType").getAsString() : "ELECTRONICS";
+            double startPrice = json.get("startPrice").getAsDouble();
+            String startTimeStr = json.has("startTime") ? json.get("startTime").getAsString() : null;
+            String endTimeStr   = json.has("endTime")   ? json.get("endTime").getAsString()   : null;
+
+            // Tạo Item
+            com.auction.project.Entities.Item item = ItemFactory.createItem(itemType, itemName, startPrice, "Unknown");
+
+            // Parse thời gian
+            LocalDateTime startTime = startTimeStr != null
+                    ? LocalDateTime.parse(startTimeStr)
+                    : LocalDateTime.now();
+            LocalDateTime endTime = endTimeStr != null
+                    ? LocalDateTime.parse(endTimeStr)
+                    : LocalDateTime.now().plusHours(2);
+
+            // Tạo Auction
+            com.auction.project.Entities.Auction auction =
+                    new com.auction.project.Entities.Auction(startTime, endTime, startPrice, item);
+            auction.setStatus(AuctionStatus.RUNNING);
+
+            // Thêm vào AuctionManager và DAO
+            auctionManager.addAuction(auction);
+            auctionDao.saveAuction(auction);
+            observerRegistry.put(auction.getId(), new java.util.ArrayList<>());
+
+            logger.info("CREATE_AUCTION | " + itemName + " | ID: " + auction.getId());
+
+            return new Response(ResponseType.BID_SUCCESS,
+                    "Tạo phiên đấu giá thành công!", AuctionDTO.from(auction));
+
+        } catch (Exception e) {
+            logger.warning("Lỗi tạo phiên: " + e.getMessage());
+            return Response.error("Không thể tạo phiên: " + e.getMessage());
+        }
+    }
+
     public Response handleSubscribeAuction(String auctionIdStr, ClientHandler handler) {
         int auctionId;
         try {
@@ -206,7 +254,7 @@ public class ServerController {
         // Trả về trạng thái hiện tại của phiên ngay lập tức
         auction.checkAndUpdateStatus();
         return new Response(ResponseType.BID_UPDATE,
-                "Đã đăng ký theo dõi phiên " + auctionId, auction);
+                "Đã đăng ký theo dõi phiên " + auctionId, AuctionDTO.from(auction));
     }
 
     public void handleUnsubscribeAuction(String auctionIdStr, ClientHandler handler) {

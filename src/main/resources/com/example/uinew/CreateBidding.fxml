@@ -31,7 +31,7 @@
                         <Font name="Agbalumo Regular" size="18.0" />
                      </font>
                   </Label>
-                  <TextField maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="61.0" prefWidth="237.0" promptText="Nhập tên sản phẩm " style="-fx-background-radius: 20;">
+                  <TextField fx:id="txtName" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="61.0" prefWidth="237.0" promptText="Nhập tên sản phẩm " style="-fx-background-radius: 20;">
                      <VBox.margin>
                         <Insets left="20.0" />
                      </VBox.margin>
@@ -47,7 +47,7 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <TextField alignment="TOP_LEFT" layoutX="10.0" layoutY="103.0" prefHeight="150.0" prefWidth="641.0" promptText="Nhập mô tả" style="-fx-background-radius: 20;">
+                  <TextField fx:id="txtDescription" alignment="TOP_LEFT" layoutX="10.0" layoutY="103.0" prefHeight="150.0" prefWidth="641.0" promptText="Nhập mô tả" style="-fx-background-radius: 20;">
                      <VBox.margin>
                         <Insets left="20.0" top="20.0" />
                      </VBox.margin>
@@ -73,7 +73,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField layoutX="10.0" layoutY="188.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="55.0" prefWidth="159.0" promptText="Thấp nhất" style="-fx-background-radius: 20;">
+                  <TextField fx:id="txtStartPrice" layoutX="10.0" layoutY="188.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="55.0" prefWidth="159.0" promptText="Thấp nhất" style="-fx-background-radius: 20;">
                      <VBox.margin>
                         <Insets left="20.0" />
                      </VBox.margin>
@@ -94,7 +94,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <DatePicker style="-fx-background-radius: 10;">
+                  <DatePicker fx:id="dateStart" style="-fx-background-radius: 10;">
                      <VBox.margin>
                         <Insets left="20.0" />
                      </VBox.margin>
@@ -104,11 +104,16 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <DatePicker style="-fx-background-radius: 10;">
+                  <DatePicker fx:id="dateEnd" style="-fx-background-radius: 10;">
                      <VBox.margin>
                         <Insets left="20.0" />
                      </VBox.margin>
                   </DatePicker>
+                  <Label fx:id="lblMessage" text="" visible="false" managed="false">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
                   <BorderPane prefHeight="48.0" prefWidth="415.0">
                      <left>
                         <Button mnemonicParsing="false" onAction="#handleCreate" prefHeight="25.0" prefWidth="91.0" style="-fx-background-color: CCE0FF; -fx-background-radius: 20;" text="Ok" BorderPane.alignment="CENTER">

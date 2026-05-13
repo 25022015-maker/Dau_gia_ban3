@@ -15,6 +15,7 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -30,12 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * Controller cho Dashboard.fxml — được load vào contentArea của MainLayout.
- *
- * KHÔNG extends HomeController vì Dashboard là view con,
- * không phải màn hình độc lập. HomeController quản lý layout chính.
- */
 public class DashboardController {
 
     @FXML private Label lblWelcome;
@@ -53,18 +48,33 @@ public class DashboardController {
     private final Map<String, AuctionCard> cardMap = new HashMap<>();
     private List<Map<String, Object>> allAuctions = new ArrayList<>();
 
-    // ── Initialize — JavaFX gọi tự động sau khi FXML load ────────────────────
+    // ── Initialize ────────────────────────────────────────────────────────────
 
     @FXML
     public void initialize() {
-        // Hiện tên user đang đăng nhập
+        // Hiện tên user ngay lập tức
         String user = SessionManager.getCurrentUser();
         if (lblWelcome != null && user != null) {
             lblWelcome.setText("Chào mừng trở lại, " + user + " 🖤");
         }
 
-        loadAuctionList();
+        // Đăng ký listener trước
         registerBidUpdateListener();
+
+        // Thử kết nối và load data — retry tối đa 10 lần (5 giây)
+        // Vì socket connect trong thread riêng, cần đợi nó xong
+        new Thread(() -> {
+            for (int i = 0; i < 10; i++) {
+                SocketClient client = SessionManager.getSocketClient();
+                if (client != null && client.isConnected()) {
+                    // Socket đã sẵn sàng — gửi request
+                    Platform.runLater(this::loadAuctionList);
+                    return;
+                }
+                try { Thread.sleep(500); } catch (InterruptedException ignored) {}
+            }
+            System.out.println("[Dashboard] Timeout: không kết nối được server.");
+        }, "DashboardRetryThread").start();
     }
 
     // ── Load danh sách phiên ──────────────────────────────────────────────────
@@ -75,6 +85,7 @@ public class DashboardController {
             System.out.println("[Dashboard] Chưa kết nối server.");
             return;
         }
+        System.out.println("[Dashboard] Gửi GET_AUCTIONS...");
         JsonObject req = new JsonObject();
         req.addProperty("action", "GET_AUCTIONS");
         client.sendRaw(gson.toJson(req));
@@ -83,17 +94,26 @@ public class DashboardController {
     // ── Đăng ký nhận realtime ─────────────────────────────────────────────────
 
     private void registerBidUpdateListener() {
-        SocketClient client = SessionManager.getSocketClient();
-        if (client == null) return;
-
-        client.setOnResponse(response -> {
-            if (response == null) return;
-            if (response.getType() == ResponseType.AUCTION_LIST) {
-                Platform.runLater(() -> buildCards(response));
-            } else if (response.getType() == ResponseType.BID_UPDATE) {
-                Platform.runLater(() -> updateCard(response));
+        // Retry đăng ký listener cho đến khi có socketClient
+        new Thread(() -> {
+            for (int i = 0; i < 10; i++) {
+                SocketClient client = SessionManager.getSocketClient();
+                if (client != null) {
+                    client.setOnResponse(response -> {
+                        if (response == null) return;
+                        if (response.getType() == ResponseType.AUCTION_LIST) {
+                            System.out.println("[Dashboard] Nhận AUCTION_LIST!");
+                            Platform.runLater(() -> buildCards(response));
+                        } else if (response.getType() == ResponseType.BID_UPDATE) {
+                            Platform.runLater(() -> updateCard(response));
+                        }
+                    });
+                    System.out.println("[Dashboard] Đã đăng ký listener.");
+                    return;
+                }
+                try { Thread.sleep(300); } catch (InterruptedException ignored) {}
             }
-        });
+        }, "ListenerRetryThread").start();
     }
 
     // ── Build cards ───────────────────────────────────────────────────────────
@@ -105,26 +125,61 @@ public class DashboardController {
                     gson.toJson(response.getData()),
                     new TypeToken<List<Map<String, Object>>>(){}.getType());
             if (allAuctions == null) allAuctions = new ArrayList<>();
+            System.out.println("[Dashboard] Build " + allAuctions.size() + " cards.");
             renderCards(allAuctions);
             updateStats(allAuctions);
         } catch (Exception e) {
             System.out.println("[Dashboard] Lỗi parse: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
     private void renderCards(List<Map<String, Object>> auctions) {
         cardsContainer.getChildren().clear();
         cardMap.clear();
-        for (Map<String, Object> auction : auctions) {
-            String auctionId = String.valueOf(((Number) auction.get("id")).intValue());
-            String itemName  = getItemName(auction);
-            double price     = getDouble(auction, "currentPrice");
-            String status    = String.valueOf(auction.get("status"));
 
-            AuctionCard card = new AuctionCard(auctionId, itemName, price, status);
-            cardMap.put(auctionId, card);
-            cardsContainer.getChildren().add(card.getNode());
-            subscribeAuction(auctionId);
+        if (auctions.isEmpty()) {
+            Label empty = new Label("Không có phiên đấu giá nào.");
+            empty.setStyle("-fx-text-fill: #7f8c9a; -fx-font-size: 14px;");
+            cardsContainer.getChildren().add(empty);
+            return;
+        }
+
+        for (Map<String, Object> auction : auctions) {
+            try {
+                String auctionId = String.valueOf(((Number) auction.get("id")).intValue());
+                String itemName  = getItemName(auction);
+                double price     = getDouble(auction, "currentPrice");
+                String status    = String.valueOf(auction.get("status"));
+
+                AuctionCard card = new AuctionCard(auctionId, itemName, price, status);
+                cardMap.put(auctionId, card);
+
+                // Click vào card → chuyển sang màn hình đặt giá
+                final String fId   = auctionId;
+                final String fName = itemName;
+                card.getNode().setOnMouseClicked(e -> navigateToThisBidding(fId, fName));
+
+                cardsContainer.getChildren().add(card.getNode());
+                subscribeAuction(auctionId);
+            } catch (Exception e) {
+                System.out.println("[Dashboard] Lỗi tạo card: " + e.getMessage());
+            }
+        }
+    }
+
+    private void navigateToThisBidding(String auctionId, String itemName) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/example/uinew/ThisBidding.fxml"));
+            Node node = loader.load();
+            ThisBiddingController ctrl = loader.getController();
+            ctrl.setAuction(auctionId, itemName);
+            HomeController home = HomeController.getInstance();
+            if (home != null) home.setView(node);
+        } catch (Exception e) {
+            System.out.println("[Dashboard] Lỗi navigate: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -201,11 +256,11 @@ public class DashboardController {
 
     private void setActiveButton(Button active) {
         String normal = "-fx-background-color: #2d1b4e; -fx-text-fill: #c39bd3; -fx-background-radius: 16; -fx-padding: 5 14;";
-        String activeStyle = "-fx-background-color: #6c3483; -fx-text-fill: white; -fx-background-radius: 16; -fx-padding: 5 14;";
+        String act    = "-fx-background-color: #6c3483; -fx-text-fill: white; -fx-background-radius: 16; -fx-padding: 5 14;";
         if (btnAll != null)      btnAll.setStyle(normal);
         if (btnLive != null)     btnLive.setStyle(normal);
         if (btnUpcoming != null) btnUpcoming.setStyle(normal);
-        if (active != null)      active.setStyle(activeStyle);
+        if (active != null)      active.setStyle(act);
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
@@ -262,16 +317,37 @@ public class DashboardController {
             lblTimer = new Label("⏱ 01:00:00");
             lblTimer.setStyle("-fx-text-fill: #e74c3c; -fx-font-size: 11px;");
 
+            Label lblHint = new Label("👆 Click để đặt giá");
+            lblHint.setStyle("-fx-text-fill: #555; -fx-font-size: 9px;");
+
             root = new VBox(8, imgPane, lblName, lblPriceTitle,
-                    lblPrice, lblBidder, lblStatus, lblTimer);
-            root.setPrefSize(220, 210);
+                    lblPrice, lblBidder, lblStatus, lblTimer, lblHint);
+            root.setPrefSize(220, 220);
             root.setStyle(
                     "-fx-background-color: #16213e;" +
                             "-fx-background-radius: 10;" +
                             "-fx-border-color: #2d2d4e;" +
                             "-fx-border-radius: 10;" +
                             "-fx-border-width: 1;" +
-                            "-fx-padding: 14;");
+                            "-fx-padding: 14;" +
+                            "-fx-cursor: hand;");
+
+            root.setOnMouseEntered(e -> root.setStyle(
+                    "-fx-background-color: #1e2a45;" +
+                            "-fx-background-radius: 10;" +
+                            "-fx-border-color: #6c3483;" +
+                            "-fx-border-radius: 10;" +
+                            "-fx-border-width: 2;" +
+                            "-fx-padding: 14;" +
+                            "-fx-cursor: hand;"));
+            root.setOnMouseExited(e -> root.setStyle(
+                    "-fx-background-color: #16213e;" +
+                            "-fx-background-radius: 10;" +
+                            "-fx-border-color: #2d2d4e;" +
+                            "-fx-border-radius: 10;" +
+                            "-fx-border-width: 1;" +
+                            "-fx-padding: 14;" +
+                            "-fx-cursor: hand;"));
 
             if ("RUNNING".equals(status)) startTimer();
             else lblTimer.setText("⏳ Chưa bắt đầu");

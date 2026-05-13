@@ -99,4 +99,21 @@ public class Auction extends Entity implements Subject, Serializable {
 
     public void setStatus(AuctionStatus s) { this.status = s; }
 
+    public String getLeadingBidder() {
+        if (transactions == null || transactions.isEmpty()) return "None";
+        return transactions.get(transactions.size()-1).getBidder().getUsername();
+    }
+
+    public String getItemName() {
+        return item != null ? item.getName() : "Unknown";
+    }
+
+    public Item getItem() { return item; }
+
+    public java.time.LocalDateTime getStartTime() { return startTime; }
+
+    public java.time.LocalDateTime getEndTime() { return endTime; }
+
+    public AuctionStatus getStatus() { return status; }
+
 }

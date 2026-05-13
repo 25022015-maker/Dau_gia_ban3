@@ -11,4 +11,5 @@ public abstract class Item extends Entity {
         this.startPrice = startPrice;
     }
     public abstract String getDetails();
+    public String getName() { return name; }
 }

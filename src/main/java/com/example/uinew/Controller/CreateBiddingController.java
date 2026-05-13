@@ -1,58 +1,114 @@
 package com.example.uinew.Controller;
 
-import com.example.uinew.Interface.ViewLoader;
-import com.example.uinew.model.Product;
+import com.auction.project.Client.SocketClient;
+import com.auction.project.Packets.GsonFactory;
+import com.example.uinew.service.SessionManager;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-public class CreateBiddingController{
-    @FXML private TextField txtName, txtStartPrice, txtDescription, txtProductType; //thong tin san pham
-    @FXML private DatePicker dateEnd;
+public class CreateBiddingController {
+
+    @FXML private TextField txtName;
+    @FXML private TextField txtDescription;
+    @FXML private TextField txtStartPrice;
+    @FXML private ChoiceBox<String> choiceBox;
     @FXML private DatePicker dateStart;
-    @FXML Button ok;
-    @FXML Button cancel;
+    @FXML private DatePicker dateEnd;
+    @FXML private Label lblMessage;
 
-
+    private final Gson gson = GsonFactory.create();
 
     @FXML
-    void handleCreate(ActionEvent event) { //tao san pham dau gia
-
-        System.out.println("Tạo phiên đấu giá thành công!");
-        //Chuyển sang trang chi tiết đấu giá ngay sau khi taoj'
-        HomeController.getInstance().setView("/com/example/uinew/ThisBidding.fxml");
+    public void initialize() {
+        choiceBox.getItems().addAll("Đồ điện tử", "Nghệ thuật", "Phương tiện");
+        choiceBox.getSelectionModel().selectFirst();
     }
 
+    @FXML
+    public void handleCreate(ActionEvent event) {
+        // Validate
+        String name  = txtName.getText().trim();
+        String price = txtStartPrice.getText().trim().replace(",", "");
+        LocalDate start = dateStart.getValue();
+        LocalDate end   = dateEnd.getValue();
 
-    @FXML public void backToDashboard(){
+        if (name.isEmpty()) {
+            showMsg("⚠️ Vui lòng nhập tên sản phẩm!", false); return;
+        }
+        if (price.isEmpty()) {
+            showMsg("⚠️ Vui lòng nhập giá khởi điểm!", false); return;
+        }
+        if (start == null || end == null) {
+            showMsg("⚠️ Vui lòng chọn ngày bắt đầu và kết thúc!", false); return;
+        }
+        if (!end.isAfter(start)) {
+            showMsg("⚠️ Ngày kết thúc phải sau ngày bắt đầu!", false); return;
+        }
+
+        double startPrice;
+        try {
+            startPrice = Double.parseDouble(price);
+            if (startPrice <= 0) throw new NumberFormatException();
+        } catch (NumberFormatException e) {
+            showMsg("⚠️ Giá khởi điểm không hợp lệ!", false); return;
+        }
+
+        // Map loại sản phẩm
+        String type = switch (choiceBox.getValue()) {
+            case "Đồ điện tử" -> "ELECTRONICS";
+            case "Nghệ thuật"  -> "ART";
+            case "Phương tiện" -> "VEHICLE";
+            default            -> "ELECTRONICS";
+        };
+
+        // Gửi lên server
+        SocketClient client = SessionManager.getSocketClient();
+        if (client == null || !client.isConnected()) {
+            showMsg("⚠️ Chưa kết nối server!", false); return;
+        }
+
+        JsonObject req = new JsonObject();
+        req.addProperty("action",      "CREATE_AUCTION");
+        req.addProperty("itemName",    name);
+        req.addProperty("itemType",    type);
+        req.addProperty("description", txtDescription.getText().trim());
+        req.addProperty("startPrice",  startPrice);
+        req.addProperty("startTime",   LocalDateTime.of(start, java.time.LocalTime.of(8, 0)).toString());
+        req.addProperty("endTime",     LocalDateTime.of(end,   java.time.LocalTime.of(20, 0)).toString());
+        req.addProperty("seller",      SessionManager.getCurrentUser());
+
+        client.sendRaw(gson.toJson(req));
+
+        showMsg("✅ Đã tạo phiên đấu giá: " + name, true);
+        System.out.println("[CreateBidding] Gửi tạo phiên: " + name);
+
+        // Chuyển về Dashboard sau 1.5 giây
+        new javafx.animation.Timeline(new javafx.animation.KeyFrame(
+                javafx.util.Duration.seconds(1.5),
+                e -> HomeController.getInstance().setView("/com/example/uinew/Dashboard.fxml")
+        )).play();
+    }
+
+    @FXML
+    public void backToDashboard() {
         HomeController.getInstance().setView("/com/example/uinew/Dashboard.fxml");
     }
 
-   @FXML
-    ChoiceBox<String> choiceBox;
-
-    public void initialize() {
-        choiceBox.getItems().addAll("Đồ điện tử", "Nghệ thuật", "Phương tiện");
-        choiceBox.getSelectionModel().selectFirst(); //chọn giá trị hiển thị mặc định của choicebox
-
-        choiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-
-            // oldValue : giá trị trước khi đổi
-            // newValue : giá trị mới client vừa chọn
-
-            System.out.println("Client vừa đổi từ: " + oldValue + " sang " + newValue);
-
-            //gán newValue vào một biến toàn cục để lưu trữ
-            String productType = newValue;
-
-            Product newProduct = new Product(txtName.getText(), Double.parseDouble(txtStartPrice.getText()), txtDescription.getText(), productType);//tạo sản phẩm dựa trên input
-            MainController.setSelectedProduct(newProduct);//lưu thông tin sản phẩm
-        });
-    }}
+    private void showMsg(String msg, boolean ok) {
+        lblMessage.setText(msg);
+        lblMessage.setStyle(ok
+                ? "-fx-text-fill: #2ecc71; -fx-font-size: 13px;"
+                : "-fx-text-fill: #e74c3c; -fx-font-size: 13px;");
+        lblMessage.setVisible(true);
+        lblMessage.setManaged(true);
+    }
+}
