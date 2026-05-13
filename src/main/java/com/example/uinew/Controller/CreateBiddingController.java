@@ -6,10 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -25,35 +22,52 @@ public class CreateBiddingController {
     @FXML
     Button cancel;
 
+   // @FXML
+   // Label lblError;
+
 
     @FXML
     void handleCreate(ActionEvent event) {
 
         String name = txtName.getText();
+        double startPrice = 0;
+        Boolean hasError = false;
 
-        double startPrice =
-                Double.parseDouble(txtStartPrice.getText());
+        if (txtStartPrice == null || txtStartPrice.getText().trim().isEmpty()) {
+            //lblError.isVisible();
+            System.out.println("Vui lon nhập giá tiền");
+        } else {
+            try {
+                startPrice = Double.parseDouble(txtStartPrice.getText());
+
+            } catch (NumberFormatException e) {
+                System.out.println("Lỗi: Giá tiền phải là một con số hợp lệ!");
+                hasError = true;
+            }
+        }
 
         LocalDate dateEnd = end.getValue();
-
         LocalDate dateStart = start.getValue();
-
         String description = txtDescription.getText();
-
         String productType = choiceBox.getValue();
 
-        Product newProduct = new Product(
-                name,
-                startPrice,
-                description,
-                productType
-        );
+        if (productType == null) {
+            hasError = true;
+        }
 
-        MainController.setSelectedProduct(newProduct);
+        if (!hasError) {
+            Product newProduct = new Product(
+                    name,
+                    startPrice,
+                    description,
+                    productType
+            );
+            MainController.setSelectedProduct(newProduct);
 
-        System.out.println("Tạo phiên đấu giá thành công!");
+            System.out.println("Tạo phiên đấu giá thành công!");
 
-        HomeController.getInstance().setView("/com/example/uinew/ThisBidding.fxml");
+            HomeController.getInstance().setView("/com/example/uinew/ThisBidding.fxml");
+        }
     }
 
 
