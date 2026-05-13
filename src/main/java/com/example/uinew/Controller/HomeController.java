@@ -16,6 +16,7 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
 
     @FXML protected VBox vboxSidebar;
     @FXML protected StackPane contentArea;
+    @FXML private Label loginStatusLabel;
 
     private static HomeController instance;
 
@@ -39,6 +40,7 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
         }
     }
 
+<<<<<<< HEAD
     @FXML void goToDashBoard(ActionEvent event)           { setView("/com/example/uinew/Dashboard.fxml"); }
     @FXML public void goToAccount(ActionEvent event)      { setView("/com/example/uinew/Account.fxml"); }
     @FXML public void goToNotification(ActionEvent event) { setView("/com/example/uinew/Notification.fxml"); }
@@ -46,12 +48,20 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
     @FXML public void goToManagement(ActionEvent event)   { setView("/com/example/uinew/Management.fxml"); }
     @FXML public void goToProducts(ActionEvent event)     { setView("/com/example/uinew/ProductList.fxml"); }
     @FXML public void createAuction()                     { setView("/com/example/uinew/CreateBidding.fxml"); }
+=======
+     @FXML void goToDashBoard(ActionEvent event){
+
+        setView("/com/example/uinew/Dashboard.fxml");
+        loginStatusLabel.setText("Đăng nhập thành công! Chào mừng bạn.");
+    }
+>>>>>>> 1da46c032df43a0463ac0495320f87727918527d
 
     public void onLogout(ActionEvent event) {
         try {
             SessionManager.logout();
             changeScene(event, "/com/example/uinew/LoginUI.fxml", "Đăng nhập");
             System.out.println("Đăng xuất thành công!");
+
         } catch (Exception e) {
             e.printStackTrace();
         }

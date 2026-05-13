@@ -1,5 +1,8 @@
 package com.auction.project.Client;
 
+import com.example.uinew.View.LoginUI;
+import javafx.application.Application;
+
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -43,6 +46,7 @@ public class ClientApp {
         try {
             // Bước 1: Kết nối tới server — listener thread tự khởi động
             networkClient.connect(SERVER_HOST, SERVER_PORT);
+            Application.launch(LoginUI.class, args);
             logger.info("Kết nối thành công! Listener thread đang chạy nền.");
 
             // Bước 2: Demo flow — đăng nhập, lấy danh sách, đặt giá
