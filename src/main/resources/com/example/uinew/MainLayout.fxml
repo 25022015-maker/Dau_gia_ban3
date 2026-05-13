@@ -20,7 +20,7 @@
    <top>
       <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="129.0" prefWidth="1018.0" style="-fx-background-image: url(&quot;img_5.png&quot;);" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#toggleSidebar" prefHeight="129.0" prefWidth="349.0" style="-fx-background-color: DCBFFF;" text="Bidding With Kuro" HBox.hgrow="ALWAYS">
+            <Button mnemonicParsing="false" onAction="#toggleSidebar" prefHeight="129.0" prefWidth="323.0" style="-fx-background-color: DCBFFF;" text="Bidding With Kuro" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets right="70.0" />
                </HBox.margin>
@@ -54,7 +54,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button alignment="CENTER" layoutX="373.0" layoutY="38.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="41.0" prefWidth="127.0" style="-fx-border-color: #5C2580; -fx-border-width: 3; -fx-background-color: FFFFFF; -fx-background-radius: 20; -fx-border-style: solid; -fx-border-radius: 20; -fx-border-style: dashed;" text="Sản phẩm" textFill="#dd00ff" HBox.hgrow="ALWAYS">
+            <Button alignment="CENTER" layoutX="373.0" layoutY="38.0" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="41.0" prefWidth="127.0" style="-fx-border-color: #5C2580; -fx-border-width: 3; -fx-background-color: FFFFFF; -fx-background-radius: 20; -fx-border-style: solid; -fx-border-radius: 20; -fx-border-style: dashed;" text="Sản phẩm" textFill="#dd00ff" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -68,35 +68,10 @@
                   <DropShadow blurType="ONE_PASS_BOX" />
                </effect>
             </Button>
-            <Button alignment="CENTER" layoutX="353.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="41.0" prefWidth="129.0" style="-fx-border-color: #6700AD; -fx-border-width: 3; -fx-background-color: B033FF; -fx-background-radius: 20; -fx-border-style: solid; -fx-border-radius: 20;" text="Thông báo" textFill="WHITE" HBox.hgrow="ALWAYS">
+            <Button alignment="CENTER" layoutX="353.0" layoutY="10.0" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="41.0" prefWidth="129.0" style="-fx-border-color: #6700AD; -fx-border-width: 3; -fx-background-color: B033FF; -fx-background-radius: 20; -fx-border-style: solid; -fx-border-radius: 20;" text="Thông báo" textFill="WHITE" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets right="30.0" />
                </HBox.margin>
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-               <effect>
-                  <DropShadow blurType="ONE_PASS_BOX" />
-               </effect>
-            </Button>
-            <Button alignment="CENTER" layoutX="369.0" layoutY="38.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="41.0" prefWidth="129.0" style="-fx-border-color: #5C2580; -fx-border-width: 3; -fx-background-color: FFFFFF; -fx-background-radius: 20; -fx-border-style: solid; -fx-border-radius: 20; -fx-border-style: dashed;" text="Cài đặt" textFill="#dd00ff" HBox.hgrow="ALWAYS">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-               <HBox.margin>
-                  <Insets right="30.0" />
-               </HBox.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-               <effect>
-                  <DropShadow blurType="ONE_PASS_BOX" />
-               </effect>
-            </Button>
-            <Button alignment="CENTER" layoutX="539.0" layoutY="38.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="41.0" prefWidth="129.0" style="-fx-border-color: #5C2580; -fx-border-width: 3; -fx-background-color: B033FF; -fx-background-radius: 20; -fx-border-style: solid; -fx-border-radius: 20; -fx-border-style: dashed;" text="Ngôn ngữ" textFill="WHITE" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -108,7 +83,7 @@
                </effect>
             </Button>
             <Pane prefHeight="129.0" prefWidth="109.0" HBox.hgrow="ALWAYS" />
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="181.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#createAuction" prefHeight="36.0" prefWidth="53.0" style="-fx-background-radius: 50; -fx-background-color: B033FF; -fx-border-width: 5; -fx-border-color: FFFFFF; -fx-border-radius: 50;" text="➕ " textFill="#f4d9ff" HBox.hgrow="ALWAYS">
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="181.0" layoutY="10.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#createAuction" prefHeight="36.0" prefWidth="53.0" style="-fx-background-radius: 50; -fx-background-color: B033FF; -fx-border-width: 5; -fx-border-color: FFFFFF; -fx-border-radius: 50;" text="➕ " textFill="#f4d9ff" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets right="20.0" />
                </HBox.margin>
@@ -146,14 +121,7 @@
                <font>
                   <Font name="Agbalumo Regular" size="12.0" />
                </font></Button>
-            <Button layoutX="10.0" layoutY="137.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="368.0" style="-fx-background-color: DCBFFF;" text="Quản lý">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-               <font>
-                  <Font name="Agbalumo Regular" size="12.0" />
-               </font></Button>
-            <Button layoutX="10.0" layoutY="200.0" mnemonicParsing="false" onAction="#onLogout" prefHeight="63.0" prefWidth="353.0" style="-fx-background-color: F8F2FF;" text="Đăng xuất">
+            <Button layoutX="10.0" layoutY="200.0" mnemonicParsing="false" onAction="#onLogout" prefHeight="63.0" prefWidth="353.0" style="-fx-background-color: DCBFFF;" text="Đăng xuất">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>

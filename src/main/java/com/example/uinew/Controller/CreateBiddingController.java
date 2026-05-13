@@ -75,11 +75,8 @@ public class CreateBiddingController {
             // newValue : giá trị mới client vừa chọn
 
             System.out.println("Client vừa đổi từ: " + oldValue + " sang " + newValue);
-            String productType = newValue;
+            String productType = newValue;    //gán newValue vào một biến toàn cục để lưu trữ
         });
     }
-    //gán newValue vào một biến toàn cục để lưu trữ
-
-
 
 }
