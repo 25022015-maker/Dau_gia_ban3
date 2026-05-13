@@ -12,30 +12,57 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Date;
 
-public class CreateBiddingController{
-    @FXML private TextField txtName, txtStartPrice, txtDescription, txtProductType; //thong tin san pham
-    @FXML private DatePicker dateEnd;
-    @FXML private DatePicker dateStart;
-    @FXML Button ok;
-    @FXML Button cancel;
-
+public class CreateBiddingController {
+    @FXML
+    private TextField txtName, txtStartPrice, txtDescription; //thong tin san pham
+    @FXML
+    private DatePicker end;
+    @FXML
+    private DatePicker start;
+    @FXML
+    Button cancel;
 
 
     @FXML
-    void handleCreate(ActionEvent event) { //tao san pham dau gia
+    void handleCreate(ActionEvent event) {
+
+        String name = txtName.getText();
+
+        double startPrice =
+                Double.parseDouble(txtStartPrice.getText());
+
+        LocalDate dateEnd = end.getValue();
+
+        LocalDate dateStart = start.getValue();
+
+        String description = txtDescription.getText();
+
+        String productType = choiceBox.getValue();
+
+        Product newProduct = new Product(
+                name,
+                startPrice,
+                description,
+                productType
+        );
+
+        MainController.setSelectedProduct(newProduct);
 
         System.out.println("Tạo phiên đấu giá thành công!");
-        //Chuyển sang trang chi tiết đấu giá ngay sau khi taoj'
+
         HomeController.getInstance().setView("/com/example/uinew/ThisBidding.fxml");
     }
 
 
-    @FXML public void backToDashboard(){
+    @FXML
+    public void backToDashboard() {
         HomeController.getInstance().setView("/com/example/uinew/Dashboard.fxml");
     }
 
-   @FXML
+    @FXML
     ChoiceBox<String> choiceBox;
 
     public void initialize() {
@@ -48,11 +75,11 @@ public class CreateBiddingController{
             // newValue : giá trị mới client vừa chọn
 
             System.out.println("Client vừa đổi từ: " + oldValue + " sang " + newValue);
-
-            //gán newValue vào một biến toàn cục để lưu trữ
             String productType = newValue;
-
-            Product newProduct = new Product(txtName.getText(), Double.parseDouble(txtStartPrice.getText()), txtDescription.getText(), productType);//tạo sản phẩm dựa trên input
-            MainController.setSelectedProduct(newProduct);//lưu thông tin sản phẩm
         });
-    }}
+    }
+    //gán newValue vào một biến toàn cục để lưu trữ
+
+
+
+}
