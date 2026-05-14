@@ -1,5 +1,6 @@
 package com.example.uinew.Controller;
 
+import com.example.uinew.Interface.ShowError;
 import com.example.uinew.model.Product;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,7 +9,7 @@ import javafx.scene.paint.Color;
 
 import java.time.LocalDate;
 
-public class CreateBiddingController {
+public class CreateBiddingController implements ShowError {
     @FXML
     private TextField txtName, txtStartPrice, txtDescription; //thong tin san pham
     @FXML
@@ -19,6 +20,8 @@ public class CreateBiddingController {
     private DatePicker start;
     @FXML
     Button cancel;
+
+    @FXML TextField txtMinBid;
 
    @FXML
    Label lblError;
@@ -73,7 +76,7 @@ public class CreateBiddingController {
 
         if (name.isEmpty()) {
             showError("Lỗi: Tên sản phẩm không được để trống!");
-            return;
+            hasError = true ;
         }
 
         if (!hasError) {
@@ -98,7 +101,7 @@ public class CreateBiddingController {
         HomeController.getInstance().setView("/com/example/uinew/Dashboard.fxml");
     }
 
-    private void showError(String message) {
+    public void showError(String message) {
         lblError.setText(message);
     }
 

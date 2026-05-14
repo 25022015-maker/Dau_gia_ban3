@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -32,7 +33,7 @@
                                        <image><Image url="@../../../../img_5.png" /></image>
                                        <VBox.margin><Insets left="5.0" right="5.0" top="5.0" /></VBox.margin>
                                     </ImageView>
-                                    <Label text="Tên sản phẩm" textFill="#9f33ff">
+                                    <Label fx:id="lblProductName" text="Tên sản phẩm" textFill="#9f33ff">
                                        <font><Font name="Agbalumo Regular" size="30.0" /></font>
                                        <VBox.margin><Insets left="20.0" /></VBox.margin>
                                     </Label>
@@ -44,7 +45,7 @@
                               </VBox>
                               <VBox spacing="15.0" styleClass="info-card-pink" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label text="Giá sản phẩm hiện tại:">
+                                    <Label fx:id="lblCurrentPrice" text="Giá sản phẩm hiện tại:">
                                        <font><Font size="18.0" /></font>
                                        <VBox.margin><Insets left="20.0" top="20.0" /></VBox.margin>
                                     </Label>
@@ -61,14 +62,27 @@
                                                 <TextField fx:id="txtBidAmount" promptText="Đặt giá" styleClass="bid-input">
                                                    <HBox.margin><Insets left="20.0" /></HBox.margin>
                                                 </TextField>
-                                                <Label fx:id="currentBudget" text="Tài chính hiện tại:" />
+                                                <Button mnemonicParsing="false" onAction="#handleSetBid" prefWidth="85.0" styleClass="btn-bid-now" text="Đặt" />
                                              </children>
                                           </HBox>
-                                          <Button mnemonicParsing="false" prefWidth="85.0" styleClass="btn-bid-now" text="Đặt">
-                                             <VBox.margin><Insets bottom="20.0" left="20.0" /></VBox.margin>
-                                          </Button>
+                                          <TextField fx:id="txtAutoStep" maxWidth="-Infinity" onAction="#setAutoBid" prefHeight="25.0" prefWidth="149.0" promptText="Bước nhảy tự động" styleClass="bid-input">
+                                             <VBox.margin>
+                                                <Insets left="20.0" />
+                                             </VBox.margin>
+                                             <cursor>
+                                                <Cursor fx:constant="TEXT" />
+                                             </cursor>
+                                          </TextField>
                                        </children>
                                     </VBox>
+                                    <Label fx:id="currentBudget" prefHeight="17.0" prefWidth="230.0" text="Tài chính hiện tại:">
+                                       <VBox.margin>
+                                          <Insets left="20.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
                                  </children>
                               </VBox>
                            </children>

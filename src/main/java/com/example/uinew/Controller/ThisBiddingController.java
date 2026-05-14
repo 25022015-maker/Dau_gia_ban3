@@ -1,43 +1,90 @@
 package com.example.uinew.Controller;
+import com.example.uinew.Interface.ShowError;
 import com.example.uinew.model.Product;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.util.Duration;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class ThisBiddingController extends HomeController implements Initializable {
+public class ThisBiddingController implements ShowError {
     @FXML private Label lblProductName, lblCurrentPrice, lblTimer;
-    @FXML private TextField txtBidAmount;
+    @FXML private TextField txtBidAmount; //Bid user gõ
     @FXML Label lblError;
-    double currentBudget;
-    double bid = 0;
-    @FXML
-    Button autoPlaceBid;
+    @FXML private Label currentBudget; //số tiền đã bid gần nhất
 
+
+    @FXML Button autoPlaceBid;
+    @FXML Label history;
+    @FXML TextField txtAutoStep;
+
+    private double bidAmount; //model
+    private double autoStep = 0;
     private Product currentProduct;
-    private int timeLeft = 3600; // Giả sử 1 tiếng (giây)
+    private int timeLeft = 3600; //Giả sử 1 tiếng (giây)
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // Lấy sản phẩm đang được chọn từ MainController (bạn nên lưu nó tương tự currentUser)
-        //currentProduct = MainController.getSelectedProduct();
+    public void showError(String message) {
+        lblError.setText(message);
+    }
+
+    @FXML
+    public void initialize() {
+        currentProduct = MainController.getSelectedProduct();
+        if (currentProduct != null) {
+            refreshUI();
+        }
         startTimer();
     }
 
     @FXML
-    ListView biddingHistory;
+    ListView<String> biddingHistory;
 
-    @FXML void setAutoBid (ActionEvent event){
-      bid += 200000;
+    @FXML
+    void setAutoBid (ActionEvent event){
+        try {
+            autoStep = Double.parseDouble(txtAutoStep.getText());
+            //if (autoStep =< Auction.getMinBid() -> lblError.setTxt()
+            //Lấy giá hiện tại cộng thêm bước nhảy
+            double newPrice = currentProduct.getPrice() + autoStep;
+            currentProduct.setPrice(newPrice);
+            biddingHistory.getItems().add(0, "Bạn đã đặt: " + newPrice);
+
+            refreshUI(); //Cập nhật toàn bộ Label trên màn hình
+        } catch (Exception e) {
+            showError("Bước nhảy không hợp lệ");
+        }
+    }
+    private void refreshUI() {
+        String priceText = String.format("%.0f", currentProduct.getPrice());
+        lblProductName.setText(currentProduct.getName());
+        lblCurrentPrice.setText("Giá hiện tại: " + priceText);
+        currentBudget.setText("Giá bạn vừa đặt: " + priceText);
+    }
+
+    @FXML
+    void handleSetBid(ActionEvent event){
+        try {
+            bidAmount = Double.parseDouble(txtBidAmount.getText());
+            // Kiểm tra logic: Giá mới phải cao hơn giá cũ
+            if (bidAmount <= currentProduct.getPrice()) {
+                showError("Giá phải cao hơn giá hiện tại!");
+                return;
+            }
+
+            currentProduct.setPrice(bidAmount);
+            refreshUI();// Cập nhật lại UI
+
+            // Thêm vào lịch sử
+            biddingHistory.getItems().add(0, "Bạn đã đặt: " + bidAmount);
+            lblError.setText("");
+        } catch (Exception e) {
+            showError("Số tiền nhập vào không đúng");
+        }
     }
 
     @FXML private void toggleHistory(ActionEvent event) {
@@ -62,13 +109,6 @@ public class ThisBiddingController extends HomeController implements Initializab
         timeline.play();
     }
 
-    @FXML
-    void handlePlaceBid(ActionEvent event) {
-        double bid = Double.parseDouble(txtBidAmount.getText());
-        //Gửi bid lên server thông qua Service
-        System.out.println("Đã đặt giá: " + bid);
-    }
-
     private String formatTime(int totalSeconds) { //chuan hoa thoi gian
         int h = totalSeconds / 3600;
         int m = (totalSeconds % 3600) / 60;
@@ -76,7 +116,8 @@ public class ThisBiddingController extends HomeController implements Initializab
         return String.format("%02d:%02d:%02d", h, m, s);
     }
 
-    public void BiddingHistory(ActionEvent event){
+    public void biddingHistory(ActionEvent event){
+       String historyBid = new String(history.getText());
 
     }
 }

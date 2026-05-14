@@ -66,11 +66,31 @@
                         <Label prefHeight="17.0" prefWidth="160.0" text="Giá khởi điểm">
                            <font><Font name="Agbalumo Regular" size="18.0" /></font>
                         </Label>
-                        <TextField fx:id="txtStartPrice" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="67.0" prefWidth="219.0" promptText="Thấp nhất" style="-fx-background-radius: 20;">
-                           <VBox.margin><Insets left="20.0" /></VBox.margin>
-                           <padding><Insets left="20.0" /></padding>
-                           <cursor><Cursor fx:constant="TEXT" /></cursor>
-                        </TextField>
+                        <HBox prefHeight="63.0" prefWidth="1103.0" spacing="20.0">
+                           <children>
+                              <TextField fx:id="txtStartPrice" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="67.0" prefWidth="219.0" promptText="Thấp nhất" style="-fx-background-radius: 20;">
+                                 <padding>
+                                    <Insets left="20.0" />
+                                 </padding>
+                                 <cursor>
+                                    <Cursor fx:constant="TEXT" />
+                                 </cursor>
+                              </TextField>
+                              <Label prefHeight="40.0" prefWidth="117.0" text="Bước nhảy tối thiểu">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txtMinBid" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="40.0" prefWidth="239.0" promptText="Nhập bước nhảy tói thiểu cho bidder" style="-fx-background-radius: 20;">
+                                 <padding>
+                                    <Insets left="20.0" />
+                                 </padding>
+                                 <cursor>
+                                    <Cursor fx:constant="TEXT" />
+                                 </cursor>
+                              </TextField>
+                           </children>
+                        </HBox>
                         <Label prefHeight="75.0" text="Thông tin đấu giá ">
                            <font><Font name="Agbalumo Regular" size="25.0" /></font>
                            <textFill>
@@ -82,7 +102,7 @@
                               </LinearGradient>
                            </textFill>
                         </Label>
-                        <Label text="Ngày bắt đầu"><font><Font size="18.0" /></font></Label>
+                        <Label text="Ngày bắt đầu"><font><Font name="System Bold" size="18.0" /></font></Label>
                         <HBox spacing="20.0">
                            <children>
                               <DatePicker fx:id="start" style="-fx-background-radius: 10;" />
@@ -92,7 +112,7 @@
                               <Spinner fx:id="minStart" prefHeight="25.0" prefWidth="63.0" />
                            </children>
                         </HBox>
-                        <Label text="Ngày kết thúc"><font><Font size="18.0" /></font></Label>
+                        <Label text="Ngày kết thúc"><font><Font name="System Bold" size="18.0" /></font></Label>
                         <HBox spacing="20.0">
                            <children>
                               <DatePicker fx:id="end" style="-fx-background-radius: 10;" />
