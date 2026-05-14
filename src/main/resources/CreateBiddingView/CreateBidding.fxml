@@ -87,9 +87,9 @@
                            <children>
                               <DatePicker fx:id="start" style="-fx-background-radius: 10;" />
                               <Label alignment="CENTER" prefHeight="25.0" prefWidth="79.0" style="-fx-background-color: DCBFFF; -fx-background-radius: 20;" text="Từ" />
-                              <Spinner prefHeight="25.0" prefWidth="63.0" style="-fx-background-color: DCBFFF;" />
+                              <Spinner fx:id="hourStart" prefHeight="25.0" prefWidth="63.0" style="-fx-background-color: DCBFFF;" />
                               <Label text=":"><font><Font name="System Bold" size="12.0" /></font></Label>
-                              <Spinner prefHeight="25.0" prefWidth="63.0" />
+                              <Spinner fx:id="minStart" prefHeight="25.0" prefWidth="63.0" />
                            </children>
                         </HBox>
                         <Label text="Ngày kết thúc"><font><Font size="18.0" /></font></Label>
@@ -97,31 +97,42 @@
                            <children>
                               <DatePicker fx:id="end" style="-fx-background-radius: 10;" />
                               <Label alignment="CENTER" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: DCBFFF; -fx-background-radius: 20;" text="Đến" />
-                              <Spinner prefHeight="25.0" prefWidth="62.0" />
+                              <Spinner fx:id="hourEnd" prefHeight="25.0" prefWidth="62.0" />
                               <Label text=":"><font><Font name="System Bold" size="12.0" /></font></Label>
-                              <Spinner prefHeight="25.0" prefWidth="63.0" />
+                              <Spinner fx:id="minEnd" prefHeight="25.0" prefWidth="63.0" />
                            </children>
                         </HBox>
                         <BorderPane prefHeight="48.0">
-                           <left>
-                              <Button mnemonicParsing="false" onAction="#handleCreate" style="-fx-background-color: DCBFFF; -fx-background-radius: 20; -fx-border-color: #962EFF; -fx-border-width: 5; -fx-border-style: dashed; -fx-border-radius: 20;" styleClass="btn-ok" text="Ok" BorderPane.alignment="CENTER">
-                                 <font><Font name="System Bold" size="12.0" /></font>
-                                 <graphic>
-                                    <ImageView fitHeight="29.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
-                                       <image><Image url="@/img_4.png" /></image>
-                                    </ImageView>
-                                 </graphic>
-                                 <cursor><Cursor fx:constant="HAND" /></cursor>
+                           <center>
+                              <HBox prefHeight="100.0" prefWidth="200.0" spacing="30.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#handleCreate" style="-fx-background-color: DCBFFF; -fx-background-radius: 20; -fx-border-color: #962EFF; -fx-border-width: 5; -fx-border-style: dashed; -fx-border-radius: 20;" styleClass="btn-ok" text="Ok">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                       <graphic>
+                                          <ImageView fitHeight="29.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@/img_4.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                    <Label fx:id="lblError" prefHeight="48.0" prefWidth="613.0" />
+                                 </children>
                                  <BorderPane.margin>
                                     <Insets bottom="20.0" />
                                  </BorderPane.margin>
-                              </Button>
-                           </left>
+                              </HBox>
+                           </center>
                         </BorderPane>
                      </children>
                      <HBox.margin><Insets left="50.0" /></HBox.margin>
                   </VBox>
-                  <Button mnemonicParsing="false" onAction="#backToDashboard" style="-fx-background-color: DCBFFF; -fx-background-radius: 20; -fx-border-color: #962EFF; -fx-border-radius: 20; -fx-border-width: 5; -fx-border-style: dashed;" styleClass="btn-cancel" text="Hủy">
+                  <Button fx:id="cancel" mnemonicParsing="false" onAction="#backToDashboard" style="-fx-background-color: DCBFFF; -fx-background-radius: 20; -fx-border-color: #962EFF; -fx-border-radius: 20; -fx-border-width: 5; -fx-border-style: dashed;" styleClass="btn-cancel" text="Hủy">
                      <font><Font name="System Bold" size="12.0" /></font>
                      <graphic>
                         <ImageView fitHeight="29.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
