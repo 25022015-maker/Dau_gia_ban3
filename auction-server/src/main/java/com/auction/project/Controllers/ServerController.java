@@ -121,6 +121,7 @@ public class ServerController {
         try {
             auction.placeBid(bidder, request.getBidAmount());
             auctionDao.saveAuction(auction);
+            auctionDao.saveBidTransaction(auctionId, request.getBidderId(), request.getBidAmount()); // Lưu lịch sử bid
 
             logger.info("BID SUCCESS | Phiên " + auctionId + " | Giá mới: " + auction.getCurrentPrice());
             return new Response(ResponseType.BID_SUCCESS, "Đặt giá thành công!", AuctionDTO.from(auction));
@@ -128,40 +129,6 @@ public class ServerController {
         } catch (InvalidBidException | AuctionClosedException e) {
             logger.info("BID FAILED | " + e.getMessage());
             return new Response(ResponseType.BID_FAILURE, e.getMessage());
-        }
-    }
-
-    // ── Tạo phiên mới ─────────────────────────────────────────────────────────
-
-    public Response handleCreateAuction(JsonObject json, ClientHandler handler) {
-        try {
-            String itemName   = json.get("itemName").getAsString();
-            String itemType   = json.has("itemType") ? json.get("itemType").getAsString() : "ELECTRONICS";
-            double startPrice = json.get("startPrice").getAsDouble();
-            String startTimeStr = json.has("startTime") ? json.get("startTime").getAsString() : null;
-            String endTimeStr   = json.has("endTime")   ? json.get("endTime").getAsString()   : null;
-
-            com.auction.project.Entities.Product item = ItemFactory.createItem(itemType, itemName, startPrice, "Unknown");
-
-            LocalDateTime startTime = startTimeStr != null ? LocalDateTime.parse(startTimeStr) : LocalDateTime.now();
-            LocalDateTime endTime = endTimeStr != null ? LocalDateTime.parse(endTimeStr) : LocalDateTime.now().plusHours(2);
-
-            Auction auction = new Auction(startTime, endTime, startPrice, item);
-            auction.setStatus(AuctionStatus.RUNNING);
-
-            auctionManager.addAuction(auction);
-            auctionDao.saveAuction(auction);
-
-            // FIX 1.3: Dùng CopyOnWriteArrayList
-            observerRegistry.put(auction.getId(), new CopyOnWriteArrayList<>());
-
-            logger.info("CREATE_AUCTION | " + itemName + " | ID: " + auction.getId());
-
-            return new Response(ResponseType.BID_SUCCESS, "Tạo phiên đấu giá thành công!", AuctionDTO.from(auction));
-
-        } catch (Exception e) {
-            logger.warning("Lỗi tạo phiên: " + e.getMessage());
-            return Response.error("Không thể tạo phiên: " + e.getMessage());
         }
     }
 
@@ -231,5 +198,78 @@ public class ServerController {
             }
             return false;
         });
+    }
+    // Thêm hàm xử lý đăng ký
+    public Response handleRegister(JsonObject json, ClientHandler handler) {
+        String username = json.get("username").getAsString();
+        String password = json.get("password").getAsString();
+        String email = json.has("email") ? json.get("email").getAsString() : username + "@auction.com";
+        String role = json.has("role") ? json.get("role").getAsString() : "BIDDER";
+
+        boolean success = auctionDao.registerUser(username, password, email, role);
+        if (success) {
+            logger.info("REGISTER SUCCESS | " + username);
+            return new Response(ResponseType.LOGIN_SUCCESS, "Đăng ký thành công!", username);
+        } else {
+            return Response.error("Tên đăng nhập đã tồn tại hoặc lỗi hệ thống.");
+        }
+    }
+
+    // Sửa lại hàm handleCreateAuction
+    public Response handleCreateAuction(JsonObject json, ClientHandler handler) {
+        try {
+            String itemName   = json.get("itemName").getAsString();
+            String itemType   = json.has("itemType") ? json.get("itemType").getAsString() : "ELECTRONICS";
+            double startPrice = json.get("startPrice").getAsDouble();
+            String startTimeStr = json.has("startTime") ? json.get("startTime").getAsString() : null;
+            String endTimeStr   = json.has("endTime")   ? json.get("endTime").getAsString()   : null;
+
+            com.auction.project.Entities.Product item = ItemFactory.createItem(itemType, itemName, startPrice, "Unknown");
+            if (json.has("description")) item.setDescription(json.get("description").getAsString());
+
+            LocalDateTime startTime = startTimeStr != null ? LocalDateTime.parse(startTimeStr) : LocalDateTime.now();
+            LocalDateTime endTime = endTimeStr != null ? LocalDateTime.parse(endTimeStr) : LocalDateTime.now().plusHours(2);
+
+            Auction auction = new Auction(startTime, endTime, startPrice, item);
+            auction.setStatus(AuctionStatus.RUNNING);
+
+            auctionDao.insertAuction(auction); // Insert vào DB trước để lấy ID
+            auctionManager.addAuction(auction); // Đưa vào Manager
+            observerRegistry.put(auction.getId(), new CopyOnWriteArrayList<>());
+
+            logger.info("CREATE_AUCTION | " + itemName + " | ID: " + auction.getId());
+            return new Response(ResponseType.BID_SUCCESS, "Tạo phiên đấu giá thành công!", AuctionDTO.from(auction));
+
+        } catch (Exception e) {
+            logger.warning("Lỗi tạo phiên: " + e.getMessage());
+            return Response.error("Không thể tạo phiên: " + e.getMessage());
+        }
+    }
+    public Response handleSignup(JsonObject json, ClientHandler handler) {
+        try {
+            String username = json.get("username").getAsString();
+            String password = json.get("password").getAsString();
+            // Nếu client không gửi email/role thì dùng giá trị mặc định
+            String email = json.has("email") ? json.get("email").getAsString() : username + "@gmail.com";
+            String role = json.has("role") ? json.get("role").getAsString() : "BIDDER";
+
+            // Gọi DAO để lưu vào Database
+            boolean success = auctionDao.insertUser(username, password, email, role);
+
+            if (success) {
+                logger.info("SIGNUP SUCCESS | " + username + " | Client: " + handler.getClientId());
+                return new Response(
+                        ResponseType.LOGIN_SUCCESS,
+                        "Đăng ký thành công! Chào mừng " + username,
+                        username
+                );
+            } else {
+                logger.warning("SIGNUP FAILURE | " + username + " (Có thể trùng tên)");
+                return new Response(ResponseType.LOGIN_FAILURE, "Đăng ký thất bại. Tên đăng nhập có thể đã tồn tại.");
+            }
+        } catch (Exception e) {
+            logger.warning("SIGNUP ERROR | Dữ liệu không hợp lệ: " + e.getMessage());
+            return Response.error("Dữ liệu đăng ký không hợp lệ.");
+        }
     }
 }

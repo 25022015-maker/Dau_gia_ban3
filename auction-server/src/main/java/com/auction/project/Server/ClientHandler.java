@@ -127,6 +127,14 @@ public class ClientHandler implements Runnable {
                     sendResponse(response);
                     break;
 
+                case "SIGNUP":
+                    response = controller.handleSignup(json, this);
+                    if (response.getType() == ResponseType.LOGIN_SUCCESS) {
+                        this.loggedInUser = json.get("username").getAsString();
+                    }
+                    sendResponse(response);
+                    break;
+
                 case "GET_AUCTIONS":
                     // Không cần body — chỉ cần action
                     response = controller.handleGetAuctionList();

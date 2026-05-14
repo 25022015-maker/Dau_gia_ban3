@@ -51,6 +51,7 @@ public class ClientHandler implements NetworkClient.ResponseListener {
         }
 
         switch (response.getType()) {
+
             case LOGIN_SUCCESS:
                 onLoginSuccess(response);
                 break;
