@@ -1,6 +1,6 @@
 package com.auction.project.Client;
 
-import com.example.uinew.View.LoginUI;
+import com.auction.project.UI.View.LoginUI;
 import javafx.application.Application;
 
 import java.util.Scanner;

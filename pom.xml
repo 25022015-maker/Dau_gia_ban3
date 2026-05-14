@@ -17,6 +17,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.3.0</version>
+        </dependency>
         <!-- Gson — JSON serialization -->
         <dependency>
             <groupId>com.google.code.gson</groupId>

@@ -15,6 +15,15 @@ abstract class Entity implements Serializable {
         this.id = idCounter++;
         this.createdAt = LocalDateTime.now();
     }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
     public int getId() { return id; }
 }

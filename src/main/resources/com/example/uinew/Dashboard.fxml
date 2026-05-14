@@ -16,7 +16,7 @@
       style="-fx-background-color: #1a1a2e;"
       xmlns="http://javafx.com/javafx/25"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.example.uinew.Controller.DashboardController">
+      fx:controller="com.auction.project.UI.Controller.DashboardController">
 
    <children>
 
