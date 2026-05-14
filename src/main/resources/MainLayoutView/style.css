@@ -1,0 +1,52 @@
+/* Nút Thông báo */
+.btn-purple {
+    -fx-background-color: #B033FF;
+    -fx-background-radius: 20;
+    -fx-border-color: #6700AD;
+    -fx-border-width: 3;
+    -fx-border-radius: 20;
+    -fx-text-fill: white;
+}
+.btn-purple:hover {
+    -fx-background-color: #D170FF;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+.btn-purple:pressed {
+    -fx-background-color: #6700AD;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
+/* Nút Sản phẩm (Viền đứt) */
+.btn-outline {
+    -fx-background-color: white;
+    -fx-border-color: #5C2580;
+    -fx-border-width: 3;
+    -fx-border-style: dashed;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-text-fill: #dd00ff;
+}
+.btn-outline:hover { -fx-background-color: #F8F2FF; -fx-scale-x: 1.05; }
+.btn-outline:pressed { -fx-background-color: #EBD9FF; -fx-scale-x: 0.95; }
+
+/* Nút Dấu cộng */
+.btn-plus {
+    -fx-background-color: #B033FF;
+    -fx-background-radius: 50;
+    -fx-border-color: white;
+    -fx-border-width: 3;
+    -fx-border-radius: 50;
+}
+.btn-plus:hover { -fx-background-color: #D170FF; -fx-scale-x: 1.2; }
+.btn-plus:pressed { -fx-background-color: #6700AD; -fx-scale-x: 0.9; }
+
+/* Sidebar Items */
+.btn-sidebar-item-light { -fx-background-color: #F8F2FF; -fx-text-fill: #5C2580; -fx-font-family: "Agbalumo Regular"; }
+.btn-sidebar-item-dark { -fx-background-color: #DCBFFF; -fx-text-fill: #5C2580; -fx-font-family: "Agbalumo Regular"; }
+
+.btn-sidebar-item-light:hover, .btn-sidebar-item-dark:hover {
+    -fx-background-color: #B033FF;
+    -fx-text-fill: white;
+}

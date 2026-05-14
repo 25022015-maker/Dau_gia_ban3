@@ -38,14 +38,14 @@ public class SignupController extends MainController implements OnEnter, ToLogin
 
     @FXML
     public void goToLogin(ActionEvent event){
-        changeScene(event, "/com/example/uinew/LoginUI.fxml", "Đăng nhập");
+        changeScene(event, "/com/example/uinew/LoginView/LoginUI.fxml", "Đăng nhập");
     }
 
     @FXML
     public void goToMainLayout(ActionEvent event) {
         try {
             Parent root = FXMLLoader.load(
-                    getClass().getResource("/com/example/uinew/MainLayout.fxml")
+                    getClass().getResource("/MainLayoutView/MainLayout.fxml")
             );
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -62,11 +62,13 @@ public class SignupController extends MainController implements OnEnter, ToLogin
         String username = txtUsername.getText();
         String password = txtPassword.getText();
         User newUSer = new User(username, password);
-
-
+        if (username.trim().isEmpty() && password.trim().isEmpty()) {
+            lblMessage.setVisible(true);
+            System.out.println("Vui lòng nhập tên");}
+        else{
             // 4. Chuyển thẳng vào Dashboard (không bắt user login lại lần nữa)
         goToMainLayout(event);
-    }
+    }}
 
 }
 

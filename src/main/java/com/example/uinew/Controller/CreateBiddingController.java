@@ -1,16 +1,11 @@
 package com.example.uinew.Controller;
 
-import com.example.uinew.Interface.ViewLoader;
 import com.example.uinew.model.Product;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 
-import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Date;
 
 public class CreateBiddingController {
     @FXML
@@ -66,7 +61,7 @@ public class CreateBiddingController {
 
             System.out.println("Tạo phiên đấu giá thành công!");
 
-            HomeController.getInstance().setView("/com/example/uinew/ThisBidding.fxml");
+            HomeController.getInstance().setView("/com/example/uinew/CurrentBiddingView/ThisBidding.fxml");
         }
     }
 

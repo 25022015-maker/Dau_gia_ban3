@@ -1,18 +1,14 @@
 package com.example.uinew.Controller;
 
-import com.almasb.fxgl.core.View;
 import com.example.uinew.Interface.OnLogout;
-import com.example.uinew.Interface.SceneLoader;
 import com.example.uinew.Interface.ViewLoader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-import javax.management.ValueExp;
 import java.io.IOException;
 
 //Dashboard controller de load view dong, chua sidebar va topbar
@@ -62,7 +58,7 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
             // 2. Nếu có Socket đang chạy (cho việc đấu giá), hãy đóng nó
             // SocketManager.getInstance().disconnect();
 
-            changeScene(event, "/com/example/uinew/LoginUI.fxml", "Đăng nhập");
+            changeScene(event, "/com/example/uinew/LoginView/LoginUI.fxml", "Đăng nhập");
             System.out.println("Đăng xuất thành công!");
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,7 +69,7 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
 
     @FXML
     public void createAuction(){
-        setView("/com/example/uinew/CreateBidding.fxml");
+        setView("/CreateBiddingView/CreateBidding.fxml");
     }
 
     //đổi nội dung vùng giữa
