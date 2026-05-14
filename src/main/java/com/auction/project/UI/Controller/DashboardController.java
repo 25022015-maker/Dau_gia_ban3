@@ -2,13 +2,9 @@ package com.auction.project.UI.Controller;
 
 import com.auction.project.Client.NetworkClient;
 import com.auction.project.Client.SocketClient;
-import com.auction.project.DAO.DatabaseConnection;
-import com.auction.project.Entities.Auction;
-import com.auction.project.Entities.Product;
 import com.auction.project.Packets.GsonFactory;
 import com.auction.project.Packets.Response;
 import com.auction.project.Packets.ResponseType;
-import com.auction.project.UI.Interface.ViewCleanup;
 import com.auction.project.UI.service.SessionManager;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -30,15 +26,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class DashboardController implements ViewCleanup {
+public class DashboardController {
 
     @FXML private Label lblWelcome;
     @FXML private Label statLive;
@@ -51,8 +45,6 @@ public class DashboardController implements ViewCleanup {
     @FXML private Button btnLive;
     @FXML private Button btnUpcoming;
 
-    private NetworkClient.ResponseListener serverListener;
-    private volatile boolean isDestroyed = false;
     private final Gson gson = GsonFactory.create();
     private final Map<String, AuctionCard> cardMap = new HashMap<>();
     private List<Map<String, Object>> allAuctions = new ArrayList<>();
@@ -103,25 +95,21 @@ public class DashboardController implements ViewCleanup {
     // ── Đăng ký nhận realtime ─────────────────────────────────────────────────
 
     private void registerBidUpdateListener() {
+        // Retry đăng ký listener cho đến khi có socketClient
         new Thread(() -> {
             for (int i = 0; i < 10; i++) {
-                if (isDestroyed) return; // Nếu đã chuyển trang thì hủy thread
-
                 NetworkClient client = SessionManager.getNetworkClient();
                 if (client != null) {
-                    serverListener = response -> {
+                    client.addResponseListener(response -> {
                         if (response == null) return;
                         if (response.getType() == ResponseType.AUCTION_LIST) {
+                            System.out.println("[Dashboard] Nhận AUCTION_LIST!");
                             Platform.runLater(() -> buildCards(response));
                         } else if (response.getType() == ResponseType.BID_UPDATE) {
                             Platform.runLater(() -> updateCard(response));
                         }
-                    };
-
-                    if (!isDestroyed) {
-                        client.addResponseListener(serverListener);
-                        System.out.println("[Dashboard] Đã đăng ký listener.");
-                    }
+                    });
+                    System.out.println("[Dashboard] Đã đăng ký listener.");
                     return;
                 }
                 try { Thread.sleep(300); } catch (InterruptedException ignored) {}
@@ -187,7 +175,6 @@ public class DashboardController implements ViewCleanup {
                     getClass().getResource("/com/example/uinew/ThisBidding.fxml"));
             Node node = loader.load();
             ThisBiddingController ctrl = loader.getController();
-            node.setUserData(ctrl);
             ctrl.setAuction(auctionId, itemName);
             HomeController home = HomeController.getInstance();
             if (home != null) home.setView(node);
@@ -302,10 +289,13 @@ public class DashboardController implements ViewCleanup {
     }
 
     private String getItemName(Map<String, Object> auction) {
-        if (auction.containsKey("itemName") && auction.get("itemName") != null) {
-            return String.valueOf(auction.get("itemName"));
-        }
-        return "Sản phẩm đấu giá"; // Fallback nếu bị null
+        try {
+            Map<String, Object> item = gson.fromJson(
+                    gson.toJson(auction.get("item")),
+                    new TypeToken<Map<String, Object>>(){}.getType());
+            if (item != null && item.get("name") != null) return String.valueOf(item.get("name"));
+        } catch (Exception ignored) {}
+        return "Sản phẩm đấu giá";
     }
 
     // ── Inner class: AuctionCard ──────────────────────────────────────────────
@@ -404,14 +394,5 @@ public class DashboardController implements ViewCleanup {
 
         private String formatPrice(double price) { return String.format("%,.0f ₫", price); }
         private String formatTime(int s) { return String.format("%02d:%02d:%02d", s/3600, (s%3600)/60, s%60); }
-    }
-    @Override
-    public void cleanup() {
-        isDestroyed = true;
-        NetworkClient client = SessionManager.getNetworkClient();
-        if (client != null && serverListener != null) {
-            client.removeResponseListener(serverListener);
-            System.out.println("[Dashboard] Đã gỡ Listener.");
-        }
     }
 }

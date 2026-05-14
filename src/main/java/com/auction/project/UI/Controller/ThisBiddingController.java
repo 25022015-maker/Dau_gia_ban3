@@ -4,7 +4,6 @@ import com.auction.project.Client.NetworkClient;
 import com.auction.project.Packets.GsonFactory;
 import com.auction.project.Packets.Response;
 import com.auction.project.Packets.ResponseType;
-import com.auction.project.UI.Interface.ViewCleanup;
 import com.auction.project.UI.service.SessionManager;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -33,8 +32,7 @@ import java.util.ResourceBundle;
  * Không extends HomeController vì đây là view con load vào contentArea.
  * Kết nối socket qua SessionManager.getNetworkClient().
  */
-public class ThisBiddingController implements Initializable, ViewCleanup {
-    private NetworkClient.ResponseListener serverListener;
+public class ThisBiddingController implements Initializable {
 
     // ── FXML bindings ─────────────────────────────────────────────────────────
     @FXML private Label lblProductName;
@@ -44,7 +42,6 @@ public class ThisBiddingController implements Initializable, ViewCleanup {
     @FXML private TextField txtBidAmount;
     @FXML private Button btnPlaceBid;
     @FXML private ListView<String> bidHistoryList;
-
 
     // ── Data ──────────────────────────────────────────────────────────────────
     private final Gson gson = GsonFactory.create();
@@ -138,27 +135,28 @@ public class ThisBiddingController implements Initializable, ViewCleanup {
         NetworkClient client = SessionManager.getNetworkClient();
         if (client == null) return;
 
-        // Gán lambda vào biến serverListener thay vì truyền trực tiếp
-        serverListener = response -> {
+        client.addResponseListener(response -> {
             if (response == null) return;
 
             if (response.getType() == ResponseType.BID_UPDATE) {
                 Platform.runLater(() -> handleBidUpdate(response));
+
             } else if (response.getType() == ResponseType.BID_SUCCESS) {
                 Platform.runLater(() -> {
                     System.out.println("[Bid] Đặt giá thành công!");
-                    bidHistoryList.getItems().add(0, "✅ Bạn vừa đặt giá thành công");
+                    // Thêm vào lịch sử
+                    bidHistoryList.getItems().add(0,
+                            "✅ Bạn vừa đặt giá thành công");
                 });
+
             } else if (response.getType() == ResponseType.BID_FAILURE) {
                 Platform.runLater(() -> {
                     System.out.println("[Bid] Thất bại: " + response.getMessage());
-                    bidHistoryList.getItems().add(0, "❌ " + response.getMessage());
+                    bidHistoryList.getItems().add(0,
+                            "❌ " + response.getMessage());
                 });
             }
-        };
-
-        // Đăng ký listener
-        client.addResponseListener(serverListener);
+        });
     }
 
     /**
@@ -249,16 +247,5 @@ public class ThisBiddingController implements Initializable, ViewCleanup {
         int m = (totalSeconds % 3600) / 60;
         int s = totalSeconds % 60;
         return String.format("%02d:%02d:%02d", h, m, s);
-    }
-    @Override
-    public void cleanup() {
-        NetworkClient client = SessionManager.getNetworkClient();
-        if (client != null && serverListener != null) {
-            client.removeResponseListener(serverListener); // GỠ LISTENER!
-            System.out.println("[ThisBidding] Đã gỡ Listener, giải phóng bộ nhớ.");
-        }
-        if (timer != null) {
-            timer.stop(); // Dừng luôn đồng hồ đếm ngược
-        }
     }
 }

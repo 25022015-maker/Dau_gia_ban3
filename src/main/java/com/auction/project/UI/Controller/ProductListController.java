@@ -1,9 +1,9 @@
 package com.auction.project.UI.Controller;
 
 import com.auction.project.Client.NetworkClient;
+import com.auction.project.Client.SocketClient;
 import com.auction.project.Packets.GsonFactory;
 import com.auction.project.Packets.ResponseType;
-import com.auction.project.UI.Interface.ViewCleanup;
 import com.auction.project.UI.service.SessionManager;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ProductListController implements ViewCleanup {
+public class ProductListController {
 
     @FXML private VBox productList;
     @FXML private TextField searchField;
@@ -38,9 +38,6 @@ public class ProductListController implements ViewCleanup {
     private final Gson gson = GsonFactory.create();
     private List<Map<String, Object>> allProducts = new ArrayList<>();
     private String currentSort = "price_asc";
-
-    // Biến lưu Listener để gỡ khi chuyển trang
-    private NetworkClient.ResponseListener serverListener;
 
     @FXML
     public void initialize() {
@@ -54,8 +51,7 @@ public class ProductListController implements ViewCleanup {
             return;
         }
 
-        // Gán lambda vào biến
-        serverListener = response -> {
+        client.addResponseListener(response -> {
             if (response != null && response.getType() == ResponseType.AUCTION_LIST) {
                 Platform.runLater(() -> {
                     try {
@@ -72,10 +68,7 @@ public class ProductListController implements ViewCleanup {
                     }
                 });
             }
-        };
-
-        // Đăng ký listener
-        client.addResponseListener(serverListener);
+        });
 
         JsonObject req = new JsonObject();
         req.addProperty("action", "GET_AUCTIONS");
@@ -103,6 +96,7 @@ public class ProductListController implements ViewCleanup {
                 ? ((Number) product.get("currentPrice")).doubleValue() : 0;
         String bidder = String.valueOf(product.getOrDefault("leadingBidder", "Chưa có"));
 
+        // Image placeholder
         VBox img = new VBox();
         img.setPrefSize(70, 70);
         img.setStyle("-fx-background-color: #2d1b4e; -fx-background-radius: 8;");
@@ -111,6 +105,7 @@ public class ProductListController implements ViewCleanup {
         img.setAlignment(Pos.CENTER);
         img.getChildren().add(imgLabel);
 
+        // Info
         Label lblName = new Label(name);
         lblName.setStyle("-fx-text-fill: #f8f0ff; -fx-font-size: 15px; -fx-font-weight: bold;");
 
@@ -123,6 +118,7 @@ public class ProductListController implements ViewCleanup {
         VBox info = new VBox(6, lblName, lblBidder, lblStatus);
         HBox.setHgrow(info, Priority.ALWAYS);
 
+        // Price + button
         Label lblPrice = new Label(String.format("%,.0f ₫", price));
         lblPrice.setStyle("-fx-text-fill: #f1c40f; -fx-font-size: 18px; -fx-font-weight: bold;");
 
@@ -154,10 +150,6 @@ public class ProductListController implements ViewCleanup {
                     getClass().getResource("/com/example/uinew/ThisBidding.fxml"));
             Node node = loader.load();
             ThisBiddingController ctrl = loader.getController();
-
-            // QUAN TRỌNG: Lưu controller vào node để dọn dẹp sau này
-            node.setUserData(ctrl);
-
             ctrl.setAuction(auctionId, itemName);
             HomeController home = HomeController.getInstance();
             if (home != null) home.setView(node);
@@ -166,13 +158,15 @@ public class ProductListController implements ViewCleanup {
         }
     }
 
+    // ── Search & Sort ─────────────────────────────────────────────────────────
+
     @FXML
     public void handleSearch() {
         String kw = searchField.getText().toLowerCase().trim();
         List<Map<String, Object>> filtered = kw.isEmpty() ? allProducts :
                 allProducts.stream()
-                .filter(p -> String.valueOf(p.getOrDefault("itemName","")).toLowerCase().contains(kw))
-                .collect(Collectors.toList());
+                        .filter(p -> String.valueOf(p.getOrDefault("itemName","")).toLowerCase().contains(kw))
+                        .collect(Collectors.toList());
         renderProducts(filtered);
     }
 
@@ -197,6 +191,7 @@ public class ProductListController implements ViewCleanup {
 
     @FXML
     public void sortByTime(ActionEvent e) {
+        // Giữ thứ tự server trả về (đã sort theo endTime)
         renderProducts(allProducts);
     }
 
@@ -206,15 +201,5 @@ public class ProductListController implements ViewCleanup {
         lbl.setStyle("-fx-text-fill: #7f8c9a; -fx-font-size: 14px;");
         productList.getChildren().add(lbl);
         if (lblCount != null) lblCount.setText("0 sản phẩm");
-    }
-
-    // ── Dọn dẹp Listener khi rời khỏi trang ──────────────────────────────────
-    @Override
-    public void cleanup() {
-        NetworkClient client = SessionManager.getNetworkClient();
-        if (client != null && serverListener != null) {
-            client.removeResponseListener(serverListener);
-            System.out.println("[ProductList] Đã gỡ Listener.");
-        }
     }
 }

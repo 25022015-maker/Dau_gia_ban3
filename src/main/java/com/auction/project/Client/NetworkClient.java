@@ -5,6 +5,7 @@ import com.auction.project.Packets.BidRequest;
 import com.auction.project.Packets.LoginRequest;
 import com.auction.project.Packets.Response;
 import com.auction.project.Packets.ResponseType;
+import com.auction.project.Packets.GsonFactory;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -38,7 +39,7 @@ import java.util.logging.Logger;
 public class NetworkClient {
 
     private static final Logger logger = Logger.getLogger(NetworkClient.class.getName());
-    private static final Gson gson = new Gson();
+    private static final Gson gson = GsonFactory.create();
 
     // ── Connection ────────────────────────────────────────────────────────────
     private Socket socket;

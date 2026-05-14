@@ -1,9 +1,9 @@
 package com.auction.project.UI.Controller;
 
 import com.auction.project.Client.NetworkClient;
+import com.auction.project.Client.SocketClient;
 import com.auction.project.Packets.GsonFactory;
 import com.auction.project.Packets.ResponseType;
-import com.auction.project.UI.Interface.ViewCleanup;
 import com.auction.project.UI.service.SessionManager;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ManagementController implements ViewCleanup {
+public class ManagementController {
 
     @FXML private VBox createForm;
     @FXML private VBox auctionList;
@@ -38,13 +38,12 @@ public class ManagementController implements ViewCleanup {
     private final Gson gson = GsonFactory.create();
     private List<Map<String, Object>> auctions = new ArrayList<>();
 
-    // Biến lưu Listener
-    private NetworkClient.ResponseListener serverListener;
-
     @FXML
     public void initialize() {
         loadAuctions();
     }
+
+    // ── Load danh sách phiên ──────────────────────────────────────────────────
 
     private void loadAuctions() {
         NetworkClient client = SessionManager.getNetworkClient();
@@ -53,8 +52,7 @@ public class ManagementController implements ViewCleanup {
             return;
         }
 
-        // Gán lambda vào biến
-        serverListener = response -> {
+        client.addResponseListener(response -> {
             if (response != null && response.getType() == ResponseType.AUCTION_LIST) {
                 Platform.runLater(() -> {
                     try {
@@ -68,10 +66,7 @@ public class ManagementController implements ViewCleanup {
                     }
                 });
             }
-        };
-
-        // Đăng ký listener
-        client.addResponseListener(serverListener);
+        });
 
         JsonObject req = new JsonObject();
         req.addProperty("action", "GET_AUCTIONS");
@@ -101,6 +96,7 @@ public class ManagementController implements ViewCleanup {
         String status   = String.valueOf(auction.getOrDefault("status", "OPEN"));
         String bidder   = String.valueOf(auction.getOrDefault("leadingBidder", "—"));
 
+        // Badge
         String badgeColor = switch (status) {
             case "RUNNING"  -> "#2ecc71";
             case "FINISHED" -> "#e74c3c";
@@ -130,6 +126,7 @@ public class ManagementController implements ViewCleanup {
         Label lblStatus = new Label(badgeText);
         lblStatus.setStyle("-fx-text-fill: " + badgeColor + "; -fx-font-size: 12px; -fx-pref-width: 130;");
 
+        // Nút hành động (chỉ Admin/Seller mới thấy ý nghĩa)
         Button btnCancel = new Button("Hủy");
         btnCancel.setStyle("-fx-background-color: #c0392b; -fx-text-fill: white;" +
                 "-fx-background-radius: 4; -fx-cursor: hand; -fx-padding: 4 10;");
@@ -153,6 +150,7 @@ public class ManagementController implements ViewCleanup {
     private void handleCancel(String auctionId, Button btn) {
         btn.setDisable(true);
         btn.setText("Đã hủy");
+        // TODO: gửi CANCEL_AUCTION lên server
         System.out.println("[Management] Hủy phiên: " + auctionId);
     }
 
@@ -163,6 +161,8 @@ public class ManagementController implements ViewCleanup {
         if (statRunning != null)  statRunning.setText(String.valueOf(running));
         if (statFinished != null) statFinished.setText(String.valueOf(finished));
     }
+
+    // ── Create form ───────────────────────────────────────────────────────────
 
     @FXML
     public void showCreateForm(ActionEvent event) {
@@ -194,6 +194,7 @@ public class ManagementController implements ViewCleanup {
             int duration      = Integer.parseInt(hours);
             if (startPrice <= 0 || duration <= 0) throw new NumberFormatException();
 
+            // TODO: gửi CREATE_AUCTION lên server
             System.out.println("[Management] Tạo phiên: " + name + " | " + startPrice + " | " + duration + "h");
             showCreateMsg("✅ Đã tạo phiên đấu giá: " + name, true);
             txtItemName.clear(); txtStartPrice.clear(); txtDuration.clear();
@@ -209,15 +210,5 @@ public class ManagementController implements ViewCleanup {
                 : "-fx-text-fill: #e74c3c; -fx-font-size: 13px;");
         lblCreateMsg.setVisible(true);
         lblCreateMsg.setManaged(true);
-    }
-
-    // ── Dọn dẹp Listener khi rời khỏi trang ──────────────────────────────────
-    @Override
-    public void cleanup() {
-        NetworkClient client = SessionManager.getNetworkClient();
-        if (client != null && serverListener != null) {
-            client.removeResponseListener(serverListener);
-            System.out.println("[Management] Đã gỡ Listener.");
-        }
     }
 }
