@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.auction.project</groupId>
+        <artifactId>Dau_gia_ban3</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>auction-client</artifactId>
+
+    <dependencies>
+        <!-- Import module common vào client -->
+        <dependency>
+            <groupId>com.auction.project</groupId>
+            <artifactId>auction-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- JavaFX -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>21.0.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>21.0.6</version>
+        </dependency>
+    </dependencies>
+
+    <!-- Giữ lại plugin JavaFX ở đây để chạy Client -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <configuration>
+                    <mainClass>com.auction.project.Client.ClientApp</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

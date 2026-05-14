@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.auction.project</groupId>
+        <artifactId>Dau_gia_ban3</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>auction-server</artifactId>
+
+    <dependencies>
+        <!-- Import module common vào server -->
+        <dependency>
+            <groupId>com.auction.project</groupId>
+            <artifactId>auction-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Database -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.3.0</version>
+        </dependency>
+    </dependencies>
+</project>
