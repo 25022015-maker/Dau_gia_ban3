@@ -1,5 +1,6 @@
 package com.auction.project.Client;
 
+import java.util.concurrent.CopyOnWriteArrayList;
 import com.auction.project.Packets.BidRequest;
 import com.auction.project.Packets.LoginRequest;
 import com.auction.project.Packets.Response;
@@ -69,8 +70,7 @@ public class NetworkClient {
     }
 
     /** Danh sách listener đang đăng ký nhận thông báo */
-    private final List<ResponseListener> listeners = new ArrayList<>();
-
+    private final List<ResponseListener> listeners = new CopyOnWriteArrayList<>();
     // ── Connect / Disconnect ──────────────────────────────────────────────────
 
     /**
@@ -163,9 +163,8 @@ public class NetworkClient {
      * @param response response cần dispatch
      */
     private void notifyListeners(Response response) {
-        // Dùng copy để tránh ConcurrentModificationException nếu listener tự hủy
-        List<ResponseListener> copy = new ArrayList<>(listeners);
-        for (ResponseListener listener : copy) {
+        // Không cần copy thủ công nữa, CopyOnWriteArrayList đã tự lo việc này
+        for (ResponseListener listener : listeners) {
             try {
                 listener.onResponse(response);
             } catch (Exception e) {
@@ -183,9 +182,8 @@ public class NetworkClient {
      * @param listener listener muốn đăng ký
      */
     public void addResponseListener(ResponseListener listener) {
-        if (!listeners.contains(listener)) {
-            listeners.add(listener);
-        }
+        // addIfAbsent là hàm có sẵn của CopyOnWriteArrayList giúp tránh trùng lặp
+        ((CopyOnWriteArrayList<ResponseListener>) listeners).addIfAbsent(listener);
     }
 
     /**
