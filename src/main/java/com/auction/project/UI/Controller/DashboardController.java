@@ -201,13 +201,29 @@ public class DashboardController {
                     gson.toJson(response.getData()),
                     new TypeToken<Map<String, Object>>(){}.getType());
             if (data == null) return;
-            String auctionId = String.valueOf(((Number) data.get("auctionId")).intValue());
+
+            // Lấy ID an toàn: Hỗ trợ cả 2 định dạng trả về từ Server ("auctionId" hoặc "id")
+            Object idObj = data.get("auctionId");
+            if (idObj == null) {
+                idObj = data.get("id");
+            }
+
+            // Nếu vẫn null thì bỏ qua để tránh crash
+            if (idObj == null) {
+                System.out.println("[Dashboard] Không tìm thấy ID trong gói tin BID_UPDATE");
+                return;
+            }
+
+            String auctionId = String.valueOf(((Number) idObj).intValue());
             double newPrice  = getDouble(data, "currentPrice");
             String bidder    = String.valueOf(data.get("leadingBidder"));
+
             AuctionCard card = cardMap.get(auctionId);
             if (card != null) card.updatePrice(newPrice, bidder);
+
         } catch (Exception e) {
             System.out.println("[Dashboard] Lỗi updateCard: " + e.getMessage());
+            e.printStackTrace(); // In ra chi tiết lỗi nếu có để dễ debug
         }
     }
 

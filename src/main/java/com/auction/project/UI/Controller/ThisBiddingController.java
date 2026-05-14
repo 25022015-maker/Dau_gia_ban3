@@ -1,7 +1,6 @@
 package com.auction.project.UI.Controller;
 
 import com.auction.project.Client.NetworkClient;
-import com.auction.project.Client.SocketClient;
 import com.auction.project.Packets.GsonFactory;
 import com.auction.project.Packets.Response;
 import com.auction.project.Packets.ResponseType;
@@ -51,7 +50,7 @@ public class ThisBiddingController implements Initializable {
 
     /**
      * auctionId của phiên đang xem.
-     * Được set từ màn hình trước qua setAuctionId() hoặc lấy từ selectedProduct.
+     * Được set từ màn hình trước qua setAuction()
      */
     private String currentAuctionId;
 
@@ -62,12 +61,8 @@ public class ThisBiddingController implements Initializable {
         startTimer();
         registerBidUpdateListener();
 
-        // Lấy auctionId từ màn hình trước (nếu có)
-        // TODO: set currentAuctionId từ màn hình Dashboard khi click vào card
-        // Tạm thời dùng auctionId đầu tiên để test
-        currentAuctionId = "1001"; // ← thay bằng ID thật khi có
-
-        subscribeAuction(currentAuctionId);
+        // Đã xóa phần hardcode currentAuctionId = "1001"
+        // Việc gán ID và subscribe sẽ được gọi từ DashboardController thông qua hàm setAuction()
     }
 
     // ── Đặt giá ───────────────────────────────────────────────────────────────
@@ -98,6 +93,11 @@ public class ThisBiddingController implements Initializable {
         String bidderId = SessionManager.getCurrentUser();
         if (bidderId == null) {
             System.out.println("[Bid] Chưa đăng nhập!");
+            return;
+        }
+
+        if (currentAuctionId == null) {
+            System.out.println("[Bid] Lỗi: Không xác định được ID phiên đấu giá!");
             return;
         }
 
@@ -236,6 +236,7 @@ public class ThisBiddingController implements Initializable {
         if (lblProductName != null) {
             lblProductName.setText(productName);
         }
+        // Gọi lệnh subscribe lên Server với đúng ID của sản phẩm này
         subscribeAuction(auctionId);
     }
 
