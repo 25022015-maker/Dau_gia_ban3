@@ -14,4 +14,5 @@ public class User { //thu nghiem
     public void setPassword(String password){
        this.password = password;
     }
+    public String getName(){return username;}
 }

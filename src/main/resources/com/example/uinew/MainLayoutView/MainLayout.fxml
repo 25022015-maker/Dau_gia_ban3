@@ -34,7 +34,7 @@
                <cursor><Cursor fx:constant="HAND" /></cursor>
                <graphic>
                   <ImageView fitHeight="60.0" fitWidth="78.0" pickOnBounds="true" preserveRatio="true">
-                     <image><Image url="@../img_4.png" /></image>
+                     <image><Image url="@../../../../img_4.png" /></image>
                   </ImageView>
                </graphic>
             </Button>

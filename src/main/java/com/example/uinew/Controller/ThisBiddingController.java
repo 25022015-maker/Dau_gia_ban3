@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 public class ThisBiddingController implements ShowError {
@@ -34,6 +35,8 @@ public class ThisBiddingController implements ShowError {
 
     @FXML
     public void initialize() {
+        lblError.setText("");
+
         currentProduct = MainController.getSelectedProduct();
         if (currentProduct != null) {
             refreshUI();
@@ -52,7 +55,7 @@ public class ThisBiddingController implements ShowError {
             //Lấy giá hiện tại cộng thêm bước nhảy
             double newPrice = currentProduct.getPrice() + autoStep;
             currentProduct.setPrice(newPrice);
-            biddingHistory.getItems().add(0, "Bạn đã đặt: " + newPrice);
+            biddingHistory.getItems().add(0, MainController.getCurrentUser().getName()+ " đã đặt: " + newPrice);
 
             refreshUI(); //Cập nhật toàn bộ Label trên màn hình
         } catch (Exception e) {
@@ -80,7 +83,7 @@ public class ThisBiddingController implements ShowError {
             refreshUI();// Cập nhật lại UI
 
             // Thêm vào lịch sử
-            biddingHistory.getItems().add(0, "Bạn đã đặt: " + bidAmount);
+            biddingHistory.getItems().add(0, MainController.getCurrentUser().getName()+ " đã đặt: " + bidAmount);
             lblError.setText("");
         } catch (Exception e) {
             showError("Số tiền nhập vào không đúng");
@@ -114,11 +117,6 @@ public class ThisBiddingController implements ShowError {
         int m = (totalSeconds % 3600) / 60;
         int s = totalSeconds % 60;
         return String.format("%02d:%02d:%02d", h, m, s);
-    }
-
-    public void biddingHistory(ActionEvent event){
-       String historyBid = new String(history.getText());
-
     }
 }
 

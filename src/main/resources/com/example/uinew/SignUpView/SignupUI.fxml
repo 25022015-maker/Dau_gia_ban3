@@ -13,7 +13,7 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="448.0" prefWidth="623.0" style="-fx-background-image: url(&quot;img_1.png&quot;); -fx-background-size: cover;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uinew.Controller.SignupController">
+<StackPane stylesheets="@style.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="448.0" prefWidth="623.0" style="-fx-background-image: url(&quot;img_1.png&quot;); -fx-background-size: cover;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uinew.Controller.SignupController">
    <children>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="458.0" prefWidth="623.0" spacing="20.0" style="-fx-background-color: FFC8BD; -fx-background-radius: 20; -fx-background-color: rgba(0, 0, 0, 0.3);">
          <children>

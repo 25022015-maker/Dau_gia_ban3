@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.Label;
 
 import javax.management.ValueExp;
 import java.io.IOException;
@@ -60,12 +61,11 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
     public void onLogout(ActionEvent event) {
         try {
             // 1. Xóa thông tin người dùng hiện tại trong hệ thống
-           //MainController.setCurrentUser(null);
-
+           MainController.setCurrentUser(null);
             // 2. Nếu có Socket đang chạy (cho việc đấu giá), hãy đóng nó
             // SocketManager.getInstance().disconnect();
 
-            changeScene(event, "/com/example/uinew/LoginUI.fxml", "Đăng nhập");
+            changeScene(event, "/com/example/uinew/LoginView/LoginUI.fxml", "Đăng nhập");
             System.out.println("Đăng xuất thành công!");
 
         } catch (Exception e) {
@@ -77,7 +77,7 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
 
     @FXML
     public void createAuction(){
-        setView("/com/example/uinew/CreateBidding.fxml");
+        setView("/com/example/uinew/CreateBiddingView/CreateBidding.fxml");
     }
 
     //đổi nội dung vùng giữa

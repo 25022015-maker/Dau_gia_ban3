@@ -50,7 +50,7 @@ public class LoginController extends MainController implements OnEnter, ToSignUp
 
     @FXML
     public void goToSignUp(ActionEvent event) {
-        changeScene(event, "/com/example/uinew/SignupUI.fxml", "Đăng ký");
+        changeScene(event, "/com/example/uinew/SignUpView/SignupUI.fxml", "Đăng ký");
     }
 
     @FXML
@@ -123,7 +123,7 @@ public class LoginController extends MainController implements OnEnter, ToSignUp
     public void goToMainLayout(ActionEvent event) {
         try {
             Parent root = FXMLLoader.load(
-                    getClass().getResource("/com/example/uinew/MainLayout.fxml"));
+                    getClass().getResource("/com/example/uinew/MainLayoutView/MainLayout.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Dashboard");

@@ -45,7 +45,7 @@ public class SignupController extends MainController implements OnEnter, ToLogin
     public void goToMainLayout(ActionEvent event) {
         try {
             Parent root = FXMLLoader.load(
-                    getClass().getResource("/MainLayoutView/MainLayout.fxml")
+                    getClass().getResource("/com/example/uinew/MainLayoutView/MainLayout.fxml")
             );
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));

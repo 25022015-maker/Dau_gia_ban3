@@ -26,6 +26,14 @@ public class CreateBiddingController implements ShowError {
    @FXML
    Label lblError;
 
+    @FXML
+    public void backToDashboard() {
+        HomeController.getInstance().setView("/com/example/uinew/Dashboard.fxml");
+    }
+
+    public void showError(String message) {
+        lblError.setText(message);
+    }
 
     @FXML
     void handleCreate(ActionEvent event) {
@@ -95,15 +103,6 @@ public class CreateBiddingController implements ShowError {
         }
     }
 
-
-    @FXML
-    public void backToDashboard() {
-        HomeController.getInstance().setView("/com/example/uinew/Dashboard.fxml");
-    }
-
-    public void showError(String message) {
-        lblError.setText(message);
-    }
 
     @FXML
     ChoiceBox<String> choiceBox;
