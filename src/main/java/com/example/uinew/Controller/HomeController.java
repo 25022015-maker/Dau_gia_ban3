@@ -20,7 +20,7 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
 
     @FXML protected VBox vboxSidebar;
     @FXML protected StackPane contentArea;
-    @FXML private Label loginStatusLabel;
+
 
     private static HomeController instance;
 
@@ -51,11 +51,10 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
         }
     }
 
-     @FXML void goToDashBoard(ActionEvent event){
+     @FXML void goToDashBoard(ActionEvent event) {
 
-        setView("/com/example/uinew/Dashboard.fxml");
-        loginStatusLabel.setText("Đăng nhập thành công! Chào mừng bạn.");
-    }
+         setView("/com/example/uinew/Dashboard.fxml");
+     }
 
     public void onLogout(ActionEvent event) {
         try {
