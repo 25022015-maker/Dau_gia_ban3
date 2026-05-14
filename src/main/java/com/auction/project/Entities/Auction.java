@@ -23,8 +23,6 @@ public class Auction extends Entity implements Subject, Serializable {
     private transient List<Observer> observers = new ArrayList<>();
     private List<BidTransaction> transactions = new ArrayList<>();
 
-    private final transient ReentrantLock lock = new ReentrantLock();
-
     public Auction(LocalDateTime start, LocalDateTime end, double startPrice, Product item) {
         super();
         this.startTime = start;
@@ -36,9 +34,7 @@ public class Auction extends Entity implements Subject, Serializable {
 
     public void placeBid(Bidder bidder, double amount)
             throws InvalidBidException, AuctionClosedException {
-
-        lock.lock();
-        try {
+        synchronized (this) {
             checkAndUpdateStatus();
 
             if (this.status != AuctionStatus.RUNNING) {
@@ -54,15 +50,12 @@ public class Auction extends Entity implements Subject, Serializable {
             BidTransaction bt = new BidTransaction(bidder, amount);
             transactions.add(bt);
 
-            //(Anti-sniping)
+            // (Anti-sniping)
             if (LocalDateTime.now().isAfter(endTime.minusMinutes(1))) {
                 this.endTime = this.endTime.plusMinutes(5);
             }
-            notifyObservers();
-
-        } finally {
-            lock.unlock();
         }
+        notifyObservers();
     }
 
     //Logic chuyển trạng thái tự động
@@ -78,10 +71,19 @@ public class Auction extends Entity implements Subject, Serializable {
     @Override
     public void notifyObservers() {
         if (observers == null) return;
+
+        // Lấy thông tin giá và người thắng một cách an toàn
+        double priceToSend;
+        String bidderToSend;
+        synchronized (this) {
+            priceToSend = this.currentPrice;
+            bidderToSend = transactions.isEmpty() ? "None" :
+                    transactions.get(transactions.size() - 1).getBidder().getUsername();
+        }
+
+        // Gửi cho các client
         for (Observer o : observers) {
-            String bidderName = transactions.isEmpty() ? "None" :
-                    transactions.get(transactions.size()-1).getBidder().username;
-            o.update(this.id, this.currentPrice, bidderName);
+            o.update(this.id, priceToSend, bidderToSend);
         }
     }
 

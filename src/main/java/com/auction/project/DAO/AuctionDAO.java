@@ -26,10 +26,10 @@ public class AuctionDAO {
 
             if (rs.next()) {
                 String storedPassword = rs.getString("password");
-                return storedPassword.equals(password);
+                return storedPassword != null && storedPassword.equals(password);
             }
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "Database error during login", e);
+            logger.log(Level.SEVERE, "Lỗi Database khi đăng nhập: ", e);
         }
         return false;
     }
@@ -47,7 +47,7 @@ public class AuctionDAO {
                 return (Bidder) UserFactory.createUser("BIDDER", username, email);
             }
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "Error finding bidder", e);
+            logger.log(Level.SEVERE, "Lỗi khi tìm kiếm Bidder: ", e);
         }
         return null;
     }
@@ -63,6 +63,7 @@ public class AuctionDAO {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
+                // 1. Khởi tạo Item
                 Product item = ItemFactory.createItem(
                         rs.getString("type"),
                         rs.getString("name"),
@@ -70,19 +71,34 @@ public class AuctionDAO {
                         rs.getString("extra_info")
                 );
 
+                // 2. Xử lý an toàn thời gian (tránh NullPointerException nếu DB bị null)
+                Timestamp startTs = rs.getTimestamp("start_time");
+                Timestamp endTs = rs.getTimestamp("end_time");
+                LocalDateTime startTime = startTs != null ? startTs.toLocalDateTime() : LocalDateTime.now();
+                LocalDateTime endTime = endTs != null ? endTs.toLocalDateTime() : LocalDateTime.now().plusDays(1);
+
+                // 3. Khởi tạo Auction
                 Auction auction = new Auction(
-                        rs.getTimestamp("start_time").toLocalDateTime(),
-                        rs.getTimestamp("end_time").toLocalDateTime(),
+                        startTime,
+                        endTime,
                         rs.getDouble("current_price"),
                         item
                 );
-                auction.setStatus(AuctionStatus.valueOf(rs.getString("status")));
-                // Note: You might need a setter for ID in Entity.java to map the DB ID back to the object
+
+                // 4. Set trạng thái
+                String statusStr = rs.getString("status");
+                if (statusStr != null) {
+                    auction.setStatus(AuctionStatus.valueOf(statusStr));
+                }
+
+                // 5. QUAN TRỌNG: Gán ID thực tế từ Database vào Object
+                // Nếu không có dòng này, ID sẽ tự sinh (1000, 1001...) gây lỗi khi Update
+                auction.setId(rs.getInt("id"));
 
                 auctions.add(auction);
             }
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "Error loading auctions", e);
+            logger.log(Level.SEVERE, "Lỗi khi tải danh sách phiên đấu giá: ", e);
         }
         return auctions;
     }
@@ -94,15 +110,23 @@ public class AuctionDAO {
 
             stmt.setDouble(1, auction.getCurrentPrice());
             stmt.setString(2, auction.getStatus().name());
-            stmt.setTimestamp(3, Timestamp.valueOf(auction.getEndTime()));
+
+            if (auction.getEndTime() != null) {
+                stmt.setTimestamp(3, Timestamp.valueOf(auction.getEndTime()));
+            } else {
+                stmt.setNull(3, Types.TIMESTAMP);
+            }
+
             stmt.setInt(4, auction.getId());
 
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
-                logger.info("DAO: Updated auction " + auction.getId() + " in database.");
+                logger.info("DAO: Đã cập nhật thành công phiên đấu giá #" + auction.getId() + " vào Database.");
+            } else {
+                logger.warning("DAO: Không tìm thấy phiên đấu giá #" + auction.getId() + " để cập nhật!");
             }
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "Error saving auction", e);
+            logger.log(Level.SEVERE, "Lỗi khi lưu phiên đấu giá: ", e);
         }
     }
 }
