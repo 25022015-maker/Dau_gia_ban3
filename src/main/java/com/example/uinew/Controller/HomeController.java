@@ -1,15 +1,18 @@
 package com.example.uinew.Controller;
 
+
 import com.example.uinew.Interface.OnLogout;
+import com.example.uinew.Interface.SceneLoader;
 import com.example.uinew.Interface.ViewLoader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Label;
 
+import javax.management.ValueExp;
 import java.io.IOException;
 
 //Dashboard controller de load view dong, chua sidebar va topbar
@@ -17,6 +20,7 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
 
     @FXML protected VBox vboxSidebar;
     @FXML protected StackPane contentArea;
+    @FXML private Label loginStatusLabel;
 
     private static HomeController instance;
 
@@ -48,7 +52,9 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
     }
 
      @FXML void goToDashBoard(ActionEvent event){
+
         setView("/com/example/uinew/Dashboard.fxml");
+        loginStatusLabel.setText("Đăng nhập thành công! Chào mừng bạn.");
     }
 
     public void onLogout(ActionEvent event) {
@@ -59,8 +65,9 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
             // 2. Nếu có Socket đang chạy (cho việc đấu giá), hãy đóng nó
             // SocketManager.getInstance().disconnect();
 
-            changeScene(event, "/com/example/uinew/LoginView/LoginUI.fxml", "Đăng nhập");
+            changeScene(event, "/com/example/uinew/LoginUI.fxml", "Đăng nhập");
             System.out.println("Đăng xuất thành công!");
+
         } catch (Exception e) {
             e.printStackTrace();
             // Hiển thị thông báo lỗi nếu không chuyển được scene
@@ -70,7 +77,7 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
 
     @FXML
     public void createAuction(){
-        setView("/CreateBiddingView/CreateBidding.fxml");
+        setView("/com/example/uinew/CreateBidding.fxml");
     }
 
     //đổi nội dung vùng giữa

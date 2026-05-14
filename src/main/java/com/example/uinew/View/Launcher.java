@@ -4,6 +4,6 @@ import javafx.application.Application;
 
 public class Launcher {
     public static void main(String[] args) {
-        Application.launch(SignupUI.class, args);
+        Application.launch(LoginUI.class, args); // ← đổi SignupUI thành LoginUI
     }
 }
