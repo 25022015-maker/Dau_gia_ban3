@@ -2,6 +2,7 @@ package com.auction.project.UI.Controller;
 
 import com.auction.project.UI.Interface.OnLogout;
 import com.auction.project.UI.Interface.ViewLoader;
+import com.auction.project.UI.Interface.ViewCleanup;
 import com.auction.project.UI.service.SessionManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,13 +31,8 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
 
     @FXML
     private void toggleSidebar(ActionEvent event) {
-        if (vboxSidebar.isVisible()) {
-            vboxSidebar.setVisible(false);
-            vboxSidebar.setManaged(false);
-        } else {
-            vboxSidebar.setVisible(true);
-            vboxSidebar.setManaged(true);
-        }
+        vboxSidebar.setVisible(!vboxSidebar.isVisible());
+        vboxSidebar.setManaged(vboxSidebar.isVisible());
     }
 
     @FXML void goToDashBoard(ActionEvent event)           { setView("/com/example/uinew/Dashboard.fxml"); }
@@ -49,6 +45,7 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
 
     public void onLogout(ActionEvent event) {
         try {
+            cleanupCurrentView(); // Dọn dẹp màn hình hiện tại trước khi thoát
             SessionManager.logout();
             changeScene(event, "/com/example/uinew/LoginUI.fxml", "Đăng nhập");
             System.out.println("Đăng xuất thành công!");
@@ -60,14 +57,28 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
     @Override
     public void setView(String fxmlFile) {
         try {
-            Node node = FXMLLoader.load(getClass().getResource(fxmlFile));
-            contentArea.getChildren().setAll(node);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+            Node node = loader.load();
+            // Lưu controller vào Node để sau này lấy ra gọi cleanup()
+            node.setUserData(loader.getController());
+            setView(node);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void setView(Node node) {
-        contentArea.getChildren().setAll(node);
+        cleanupCurrentView(); // Gọi dọn dẹp màn hình cũ
+        contentArea.getChildren().setAll(node); // Hiển thị màn hình mới
+    }
+
+    private void cleanupCurrentView() {
+        if (!contentArea.getChildren().isEmpty()) {
+            Node oldNode = contentArea.getChildren().get(0);
+            Object oldController = oldNode.getUserData();
+            if (oldController instanceof ViewCleanup) {
+                ((ViewCleanup) oldController).cleanup();
+            }
+        }
     }
 }

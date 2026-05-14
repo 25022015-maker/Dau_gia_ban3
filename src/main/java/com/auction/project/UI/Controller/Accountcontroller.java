@@ -1,9 +1,9 @@
 package com.auction.project.UI.Controller;
 
 import com.auction.project.Client.NetworkClient;
-import com.auction.project.Client.SocketClient;
 import com.auction.project.Packets.GsonFactory;
 import com.auction.project.Packets.ResponseType;
+import com.auction.project.UI.Interface.ViewCleanup;
 import com.auction.project.UI.service.SessionManager;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -16,33 +16,24 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.layout.VBox;
 
-/**
- * Controller cho màn hình Tài khoản — không extends HomeController
- * vì là view con load vào contentArea của MainLayout.
- */
-public class Accountcontroller {
+public class Accountcontroller implements ViewCleanup {
 
-    // ── Tab buttons ───────────────────────────────────────────────────────────
     @FXML private Button btnTabInfo;
     @FXML private Button btnTabHistory;
     @FXML private Button btnTabPassword;
 
-    // ── Tab panels ────────────────────────────────────────────────────────────
     @FXML private VBox tabInfo;
     @FXML private VBox tabHistory;
     @FXML private VBox tabPassword;
 
-    // ── Tab Info ──────────────────────────────────────────────────────────────
     @FXML private Label lblAvatar;
     @FXML private Label lblUsername;
     @FXML private Label lblRole;
     @FXML private Label lblEmail;
     @FXML private Label lblId;
 
-    // ── Tab History ───────────────────────────────────────────────────────────
     @FXML private ListView<String> historyList;
 
-    // ── Tab Password ──────────────────────────────────────────────────────────
     @FXML private PasswordField txtCurrentPass;
     @FXML private PasswordField txtNewPass;
     @FXML private PasswordField txtConfirmPass;
@@ -50,7 +41,8 @@ public class Accountcontroller {
 
     private final Gson gson = GsonFactory.create();
 
-    // ── Initialize ────────────────────────────────────────────────────────────
+    // Biến lưu Listener
+    private NetworkClient.ResponseListener serverListener;
 
     @FXML
     public void initialize() {
@@ -58,19 +50,15 @@ public class Accountcontroller {
         loadBidHistory();
     }
 
-    // ── Load thông tin user ───────────────────────────────────────────────────
-
     private void loadUserInfo() {
         String username = SessionManager.getCurrentUser();
         if (username == null) return;
 
-        // Hiện avatar chữ cái đầu
         lblAvatar.setText(username.substring(0, 1).toUpperCase());
         lblUsername.setText(username);
         lblEmail.setText(username + "@auction.com");
         lblId.setText("#" + Math.abs(username.hashCode() % 10000));
 
-        // Role dựa theo username (demo — production lấy từ server)
         if (username.equals("admin")) {
             lblRole.setText("Admin");
             lblRole.setStyle("-fx-text-fill: #e74c3c; -fx-background-color: #2d1b4e; " +
@@ -84,8 +72,6 @@ public class Accountcontroller {
         }
     }
 
-    // ── Load lịch sử đấu giá ─────────────────────────────────────────────────
-
     private void loadBidHistory() {
         historyList.getItems().clear();
 
@@ -95,25 +81,25 @@ public class Accountcontroller {
             return;
         }
 
-        // Gửi yêu cầu lấy lịch sử
         JsonObject req = new JsonObject();
         req.addProperty("action", "GET_BID_HISTORY");
         req.addProperty("username", SessionManager.getCurrentUser());
         client.sendRequest(gson.toJson(req));
 
-        // Đăng ký nhận response
-        client.addResponseListener(response -> {
+        // Gán lambda vào biến
+        serverListener = response -> {
             if (response == null) return;
             if (response.getType() == ResponseType.AUCTION_LIST) {
-                // Tái sử dụng AUCTION_LIST để hiện lịch sử tạm thời
                 Platform.runLater(() -> {
                     historyList.getItems().clear();
                     historyList.getItems().add("📋 Dữ liệu lịch sử sẽ hiện ở đây");
                 });
             }
-        });
+        };
 
-        // Hiện dữ liệu mẫu tạm thời
+        // Đăng ký listener
+        client.addResponseListener(serverListener);
+
         historyList.getItems().addAll(
                 "🔴 Laptop Dell XPS 15 — Đặt giá: 6,000,000 ₫ — Đang diễn ra",
                 "✅ Rolex Submariner — Đặt giá: 55,000,000 ₫ — Đã thắng",
@@ -121,22 +107,14 @@ public class Accountcontroller {
         );
     }
 
-    // ── Tab switching ─────────────────────────────────────────────────────────
+    @FXML
+    public void showTabInfo(ActionEvent event) { setActiveTab(0); }
 
     @FXML
-    public void showTabInfo(ActionEvent event) {
-        setActiveTab(0);
-    }
+    public void showTabHistory(ActionEvent event) { setActiveTab(1); }
 
     @FXML
-    public void showTabHistory(ActionEvent event) {
-        setActiveTab(1);
-    }
-
-    @FXML
-    public void showTabPassword(ActionEvent event) {
-        setActiveTab(2);
-    }
+    public void showTabPassword(ActionEvent event) { setActiveTab(2); }
 
     private void setActiveTab(int index) {
         String active = "-fx-background-color: #6c3483; -fx-text-fill: white; " +
@@ -153,15 +131,12 @@ public class Accountcontroller {
         tabPassword.setVisible(index == 2); tabPassword.setManaged(index == 2);
     }
 
-    // ── Đổi mật khẩu ─────────────────────────────────────────────────────────
-
     @FXML
     public void handleChangePassword(ActionEvent event) {
         String current = txtCurrentPass.getText();
         String newPass  = txtNewPass.getText();
         String confirm  = txtConfirmPass.getText();
 
-        // Validate
         if (current.isEmpty() || newPass.isEmpty() || confirm.isEmpty()) {
             showPassMessage("⚠️ Vui lòng điền đầy đủ thông tin.", false);
             return;
@@ -175,8 +150,6 @@ public class Accountcontroller {
             return;
         }
 
-        // TODO: gửi lên server để xác thực mật khẩu cũ và cập nhật
-        // Hiện tại demo local
         showPassMessage("✅ Đổi mật khẩu thành công!", true);
         txtCurrentPass.clear();
         txtNewPass.clear();
@@ -190,5 +163,15 @@ public class Accountcontroller {
                 : "-fx-text-fill: #e74c3c; -fx-font-size: 13px;");
         lblPassMessage.setVisible(true);
         lblPassMessage.setManaged(true);
+    }
+
+    // ── Dọn dẹp Listener khi rời khỏi trang ──────────────────────────────────
+    @Override
+    public void cleanup() {
+        NetworkClient client = SessionManager.getNetworkClient();
+        if (client != null && serverListener != null) {
+            client.removeResponseListener(serverListener);
+            System.out.println("[Account] Đã gỡ Listener.");
+        }
     }
 }

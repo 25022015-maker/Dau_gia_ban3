@@ -149,10 +149,9 @@ public class ServerController {
             Auction auction = new Auction(startTime, endTime, startPrice, item);
             auction.setStatus(AuctionStatus.RUNNING);
 
-            auctionManager.addAuction(auction);
-            auctionDao.saveAuction(auction);
+            auctionDao.createNewAuction(auction);
 
-            // FIX 1.3: Dùng CopyOnWriteArrayList
+            auctionManager.addAuction(auction);
             observerRegistry.put(auction.getId(), new CopyOnWriteArrayList<>());
 
             logger.info("CREATE_AUCTION | " + itemName + " | ID: " + auction.getId());
