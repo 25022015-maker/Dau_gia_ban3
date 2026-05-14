@@ -196,7 +196,7 @@ public class ServerController {
             String endTimeStr   = json.has("endTime")   ? json.get("endTime").getAsString()   : null;
 
             // Tạo Item
-            com.auction.project.Entities.Item item = ItemFactory.createItem(itemType, itemName, startPrice, "Unknown");
+            com.auction.project.Entities.Product item = ItemFactory.createItem(itemType, itemName, startPrice, "Unknown");
 
             // Parse thời gian
             LocalDateTime startTime = startTimeStr != null

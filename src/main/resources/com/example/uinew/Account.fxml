@@ -15,7 +15,7 @@
       style="-fx-background-color: #1a1a2e;"
       xmlns="http://javafx.com/javafx/25"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.example.uinew.Controller.Accountcontroller">
+      fx:controller="com.auction.project.UI.Controller.Accountcontroller">
 
     <!-- ── Tab buttons ──────────────────────────────────────────────────── -->
     <HBox spacing="0" style="-fx-background-color: #16213e; -fx-border-color: #2d2d4e; -fx-border-width: 0 0 1 0;">

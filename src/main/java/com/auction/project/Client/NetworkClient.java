@@ -265,7 +265,7 @@ public class NetworkClient {
      *
      * @param jsonMessage chuỗi JSON cần gửi
      */
-    private synchronized void sendRequest(String jsonMessage) {
+    public synchronized void sendRequest(String jsonMessage) {
         if (!connected || writer == null) {
             logger.warning("Chưa kết nối tới server — không thể gửi: " + jsonMessage);
             return;

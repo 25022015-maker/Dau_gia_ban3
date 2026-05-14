@@ -18,14 +18,14 @@ public class Auction extends Entity implements Subject, Serializable {
     private LocalDateTime endTime;
     private double currentPrice;
     private AuctionStatus status;
-    private Item item;
+    private Product item;
 
     private transient List<Observer> observers = new ArrayList<>();
     private List<BidTransaction> transactions = new ArrayList<>();
 
     private final transient ReentrantLock lock = new ReentrantLock();
 
-    public Auction(LocalDateTime start, LocalDateTime end, double startPrice, Item item) {
+    public Auction(LocalDateTime start, LocalDateTime end, double startPrice, Product item) {
         super();
         this.startTime = start;
         this.endTime = end;
@@ -108,7 +108,7 @@ public class Auction extends Entity implements Subject, Serializable {
         return item != null ? item.getName() : "Unknown";
     }
 
-    public Item getItem() { return item; }
+    public Product getItem() { return item; }
 
     public java.time.LocalDateTime getStartTime() { return startTime; }
 
