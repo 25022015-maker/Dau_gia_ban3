@@ -13,7 +13,11 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
+<<<<<<<< HEAD:auction-client/src/main/resources/com/example/uinew/SignupUI.fxml
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="635.0" prefWidth="893.0" style="-fx-background-image: url(&quot;img_1.png&quot;); -fx-background-size: cover;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.auction.project.UI.Controller.SignupController">
+========
+<StackPane stylesheets="@style.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="448.0" prefWidth="623.0" style="-fx-background-image: url(&quot;img_1.png&quot;); -fx-background-size: cover;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.uinew.Controller.SignupController">
+>>>>>>>> feature-ui:auction-client/src/main/resources/com/example/uinew/SignUpView/SignupUI.fxml
    <children>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="458.0" prefWidth="623.0" spacing="20.0" style="-fx-background-color: FFC8BD; -fx-background-radius: 20; -fx-background-color: rgba(0, 0, 0, 0.3);">
          <children>
@@ -47,7 +51,7 @@
                      <stops>
                         <Stop>
                            <color>
-                              <Color red="0.9645877480506897" green="0.75" blue="1.0" />
+                              <Color red="0.8148148059844971" green="0.8765432238578796" blue="1.0" />
                            </color>
                         </Stop>
                         <Stop offset="1.0">
@@ -69,9 +73,14 @@
                   <Insets left="20.0" />
                </padding>
             </PasswordField>
+            <Label fx:id="lblMessage" prefHeight="17.0" prefWidth="185.0" text="Vui lòng nhập đầy đủ thông tin" textFill="#ff6479" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
             <StackPane prefHeight="32.0" prefWidth="232.0" style="-fx-background-radius: 20;">
                <children>
-                  <Button mnemonicParsing="false" onAction="#handleSignup" prefHeight="25.0" prefWidth="65.0" style="-fx-background-radius: 20; -fx-background-color: BADDFF;" text="Sign up">
+                  <Button mnemonicParsing="false" onAction="#handleSignup" prefHeight="25.0" prefWidth="65.0" style="-fx-background-radius: 20; -fx-background-color: BADDFF;" text="Sign up" textFill="#699bff">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
@@ -85,7 +94,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Button layoutX="344.0" layoutY="1.0" mnemonicParsing="false" onAction="#goToLogin" prefHeight="25.0" prefWidth="57.0" style="-fx-background-color: BADDFF; -fx-background-radius: 20;" text="Log in">
+                  <Button layoutX="344.0" layoutY="1.0" mnemonicParsing="false" onAction="#goToLogin" prefHeight="25.0" prefWidth="57.0" style="-fx-background-color: BADDFF; -fx-background-radius: 20;" text="Log in" textFill="#6b9cff">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
