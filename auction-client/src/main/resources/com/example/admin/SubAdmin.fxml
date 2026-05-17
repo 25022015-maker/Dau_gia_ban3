@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox prefHeight="295.0" prefWidth="880.0" spacing="15.0" style="-fx-background-color: #FDEDEC; -fx-padding: 10;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SubAdminController">
+    <children>
+        <VBox prefWidth="180.0" spacing="10.0" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 0);">
+            <children>
+                <Label text="QUẢN TRỊ VIÊN" textFill="#C0392B">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                </Label>
+                <Label text="Giám sát phòng thầu thời gian thực." textFill="#7F8C8D" wrapText="true" />
+                <VBox prefHeight="158.0" prefWidth="127.0" style="-fx-background-color: #FADBD8; -fx-padding: 8; -fx-background-radius: 5;" VBox.vgrow="ALWAYS">
+                    <children>
+                        <Label style="-fx-font-weight: bold;" text="Tổng số người:" />
+                        <Label fx:id="lblTotalParticipants" text="0" textFill="#C0392B">
+                            <font>
+                                <Font name="System Bold" size="20.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+
+        <TableView fx:id="tableParticipants" style="-fx-background-radius: 8;" HBox.hgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colId" prefWidth="60.0" text="ID" />
+                <TableColumn fx:id="colRole" prefWidth="80.0" text="Vai trò" />
+                <TableColumn fx:id="colName" prefWidth="140.0" text="Tên người dùng" />
+                <TableColumn fx:id="colIp" prefWidth="120.0" text="Địa chỉ IP" />
+                <TableColumn fx:id="colBalance" prefWidth="120.0" text="Số dư ví" />
+                <TableColumn fx:id="colAction" prefWidth="160.0" text="Thao tác" />
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+        </TableView>
+    </children>
+</HBox>

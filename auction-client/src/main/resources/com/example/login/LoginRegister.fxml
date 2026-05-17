@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1150.0" style="-fx-background-color: #f4f6f9;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.controller.LoginRegisterController">
+    <children>
+        <AnchorPane prefHeight="550.0" prefWidth="350.0" style="-fx-background-color: linear-gradient(to bottom right, #2c3e50, #3498db);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Label layoutX="52.0" layoutY="225.0" text="AUCTION SYSTEM" textFill="WHITE">
+                    <font><Font name="System Bold" size="28.0" /></font>
+                </Label>
+                <Label layoutX="67.0" layoutY="275.0" text="Hệ thống đấu giá công khai" textFill="#ecf0f1">
+                    <font><Font size="16.0" /></font>
+                </Label>
+            </children>
+        </AnchorPane>
+
+        <AnchorPane layoutX="350.0" prefHeight="550.0" prefWidth="450.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+
+                <VBox fx:id="loginForm" alignment="CENTER_LEFT" layoutX="50.0" layoutY="40.0" prefHeight="460.0" prefWidth="350.0" spacing="15.0">
+                    <children>
+                        <Label text="ĐĂNG NHẬP/ ĐĂNG KÝ" textFill="#2c3e50">
+                            <font><Font name="System Bold" size="24.0" /></font>
+                        </Label>
+                        <VBox spacing="5.0">
+                            <children>
+                                <Label text="Tài khoản" />
+                                <TextField fx:id="txtUsername" prefHeight="38.0" promptText="Tên tài khoản của bạn" style="-fx-background-radius: 5;" />
+                                <Label fx:id="lblUsernameMessage" text="lblUsernameMessage" textFill="RED" />
+                            </children>
+                        </VBox>
+                        <VBox layoutX="10.0" layoutY="79.0" spacing="5.0">
+                            <children>
+                                <Label text="Email" />
+                                <TextField fx:id="txtEmail" prefHeight="38.0" promptText="Email của bạn" style="-fx-background-radius: 5;" />
+                                <Label fx:id="lblEmailMessage" text="lblEmailMessage" textFill="RED" />
+                            </children>
+                        </VBox>
+                        <VBox spacing="5.0">
+                            <children>
+                                <Label text="Mật khẩu" />
+                                <PasswordField fx:id="txtPassword" prefHeight="38.0" promptText="Nhập mật khẩu" style="-fx-background-radius: 5;" />
+                                <Label fx:id="lblPasswordMessage" layoutX="10.0" layoutY="10.0" text="lblPasswordMessage" textFill="RED" />
+                            </children>
+                        </VBox>
+                        <Button mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" prefWidth="350.0" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;" text="ĐĂNG NHẬP">
+                            <font><Font name="System Bold" size="14.0" /></font>
+                        </Button>
+                        <Label fx:id="lblLoginRegisterMessage" text="lblLoginRegisterMessage" textFill="RED" />
+                        <Button layoutX="10.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleRegister" prefHeight="40.0" prefWidth="350.0" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;" text="ĐĂNG KÝ">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </VBox>
+
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>
