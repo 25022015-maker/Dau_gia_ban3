@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane fx:id="mainBorderPane" prefHeight="700.0" prefWidth="1050.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.controller.MainLayoutController">
+    <left>
+        <VBox prefWidth="250.0" style="-fx-background-color: #2c3e50;" BorderPane.alignment="CENTER">
+            <children>
+                <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="80.0" style="-fx-border-color: #34495e; -fx-border-width: 0 0 1 0;">
+                    <children>
+                        <Label layoutX="41.0" layoutY="14.0" text="AUCTION SYSTEM" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="18.0" />
+                            </font>
+                        </Label>
+                        <Label layoutX="61.0" layoutY="41.0" text="&lt;&lt;ADMIN&gt;&gt;" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </AnchorPane>
+
+                <VBox spacing="5.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <Button fx:id="btnCreateAuction" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onCreateAuctionClick" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-cursor: hand;" text="🔨  AdminAuctions">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <padding><Insets left="25.0" /></padding>
+                        </Button>
+                        <Button fx:id="btnDashboard" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onDashboardClick" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-cursor: hand;" text="🛡 AdminUsers">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <padding><Insets left="25.0" /></padding>
+                        </Button>
+                    </children>
+                    <VBox.margin><Insets top="15.0" /></VBox.margin>
+                </VBox>
+
+                <VBox prefHeight="257.0" prefWidth="219.0" spacing="5.0" style="-fx-background-color: #34495e; -fx-background-radius: 8; -fx-padding: 12;">
+                    <VBox.margin>
+                        <Insets bottom="20.0" left="15.0" right="15.0" />
+                    </VBox.margin>
+                    <children>
+                        <Label text="🔔 Thông báo hệ thống:" textFill="#f1c40f">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="lblSidebarNotification" text="Một cuộc đấu giá đang chờ phê duyệt." textFill="WHITE" wrapText="true">
+                            <font>
+                                <Font size="11.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+
+                <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onLogoutClick" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-text-fill: #e74c3c; -fx-cursor: hand;" text="🚪  Đăng xuất">
+                    <font><Font name="System Bold" size="14.0" /></font>
+                    <padding><Insets left="25.0" /></padding>
+                    <VBox.margin><Insets bottom="15.0" /></VBox.margin>
+                </Button>
+            </children>
+        </VBox>
+    </left>
+    <center>
+        <StackPane fx:id="contentArea" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER" />
+    </center>
+</BorderPane>

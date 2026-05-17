@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="320.0" prefWidth="220.0" style="-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 4); -fx-border-color: #eaeded; -fx-border-radius: 20;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.controller.ProductCardController">
+    <children>
+        <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="300.0" prefWidth="200.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+            <children>
+
+                <AnchorPane prefHeight="140.0" prefWidth="200.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 8;">
+                    <children>
+                        <ImageView fx:id="imgProduct" fitHeight="130.0" fitWidth="190.0" layoutX="5.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" />
+                    </children>
+                </AnchorPane>
+
+                <VBox prefHeight="80.0" prefWidth="200.0" spacing="4.0">
+                    <children>
+                        <Label fx:id="lblProductName" text="lblProductName" textFill="#2c3e50" wrapText="true">
+                            <font>
+                                <Font name="System Bold" size="15.0" />
+                            </font>
+                        </Label>
+                        <HBox alignment="CENTER_LEFT" spacing="5.0">
+                            <children>
+                                <Label text="Giá sàn:" textFill="#7f8c8d" />
+                                <Label fx:id="lblProductPrice" text="(lblProductPrice)" textFill="#e74c3c">
+                                    <font>
+                                        <Font name="System Bold" size="14.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </HBox>
+                        <Label fx:id="lblStatus" text="⏱ Đang diễn ra(lblStatus)" textFill="#2ecc71">
+                            <font>
+                                <Font size="12.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="lblEndTimeProduct" layoutX="15.0" layoutY="59.0" text="⏱ (lblEndTimeProduct)" textFill="#2ecc71">
+                            <font>
+                                <Font size="12.0" />
+                            </font>
+                        </Label>
+                    </children>
+                    <padding>
+                        <Insets left="5.0" right="5.0" />
+                    </padding>
+                </VBox>
+
+                <Button fx:id="btnBid" mnemonicParsing="false" onAction="#handleBidAction" prefHeight="35.0" prefWidth="190.0" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;" text="Tham Gia">
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                </Button>
+
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
