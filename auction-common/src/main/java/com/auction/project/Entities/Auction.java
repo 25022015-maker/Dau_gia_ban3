@@ -4,6 +4,7 @@ package com.auction.project.Entities;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
 @Table(name = "auctions")
 public class Auction {
 
