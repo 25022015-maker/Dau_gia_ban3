@@ -17,9 +17,9 @@
             fx:controller="com.auction.project.UI.Controller.ThisBiddingController">
    <top>
       <!-- Tên sản phẩm — cập nhật từ server -->
-      <Label fx:id="lblProductName"
+      <Label fx:id="lblItemName"
              prefHeight="73.0" prefWidth="640.0"
-             text="Product's name"
+             text="Item's name"
              BorderPane.alignment="CENTER">
          <font><Font name="MilkywayDEMO" size="27.0" /></font>
       </Label>

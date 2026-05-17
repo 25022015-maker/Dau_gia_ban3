@@ -1,6 +1,6 @@
 package com.auction.project.Entities;
 
-public class ArtItem extends Product {
+public class ArtItem extends Item {
     private String artist;
     private int year;
 

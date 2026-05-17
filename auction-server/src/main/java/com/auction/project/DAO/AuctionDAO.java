@@ -79,7 +79,7 @@ public class AuctionDAO {
 
             while (rs.next()) {
                 // 1. Khởi tạo Item
-                Product item = ItemFactory.createItem(
+                Item item = ItemFactory.createItem(
                         rs.getString("type"),
                         rs.getString("name"),
                         rs.getDouble("item_price"),

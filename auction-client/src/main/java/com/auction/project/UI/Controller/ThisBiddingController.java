@@ -35,7 +35,7 @@ import java.util.ResourceBundle;
 public class ThisBiddingController implements Initializable {
 
     // ── FXML bindings ─────────────────────────────────────────────────────────
-    @FXML private Label lblProductName;
+    @FXML private Label lblItemName;
     @FXML private Label lblCurrentPrice;
     @FXML private Label lblLeader;
     @FXML private Label lblTimer;
@@ -228,10 +228,10 @@ public class ThisBiddingController implements Initializable {
      *   ThisBiddingController ctrl = loader.getController();
      *   ctrl.setAuction("1001", "Laptop Dell XPS 15");
      */
-    public void setAuction(String auctionId, String productName) {
+    public void setAuction(String auctionId, String ItemName) {
         this.currentAuctionId = auctionId;
-        if (lblProductName != null) {
-            lblProductName.setText(productName);
+        if (lblItemName != null) {
+            lblItemName.setText(ItemName);
         }
         // Gọi lệnh subscribe lên Server với đúng ID của sản phẩm này
         subscribeAuction(auctionId);

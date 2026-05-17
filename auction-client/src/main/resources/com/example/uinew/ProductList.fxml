@@ -12,7 +12,7 @@
       style="-fx-background-color: #1a1a2e;"
       xmlns="http://javafx.com/javafx/25"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.auction.project.UI.Controller.ProductListController">
+      fx:controller="com.auction.project.UI.Controller.ItemListController">
 
     <!-- Header + search -->
     <HBox prefHeight="60.0" spacing="12.0" alignment="CENTER_LEFT"
@@ -46,10 +46,10 @@
                style="-fx-text-fill: #7f8c9a; -fx-font-size: 13px;"/>
     </HBox>
 
-    <!-- Product list -->
+    <!-- Item list -->
     <ScrollPane VBox.vgrow="ALWAYS" fitToWidth="true"
                 style="-fx-background-color: transparent; -fx-background: #1a1a2e;">
-        <VBox fx:id="productList" spacing="8.0">
+        <VBox fx:id="ItemList" spacing="8.0">
             <padding><Insets top="16.0" left="16.0" right="16.0" bottom="16.0"/></padding>
         </VBox>
     </ScrollPane>

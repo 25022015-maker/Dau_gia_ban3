@@ -4,53 +4,74 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c98c711d-dca7-4298-a54c-ed59d4c25de5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Interface/ShowError.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/uinew/CreateBiddingView/CreateBidding.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/uinew/CreateBiddingView/style.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/uinew/CurrentBiddingView/ThisBidding.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/uinew/CurrentBiddingView/style.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/uinew/LoginView/LoginUI.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/uinew/LoginView/style.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/uinew/MainLayoutView/MainLayout.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/uinew/MainLayoutView/style.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/uinew/SignUpView/style.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-client/src/main/resources/img_10.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-client/src/main/resources/img_9.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/uinew/Controller/CreateBiddingController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/uinew/Controller/HomeController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/uinew/Controller/LoginController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/uinew/Controller/SignupController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/uinew/Controller/ThisBiddingController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/uinew/model/Auction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/uinew/model/Product.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/uinew/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/SideBarController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Interface/Initialize.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/View/CreateBidding.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/View/CreateBidding.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/View/LoginUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/View/LoginUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/View/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/View/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/View/SignupUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/View/SignupUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/resources/62403184a02374a987675652b4e30278.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/resources/ok.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/resources/com/auction/project/hello-view.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/uinew/CreateBidding.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/uinew/MainLayout.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/uinew/SignupUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/uinew/SignUpView/SignupUI.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/resources/e19429e326bd7582329d3a7502b5953c.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/resources/windowstar.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/resources/tải xuống.png" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/resources/n.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/62403184a02374a987675652b4e30278.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/62403184a02374a987675652b4e30278.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/uinew/SignupUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/uinew/SignupUI.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/e19429e326bd7582329d3a7502b5953c.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/e19429e326bd7582329d3a7502b5953c.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/tải xuống.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/tải xuống.png" afterDir="false" />
+    <list default="true" id="6bf52fee-7d12-4818-bcc0-dcc066cb9c50" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/AuctionLogs.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/Notification.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/Accountcontroller.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/Accountcontroller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/HomeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/MainController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/NotificationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/NotificationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/ProductInfoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/ProductInfoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/ProductListController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/ProductListController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/ThisBiddingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/ThisBiddingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Interface/IProductListView.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Interface/IProductListView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/View/ProductList.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/View/ProductList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/service/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/uinew/CurrentBiddingView/ThisBidding.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/uinew/CurrentBiddingView/ThisBidding.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/uinew/ProductList.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/uinew/ProductList.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/uinew/ThisBidding.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/uinew/ThisBidding.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-common/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/auction-common/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/ArtItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/ArtItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/Auction.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/Auction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/ElectronicsItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/ElectronicsItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/Item.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/Seller.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/Seller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/VehicleItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/VehicleItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Factory/ItemFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Factory/ItemFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-common/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-common/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-server/src/main/java/com/auction/project/Controllers/ServerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-server/src/main/java/com/auction/project/Controllers/ServerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auction-server/src/main/java/com/auction/project/DAO/AuctionDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-server/src/main/java/com/auction/project/DAO/AuctionDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/uinew/Controller/CreateBiddingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/uinew/Controller/CreateBiddingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/uinew/Controller/ThisBiddingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/uinew/Controller/ThisBiddingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/uinew/model/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/uinew/model/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/java/com/auction/project/Entities/AuctionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/java/com/auction/project/Entities/AuctionTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotChats">
+    <option name="panelChat">
+      <chat>
+        <option name="activeSessionId" value="9d7a02d3-71ab-443f-9fb6-8c289f76d2ab" />
+        <option name="sessions">
+          <session>
+            <option name="chatType" value="PANEL" />
+            <option name="id" value="9d7a02d3-71ab-443f-9fb6-8c289f76d2ab" />
+            <option name="modeId" value="Ask" />
+            <option name="modelType" value="builtin_family" />
+            <option name="modelValue" value="auto" />
+            <option name="targetType" value="LOCAL" />
+          </session>
+        </option>
+        <option name="type" value="PANEL" />
+      </chat>
+    </option>
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_C:/Users/PC/Documents/Code/Dau_gia_ban3" value="3DibqQbamhooaRXpSxqw9gkDtEr" />
+    </persistenceIdMap>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -69,7 +90,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/25022015-maker/Dau_gia_ban3.git&quot;,
-    &quot;accountId&quot;: &quot;04648f74-c284-457d-8269-0ee370e5931e&quot;
+    &quot;accountId&quot;: &quot;610d5ac1-b9ef-4f17-98da-6b3cd384ddcf&quot;
   }
 }</component>
   <component name="MavenImportPreferences">
@@ -92,31 +113,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.ClientApp.executor&quot;: &quot;Run&quot;,
-    &quot;Application.ServerApp.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Merging socket&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.ClientApp.executor": "Run",
+    "Application.ServerApp.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ]
   }
-}</component>
-  <component name="RunManager" selected="Application.ClientApp">
+}]]></component>
+  <component name="RunManager" selected="Application.ServerApp">
     <configuration name="ClientApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.auction.project.Client.ClientApp" />
       <module name="auction-client" />
@@ -145,8 +175,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.ClientApp" />
         <item itemvalue="Application.ServerApp" />
+        <item itemvalue="Application.ClientApp" />
       </list>
     </recent_temporary>
   </component>
@@ -159,13 +189,18 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c98c711d-dca7-4298-a54c-ed59d4c25de5" name="Changes" comment="" />
+      <changelist id="6bf52fee-7d12-4818-bcc0-dcc066cb9c50" name="Changes" comment="" />
       <created>1778768029473</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1778768029473</updated>
+      <workItem from="1779016379089" duration="2393000" />
+      <workItem from="1779018787220" duration="603000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -189,5 +224,25 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-field">
+          <url>file://$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/Auction.java</url>
+          <line>17</line>
+          <properties field="startPrice" class="com.auction.project.Entities.Auction" />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
   </component>
 </project>

@@ -3,7 +3,7 @@ package com.auction.project.UI.View;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class ProductList extends Application {
+public class ItemList extends Application {
 
     public static void main(String[] args) {
         launch(args);

@@ -16,7 +16,7 @@ class AuctionTest {
 
     private Auction auction;
     private Bidder bidder;
-    private Product item;
+    private Item item;
 
     @BeforeEach
     void setUp() {

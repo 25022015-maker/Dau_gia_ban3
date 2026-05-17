@@ -224,7 +224,7 @@ public class ServerController {
             String startTimeStr = json.has("startTime") ? json.get("startTime").getAsString() : null;
             String endTimeStr   = json.has("endTime")   ? json.get("endTime").getAsString()   : null;
 
-            com.auction.project.Entities.Product item = ItemFactory.createItem(itemType, itemName, startPrice, "Unknown");
+            com.auction.project.Entities.Item item = ItemFactory.createItem(itemType, itemName, startPrice, "Unknown");
             if (json.has("description")) item.setDescription(json.get("description").getAsString());
 
             LocalDateTime startTime = startTimeStr != null ? LocalDateTime.parse(startTimeStr) : LocalDateTime.now();

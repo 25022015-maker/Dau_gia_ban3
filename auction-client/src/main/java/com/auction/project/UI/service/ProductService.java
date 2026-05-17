@@ -1,5 +1,5 @@
 package com.auction.project.UI.service;
 
-public class ProductService {
-    void getAllProducts(){}
+public class ItemService {
+    void getAllItems(){}
 }

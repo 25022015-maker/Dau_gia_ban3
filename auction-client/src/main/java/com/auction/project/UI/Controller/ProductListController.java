@@ -27,23 +27,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ProductListController {
+public class ItemListController {
 
-    @FXML private VBox productList;
+    @FXML private VBox ItemList;
     @FXML private TextField searchField;
     @FXML private Label lblCount;
     @FXML private Button btnSortPrice;
 
     private final Gson gson = GsonFactory.create();
-    private List<Map<String, Object>> allProducts = new ArrayList<>();
+    private List<Map<String, Object>> allItems = new ArrayList<>();
     private String currentSort = "price_asc";
 
     @FXML
     public void initialize() {
-        loadProducts();
+        loadItems();
     }
 
-    private void loadProducts() {
+    private void loadItems() {
         NetworkClient client = SessionManager.getNetworkClient();
         if (client == null || !client.isConnected()) {
             showEmpty("⚠️ Chưa kết nối server");
@@ -54,14 +54,14 @@ public class ProductListController {
             if (response != null && response.getType() == ResponseType.AUCTION_LIST) {
                 Platform.runLater(() -> {
                     try {
-                        allProducts = gson.fromJson(gson.toJson(response.getData()),
+                        allItems = gson.fromJson(gson.toJson(response.getData()),
                                 new TypeToken<List<Map<String, Object>>>(){}.getType());
-                        if (allProducts == null) allProducts = new ArrayList<>();
+                        if (allItems == null) allItems = new ArrayList<>();
                         // Chỉ hiện phiên đang RUNNING
-                        allProducts = allProducts.stream()
+                        allItems = allItems.stream()
                                 .filter(p -> "RUNNING".equals(String.valueOf(p.get("status"))))
                                 .collect(Collectors.toList());
-                        renderProducts(allProducts);
+                        renderItems(allItems);
                     } catch (Exception e) {
                         showEmpty("Lỗi tải dữ liệu");
                     }
@@ -74,26 +74,26 @@ public class ProductListController {
         client.sendRequest(gson.toJson(req));
     }
 
-    private void renderProducts(List<Map<String, Object>> products) {
-        productList.getChildren().clear();
-        if (lblCount != null) lblCount.setText(products.size() + " sản phẩm");
+    private void renderItems(List<Map<String, Object>> Items) {
+        ItemList.getChildren().clear();
+        if (lblCount != null) lblCount.setText(Items.size() + " sản phẩm");
 
-        if (products.isEmpty()) {
+        if (Items.isEmpty()) {
             showEmpty("Không có sản phẩm nào đang đấu giá");
             return;
         }
 
-        for (Map<String, Object> product : products) {
-            productList.getChildren().add(buildProductRow(product));
+        for (Map<String, Object> Item : Items) {
+            ItemList.getChildren().add(buildItemRow(Item));
         }
     }
 
-    private HBox buildProductRow(Map<String, Object> product) {
-        String id     = String.valueOf(((Number) product.get("id")).intValue());
-        String name   = String.valueOf(product.getOrDefault("itemName", "Sản phẩm"));
-        double price  = product.get("currentPrice") instanceof Number
-                ? ((Number) product.get("currentPrice")).doubleValue() : 0;
-        String bidder = String.valueOf(product.getOrDefault("leadingBidder", "Chưa có"));
+    private HBox buildItemRow(Map<String, Object> Item) {
+        String id     = String.valueOf(((Number) Item.get("id")).intValue());
+        String name   = String.valueOf(Item.getOrDefault("itemName", "Sản phẩm"));
+        double price  = Item.get("currentPrice") instanceof Number
+                ? ((Number) Item.get("currentPrice")).doubleValue() : 0;
+        String bidder = String.valueOf(Item.getOrDefault("leadingBidder", "Chưa có"));
 
         // Image placeholder
         VBox img = new VBox();
@@ -153,7 +153,7 @@ public class ProductListController {
             HomeController home = HomeController.getInstance();
             if (home != null) home.setView(node);
         } catch (Exception e) {
-            System.out.println("[ProductList] Lỗi navigate: " + e.getMessage());
+            System.out.println("[ItemList] Lỗi navigate: " + e.getMessage());
         }
     }
 
@@ -162,43 +162,43 @@ public class ProductListController {
     @FXML
     public void handleSearch() {
         String kw = searchField.getText().toLowerCase().trim();
-        List<Map<String, Object>> filtered = kw.isEmpty() ? allProducts :
-                allProducts.stream()
+        List<Map<String, Object>> filtered = kw.isEmpty() ? allItems :
+                allItems.stream()
                         .filter(p -> String.valueOf(p.getOrDefault("itemName","")).toLowerCase().contains(kw))
                         .collect(Collectors.toList());
-        renderProducts(filtered);
+        renderItems(filtered);
     }
 
     @FXML
     public void sortByPrice(ActionEvent e) {
         currentSort = "price_asc";
-        allProducts.sort(Comparator.comparingDouble(p ->
+        allItems.sort(Comparator.comparingDouble(p ->
                 p.get("currentPrice") instanceof Number ? ((Number)p.get("currentPrice")).doubleValue() : 0));
-        renderProducts(allProducts);
+        renderItems(allItems);
     }
 
     @FXML
     public void sortByPriceDesc(ActionEvent e) {
         currentSort = "price_desc";
-        allProducts.sort((a, b) -> {
+        allItems.sort((a, b) -> {
             double pa = a.get("currentPrice") instanceof Number ? ((Number)a.get("currentPrice")).doubleValue() : 0;
             double pb = b.get("currentPrice") instanceof Number ? ((Number)b.get("currentPrice")).doubleValue() : 0;
             return Double.compare(pb, pa);
         });
-        renderProducts(allProducts);
+        renderItems(allItems);
     }
 
     @FXML
     public void sortByTime(ActionEvent e) {
         // Giữ thứ tự server trả về (đã sort theo endTime)
-        renderProducts(allProducts);
+        renderItems(allItems);
     }
 
     private void showEmpty(String msg) {
-        productList.getChildren().clear();
+        ItemList.getChildren().clear();
         Label lbl = new Label(msg);
         lbl.setStyle("-fx-text-fill: #7f8c9a; -fx-font-size: 14px;");
-        productList.getChildren().add(lbl);
+        ItemList.getChildren().add(lbl);
         if (lblCount != null) lblCount.setText("0 sản phẩm");
     }
 }

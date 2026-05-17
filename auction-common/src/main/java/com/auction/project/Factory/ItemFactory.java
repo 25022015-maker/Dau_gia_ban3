@@ -1,11 +1,11 @@
 package com.auction.project.Factory;
 
-import com.auction.project.Entities.Product;
+import com.auction.project.Entities.Item;
 
 import com.auction.project.Entities.*;
 
 public class ItemFactory {
-    public static Product createItem(String type, String name, double startPrice, String... extraParams) {
+    public static Item createItem(String type, String name, double startPrice, String... extraParams) {
         if (type == null || type.isEmpty()) {
             return null;
         }

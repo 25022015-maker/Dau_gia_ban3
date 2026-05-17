@@ -1,7 +1,7 @@
 package com.example.uinew.Controller;
 
 import com.example.uinew.Interface.ShowError;
-import com.example.uinew.model.Product;
+import com.example.uinew.model.Item;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -43,7 +43,7 @@ public class CreateBiddingController implements ShowError {
 
         String name = txtName.getText();
         String description = txtDescription.getText();
-        String productType = choiceBox.getValue();
+        String ItemType = choiceBox.getValue();
         double startPrice = 0;
         Boolean hasError = false;
         LocalDate dateEnd = end.getValue();
@@ -77,7 +77,7 @@ public class CreateBiddingController implements ShowError {
             hasError = true;
         }
 
-        if (productType.isEmpty()) {
+        if (ItemType.isEmpty()) {
             showError("Lỗi: Vui lon chọn loại sản phẩm");
             hasError = true;
         }
@@ -88,13 +88,13 @@ public class CreateBiddingController implements ShowError {
         }
 
         if (!hasError) {
-            Product newProduct = new Product(
+            Item newItem = new Item(
                     name,
                     startPrice,
                     description,
-                    productType
+                    ItemType
             );
-            MainController.setSelectedProduct(newProduct);
+            MainController.setSelectedItem(newItem);
 
             System.out.println("Tạo phiên đấu giá thành công!");
             showError("Tạo phiên đấu giá thành công!");
@@ -118,7 +118,7 @@ public class CreateBiddingController implements ShowError {
 
 
             System.out.println("Client vừa đổi từ: " + oldValue + " sang " + newValue);
-            String productType = newValue;    //gán newValue vào một biến toàn cục để lưu trữ
+            String ItemType = newValue;    //gán newValue vào một biến toàn cục để lưu trữ
         });
         hourStart.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 0));
         minStart.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0));

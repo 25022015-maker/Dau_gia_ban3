@@ -19,7 +19,7 @@ public class NotificationController {
 
     @FXML
     public void initialize() {
-        // Dữ liệu mẫu — production lấy từ server
+        // Dữ liệu mẫu — Itemion lấy từ server
         notifications.add(new NotifItem("🏆", "Bạn đã thắng phiên đấu giá!", "Laptop Dell XPS 15 — 6,000,000 ₫", "2 phút trước", true));
         notifications.add(new NotifItem("💰", "Có người đặt giá cao hơn bạn!", "Rolex Submariner — giá mới: 55,000,000 ₫", "15 phút trước", true));
         notifications.add(new NotifItem("🔔", "Phiên đấu giá mới bắt đầu!", "Toyota Camry 2023 — Bắt đầu ngay!", "1 giờ trước", true));

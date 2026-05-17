@@ -1,6 +1,6 @@
 package com.auction.project.UI.Controller;
 
-import com.auction.project.Entities.Product;
+import com.auction.project.Entities.Item;
 import com.auction.project.Entities.User;
 import com.auction.project.UI.Interface.SceneLoader;
 
@@ -15,15 +15,15 @@ import java.io.IOException;
 
 public abstract class MainController implements SceneLoader {
     private static User currentUser;
-    private static Product selectedProduct;
+    private static Item selectedItem;
 
 
 
     public static void setCurrentUser(User user) { currentUser = user; }
     public static User getCurrentUser() { return currentUser; }
 
-    public static void setSelectedProduct(Product product) { selectedProduct = product; }
-    public static Product getSelectedProduct() { return selectedProduct; }
+    public static void setSelectedItem(Item Item) { selectedItem = Item; }
+    public static Item getSelectedItem() { return selectedItem; }
 
     //đổi toàn bộ cửa sổ (Login/Logout)
     @FXML

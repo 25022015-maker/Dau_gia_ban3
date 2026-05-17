@@ -33,7 +33,7 @@
                                        <image><Image url="@../../../../img_5.png" /></image>
                                        <VBox.margin><Insets left="5.0" right="5.0" top="5.0" /></VBox.margin>
                                     </ImageView>
-                                    <Label fx:id="lblProductName" text="Tên sản phẩm" textFill="#9f33ff">
+                                    <Label fx:id="lblItemName" text="Tên sản phẩm" textFill="#9f33ff">
                                        <font><Font name="Agbalumo Regular" size="30.0" /></font>
                                        <VBox.margin><Insets left="20.0" /></VBox.margin>
                                     </Label>

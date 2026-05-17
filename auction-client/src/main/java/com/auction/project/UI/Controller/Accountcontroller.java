@@ -69,7 +69,7 @@ public class Accountcontroller {
         lblEmail.setText(username + "@auction.com");
         lblId.setText("#" + Math.abs(username.hashCode() % 10000));
 
-        // Role dựa theo username (demo — production lấy từ server)
+        // Role dựa theo username (demo — Itemion lấy từ server)
         if (username.equals("admin")) {
             lblRole.setText("Admin");
             lblRole.setStyle("-fx-text-fill: #e74c3c; -fx-background-color: #2d1b4e; " +

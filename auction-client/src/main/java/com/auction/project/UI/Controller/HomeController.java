@@ -44,7 +44,7 @@ public class HomeController extends MainController implements OnLogout, ViewLoad
     @FXML public void goToNotification(ActionEvent event) { setView("/com/example/uinew/Notification.fxml"); }
     @FXML public void goToLanguage(ActionEvent event)     { setView("/com/example/uinew/Language.fxml"); }
     @FXML public void goToManagement(ActionEvent event)   { setView("/com/example/uinew/Management.fxml"); }
-    @FXML public void goToProducts(ActionEvent event)     { setView("/com/example/uinew/ProductList.fxml"); }
+    @FXML public void goToItems(ActionEvent event)     { setView("/com/example/uinew/ItemList.fxml"); }
     @FXML public void createAuction()                     { setView("/com/example/uinew/CreateBidding.fxml"); }
 
     public void onLogout(ActionEvent event) {

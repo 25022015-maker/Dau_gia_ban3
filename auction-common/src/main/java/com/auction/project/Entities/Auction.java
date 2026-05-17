@@ -1,120 +1,125 @@
 package com.auction.project.Entities;
 
-import com.auction.project.Entities.enums.AuctionStatus;
-import com.auction.project.ManagerServer.BidTransaction;
-import com.auction.project.Observer.*;
-import com.auction.project.Exception.*;
 
-import java.io.Serializable;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-public class Auction extends Entity implements Subject, Serializable {
-    private static final long serialVersionUID = 1L;
+@Table(name = "auctions")
+public class Auction {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "item_id", nullable = false, unique = true)
+    private Long itemId;
+
+    @Column(name = "start_price", nullable = false)
+    private Long startPrice;
+
+    @Column(name = "min_bid", nullable = false)
+    private Long minBid;
+
+    @Column(name = "current_price", nullable = false)
+    private Long currentPrice;
+
+    @Column(name = "current_winner_id")
+    private Long currentWinnerId;
+
+    @Column(name = "start_time", nullable = false)
     private LocalDateTime startTime;
+
+    @Column(name = "end_time", nullable = false)
     private LocalDateTime endTime;
-    private double currentPrice;
-    private AuctionStatus status;
-    private Product item;
 
-    private transient List<Observer> observers = new ArrayList<>();
-    private List<BidTransaction> transactions = new ArrayList<>();
+    @Column(length = 20, columnDefinition = "VARCHAR(20) DEFAULT 'Pending'")
+    private String status = "Pending";
 
-    public Auction(LocalDateTime start, LocalDateTime end, double startPrice, Product item) {
-        super();
-        this.startTime = start;
-        this.endTime = end;
-        this.currentPrice = startPrice;
-        this.item = item;
-        this.status = AuctionStatus.OPEN;
+    @Column(name = "anti_snipping", columnDefinition = "INT DEFAULT 5")
+    private Integer antiSnipping = 5;
+
+    // Default Constructor required by JPA
+    public Auction() {
     }
 
-    public void placeBid(Bidder bidder, double amount)
-            throws InvalidBidException, AuctionClosedException {
-        synchronized (this) {
-            checkAndUpdateStatus();
-
-            if (this.status != AuctionStatus.RUNNING) {
-                throw new AuctionClosedException("Phiên đấu giá đang ở trạng thái: " + status);
-            }
-
-            if (amount <= currentPrice) {
-                throw new InvalidBidException("Giá đặt phảI cao hơn giá hiện tại!");
-            }
-
-            // Ghi nhận đặt giá thành công
-            this.currentPrice = amount;
-            BidTransaction bt = new BidTransaction(bidder, amount);
-            transactions.add(bt);
-
-            // (Anti-sniping)
-            if (LocalDateTime.now().isAfter(endTime.minusMinutes(1))) {
-                this.endTime = this.endTime.plusMinutes(5);
-            }
-        }
-        notifyObservers();
+    // Getters and Setters
+    public Long getId() {
+        return id;
     }
 
-    //Logic chuyển trạng thái tự động
-    public synchronized void checkAndUpdateStatus() {
-        LocalDateTime now = LocalDateTime.now();
-        if (status == AuctionStatus.OPEN && now.isAfter(startTime) && now.isBefore(endTime)) {
-            status = AuctionStatus.RUNNING;
-        } else if ((status == AuctionStatus.RUNNING || status == AuctionStatus.OPEN) && now.isAfter(endTime)) {
-            status = AuctionStatus.FINISHED;
-        }
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    @Override
-    public void notifyObservers() {
-        if (observers == null) return;
-
-        // Lấy thông tin giá và người thắng một cách an toàn
-        double priceToSend;
-        String bidderToSend;
-        synchronized (this) {
-            priceToSend = this.currentPrice;
-            bidderToSend = transactions.isEmpty() ? "None" :
-                    transactions.get(transactions.size() - 1).getBidder().getUsername();
-        }
-
-        // Gửi cho các client
-        for (Observer o : observers) {
-            o.update(this.id, priceToSend, bidderToSend);
-        }
+    public Long getItemId() {
+        return itemId;
     }
 
-    @Override
-    public void registerObserver(Observer o) {
-        if (observers == null) observers = new ArrayList<>();
-        observers.add(o);
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
     }
 
-    @Override
-    public void removeObserver(Observer o) {
-        if (observers != null) observers.remove(o);
-    }
-    public double getCurrentPrice() { return this.currentPrice; }
-
-    public void setStatus(AuctionStatus s) { this.status = s; }
-
-    public String getLeadingBidder() {
-        if (transactions == null || transactions.isEmpty()) return "None";
-        return transactions.get(transactions.size()-1).getBidder().getUsername();
+    public Long getStartPrice() {
+        return startPrice;
     }
 
-    public String getItemName() {
-        return item != null ? item.getName() : "Unknown";
+    public void setStartPrice(Long startPrice) {
+        this.startPrice = startPrice;
     }
 
-    public Product getItem() { return item; }
+    public Long getMinBid() {
+        return minBid;
+    }
 
-    public java.time.LocalDateTime getStartTime() { return startTime; }
+    public void setMinBid(Long minBid) {
+        this.minBid = minBid;
+    }
 
-    public java.time.LocalDateTime getEndTime() { return endTime; }
+    public Long getCurrentPrice() {
+        return currentPrice;
+    }
 
-    public AuctionStatus getStatus() { return status; }
+    public void setCurrentPrice(Long currentPrice) {
+        this.currentPrice = currentPrice;
+    }
 
+    public Long getCurrentWinnerId() {
+        return currentWinnerId;
+    }
+
+    public void setCurrentWinnerId(Long currentWinnerId) {
+        this.currentWinnerId = currentWinnerId;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Integer getAntiSnipping() {
+        return antiSnipping;
+    }
+
+    public void setAntiSnipping(Integer antiSnipping) {
+        this.antiSnipping = antiSnipping;
+    }
 }

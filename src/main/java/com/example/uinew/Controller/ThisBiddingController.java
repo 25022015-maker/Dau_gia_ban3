@@ -1,6 +1,6 @@
 package com.example.uinew.Controller;
 import com.example.uinew.Interface.ShowError;
-import com.example.uinew.model.Product;
+import com.example.uinew.model.Item;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -14,7 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 public class ThisBiddingController implements ShowError {
-    @FXML private Label lblProductName, lblCurrentPrice, lblTimer;
+    @FXML private Label lblItemName, lblCurrentPrice, lblTimer;
     @FXML private TextField txtBidAmount; //Bid user gõ
     @FXML Label lblError;
     @FXML private Label currentBudget; //số tiền đã bid gần nhất
@@ -26,7 +26,7 @@ public class ThisBiddingController implements ShowError {
 
     private double bidAmount; //model
     private double autoStep = 0;
-    private Product currentProduct;
+    private Item currentItem;
     private int timeLeft = 3600; //Giả sử 1 tiếng (giây)
 
     public void showError(String message) {
@@ -37,8 +37,8 @@ public class ThisBiddingController implements ShowError {
     public void initialize() {
         lblError.setText("");
 
-        currentProduct = MainController.getSelectedProduct();
-        if (currentProduct != null) {
+        currentItem = MainController.getSelectedItem();
+        if (currentItem != null) {
             refreshUI();
         }
         startTimer();
@@ -53,8 +53,8 @@ public class ThisBiddingController implements ShowError {
             autoStep = Double.parseDouble(txtAutoStep.getText());
             //if (autoStep =< Auction.getMinBid() -> lblError.setTxt()
             //Lấy giá hiện tại cộng thêm bước nhảy
-            double newPrice = currentProduct.getPrice() + autoStep;
-            currentProduct.setPrice(newPrice);
+            double newPrice = currentItem.getPrice() + autoStep;
+            currentItem.setPrice(newPrice);
             biddingHistory.getItems().add(0, MainController.getCurrentUser().getName()+ " đã đặt: " + newPrice);
 
             refreshUI(); //Cập nhật toàn bộ Label trên màn hình
@@ -63,8 +63,8 @@ public class ThisBiddingController implements ShowError {
         }
     }
     private void refreshUI() {
-        String priceText = String.format("%.0f", currentProduct.getPrice());
-        lblProductName.setText(currentProduct.getName());
+        String priceText = String.format("%.0f", currentItem.getPrice());
+        lblItemName.setText(currentItem.getName());
         lblCurrentPrice.setText("Giá hiện tại: " + priceText);
         currentBudget.setText("Giá bạn vừa đặt: " + priceText);
     }
@@ -74,12 +74,12 @@ public class ThisBiddingController implements ShowError {
         try {
             bidAmount = Double.parseDouble(txtBidAmount.getText());
             // Kiểm tra logic: Giá mới phải cao hơn giá cũ
-            if (bidAmount <= currentProduct.getPrice()) {
+            if (bidAmount <= currentItem.getPrice()) {
                 showError("Giá phải cao hơn giá hiện tại!");
                 return;
             }
 
-            currentProduct.setPrice(bidAmount);
+            currentItem.setPrice(bidAmount);
             refreshUI();// Cập nhật lại UI
 
             // Thêm vào lịch sử
