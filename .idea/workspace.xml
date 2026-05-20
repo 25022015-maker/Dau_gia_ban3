@@ -4,154 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6bf52fee-7d12-4818-bcc0-dcc066cb9c50" name="Changes" comment="Update class springboots">
-      <change afterPath="$PROJECT_DIR$/.claude/settings.local.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/example/controller/AccountController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/example/controller/AdminAuctionsController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/example/controller/AdminUsersController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/example/controller/AuctionRoomController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/example/controller/CreateAuctionController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/example/controller/DashboardController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/example/controller/LoginRegisterController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/example/controller/MainLayoutController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-client/src/main/java/com/example/controller/ProductCardController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/AuctionServerApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/config/SecurityConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/config/WebSocketConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/controller/AdminController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/controller/AuctionController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/controller/AuthController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/controller/UserController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/dto/AuctionResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/dto/AuthResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/dto/AutoBidRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/dto/BidTransactionResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/dto/BidUpdateMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/dto/CreateAuctionRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/dto/LoginRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/dto/PlaceBidRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/dto/RegisterRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/dto/UserProfileResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/entity/ArtItem.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/entity/Auction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/entity/AutoBid.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/entity/BidTransaction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/entity/ElectronicsItem.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/entity/Item.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/entity/Notification.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/entity/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/entity/VehicleItem.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/entity/enums/AuctionStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/entity/enums/Role.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/exception/AuctionClosedException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/exception/GlobalExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/exception/InvalidBidException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/repository/AuctionRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/repository/AutoBidRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/repository/BidTransactionRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/repository/ItemRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/repository/NotificationRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/repository/UserRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/security/JwtAuthFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/security/JwtUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/security/UserDetailsServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/service/AuctionScheduler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/service/AuctionService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/service/AuthService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/service/ItemFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/java/com/auction/project/service/UserService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auction-springboot-server/springboot-server/src/test/java/com/auction/project/service/AuctionServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/Client/ClientApp.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/Client/ClientHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/Client/NetworkClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/Client/SocketClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/Accountcontroller.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/CreateBiddingController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/DashboardController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/HomeController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/LanguageController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/LoginController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/MainController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/ManagementController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/NotificationController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/ProductInfoController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/ProductListController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/SignupController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Controller/ThisBiddingController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Interface/IProductListView.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Interface/OnEnter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Interface/OnLogout.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Interface/SceneLoader.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Interface/ShowError.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Interface/ToLayOut.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Interface/ToLogin.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Interface/ToSignUp.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Interface/ViewCleanup.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/Interface/ViewLoader.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/View/AboutUs.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/View/CreateBidding.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/View/Dashboard.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/View/Launcher.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/View/LoginUI.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/View/MainController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/View/ProductList.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/View/SignupUI.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/View/ThisBidding.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/service/ProductService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/com/auction/project/UI/service/SessionManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/admin/AdminUsers.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/admin/AdminUsers.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/admin/SubAdmin.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/login/LoginRegister.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/login/LoginRegister.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/uinew/CurrentBiddingView/ThisBidding.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/uinew/ProductList.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/uinew/ThisBidding.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/user/AuctionRoom.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/user/AuctionRoom.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/user/CreateAuction.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/user/CreateAuction.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/user/Dashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/user/Dashboard.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/user/MainLayout.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/user/MainLayout.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/user/SubBidder.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-client/src/main/resources/com/example/user/SubSeller.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/ArtItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/ArtItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/Bidder.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/Bidder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/ElectronicsItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/ElectronicsItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/Seller.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/Seller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/VehicleItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Entities/VehicleItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Factory/ItemFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Factory/ItemFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Factory/UserFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Factory/UserFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Packets/AuctionDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/auction-common/src/main/java/com/auction/project/Packets/AuctionDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-server/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-server/src/main/java/com/auction/project/AuctionManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-server/src/main/java/com/auction/project/Controllers/ServerController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-server/src/main/java/com/auction/project/DAO/AuctionDAO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-server/src/main/java/com/auction/project/DAO/DatabaseConnection.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-server/src/main/java/com/auction/project/Server/ClientHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-server/src/main/java/com/auction/project/Server/ClientHandlerObserver.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-server/src/main/java/com/auction/project/Server/DataStorage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-server/src/main/java/com/auction/project/Server/ServerApp.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-server/src/main/java/com/auction/project/Server/SocketServer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-server/src/main/java/module-info.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auction-server/src/main/recources/schema.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/uinew/Controller/CreateBiddingController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/uinew/Controller/HomeController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/uinew/Controller/LoginController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/uinew/Controller/SignupController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/uinew/Controller/ThisBiddingController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/uinew/model/Auction.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/uinew/model/Product.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/uinew/model/User.java" beforeDir="false" />
-    </list>
+    <list default="true" id="6bf52fee-7d12-4818-bcc0-dcc066cb9c50" name="Changes" comment="Refactor: chuyển sang kiến trúc Spring Boot + JavaFX, thêm tính năng đấu giá thực&#10;&#10;  - Thay thế toàn bộ UI cũ (TCP socket) bằng JavaFX mới (com.example.*)&#10;  - Thêm Spring Boot server với REST API + WebSocket STOMP real-time                                        &#10;  - Tính năng: đặt giá thủ công, auto-bid, anti-sniping, quản lý admin&#10;  - Validate số dư khi bid thủ công và auto-bid&#10;  - Fix: chỉ seller sở hữu phiên mới được hủy (kiểm tra ownership)&#10;  - Xóa code cũ: TCP socket server, UI cũ, FXML không dùng&#10;  - Cập nhật README với hướng dẫn chạy và tài khoản test" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -329,7 +182,15 @@
       <option name="project" value="LOCAL" />
       <updated>1779250206499</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Refactor: chuyển sang kiến trúc Spring Boot + JavaFX, thêm tính năng đấu giá thực&#10;&#10;  - Thay thế toàn bộ UI cũ (TCP socket) bằng JavaFX mới (com.example.*)&#10;  - Thêm Spring Boot server với REST API + WebSocket STOMP real-time                                        &#10;  - Tính năng: đặt giá thủ công, auto-bid, anti-sniping, quản lý admin&#10;  - Validate số dư khi bid thủ công và auto-bid&#10;  - Fix: chỉ seller sở hữu phiên mới được hủy (kiểm tra ownership)&#10;  - Xóa code cũ: TCP socket server, UI cũ, FXML không dùng&#10;  - Cập nhật README với hướng dẫn chạy và tài khoản test">
+      <option name="closed" value="true" />
+      <created>1779263291960</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1779263291960</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -360,7 +221,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Update class springboots" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update class springboots" />
+    <MESSAGE value="Refactor: chuyển sang kiến trúc Spring Boot + JavaFX, thêm tính năng đấu giá thực&#10;&#10;  - Thay thế toàn bộ UI cũ (TCP socket) bằng JavaFX mới (com.example.*)&#10;  - Thêm Spring Boot server với REST API + WebSocket STOMP real-time                                        &#10;  - Tính năng: đặt giá thủ công, auto-bid, anti-sniping, quản lý admin&#10;  - Validate số dư khi bid thủ công và auto-bid&#10;  - Fix: chỉ seller sở hữu phiên mới được hủy (kiểm tra ownership)&#10;  - Xóa code cũ: TCP socket server, UI cũ, FXML không dùng&#10;  - Cập nhật README với hướng dẫn chạy và tài khoản test" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor: chuyển sang kiến trúc Spring Boot + JavaFX, thêm tính năng đấu giá thực&#10;&#10;  - Thay thế toàn bộ UI cũ (TCP socket) bằng JavaFX mới (com.example.*)&#10;  - Thêm Spring Boot server với REST API + WebSocket STOMP real-time                                        &#10;  - Tính năng: đặt giá thủ công, auto-bid, anti-sniping, quản lý admin&#10;  - Validate số dư khi bid thủ công và auto-bid&#10;  - Fix: chỉ seller sở hữu phiên mới được hủy (kiểm tra ownership)&#10;  - Xóa code cũ: TCP socket server, UI cũ, FXML không dùng&#10;  - Cập nhật README với hướng dẫn chạy và tài khoản test" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
