@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6bf52fee-7d12-4818-bcc0-dcc066cb9c50" name="Changes" comment="Refactor: chuyển sang kiến trúc Spring Boot + JavaFX, thêm tính năng đấu giá thực&#10;&#10;  - Thay thế toàn bộ UI cũ (TCP socket) bằng JavaFX mới (com.example.*)&#10;  - Thêm Spring Boot server với REST API + WebSocket STOMP real-time                                        &#10;  - Tính năng: đặt giá thủ công, auto-bid, anti-sniping, quản lý admin&#10;  - Validate số dư khi bid thủ công và auto-bid&#10;  - Fix: chỉ seller sở hữu phiên mới được hủy (kiểm tra ownership)&#10;  - Xóa code cũ: TCP socket server, UI cũ, FXML không dùng&#10;  - Cập nhật README với hướng dẫn chạy và tài khoản test" />
+    <list default="true" id="6bf52fee-7d12-4818-bcc0-dcc066cb9c50" name="Changes" comment="cap nhat lai">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -190,13 +192,36 @@
       <option name="project" value="LOCAL" />
       <updated>1779263291960</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="cap nhat lai">
+      <option name="closed" value="true" />
+      <created>1779263611250</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1779263611250</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="User">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="*" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
@@ -211,6 +236,13 @@
                       </list>
                     </value>
                   </entry>
+                  <entry key="user">
+                    <value>
+                      <list>
+                        <option value="*" />
+                      </list>
+                    </value>
+                  </entry>
                 </map>
               </option>
             </State>
@@ -222,7 +254,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Update class springboots" />
     <MESSAGE value="Refactor: chuyển sang kiến trúc Spring Boot + JavaFX, thêm tính năng đấu giá thực&#10;&#10;  - Thay thế toàn bộ UI cũ (TCP socket) bằng JavaFX mới (com.example.*)&#10;  - Thêm Spring Boot server với REST API + WebSocket STOMP real-time                                        &#10;  - Tính năng: đặt giá thủ công, auto-bid, anti-sniping, quản lý admin&#10;  - Validate số dư khi bid thủ công và auto-bid&#10;  - Fix: chỉ seller sở hữu phiên mới được hủy (kiểm tra ownership)&#10;  - Xóa code cũ: TCP socket server, UI cũ, FXML không dùng&#10;  - Cập nhật README với hướng dẫn chạy và tài khoản test" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor: chuyển sang kiến trúc Spring Boot + JavaFX, thêm tính năng đấu giá thực&#10;&#10;  - Thay thế toàn bộ UI cũ (TCP socket) bằng JavaFX mới (com.example.*)&#10;  - Thêm Spring Boot server với REST API + WebSocket STOMP real-time                                        &#10;  - Tính năng: đặt giá thủ công, auto-bid, anti-sniping, quản lý admin&#10;  - Validate số dư khi bid thủ công và auto-bid&#10;  - Fix: chỉ seller sở hữu phiên mới được hủy (kiểm tra ownership)&#10;  - Xóa code cũ: TCP socket server, UI cũ, FXML không dùng&#10;  - Cập nhật README với hướng dẫn chạy và tài khoản test" />
+    <MESSAGE value="cap nhat lai" />
+    <option name="LAST_COMMIT_MESSAGE" value="cap nhat lai" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
