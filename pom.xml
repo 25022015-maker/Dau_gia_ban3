@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.auction.project</groupId>
     <artifactId>Dau_gia_ban3</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging> <!-- Rất quan trọng: packaging phải là pom -->
+    <packaging>pom</packaging>
 
-    <!-- Khai báo 3 module con -->
     <modules>
         <module>auction-common</module>
-        <module>auction-server</module>
         <module>auction-client</module>
+        <module>auction-springboot-server/springboot-server</module>
     </modules>
 
     <properties>
+
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <gson.version>2.10.1</gson.version>
     </properties>
+
 </project>

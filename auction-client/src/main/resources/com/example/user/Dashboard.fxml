@@ -63,7 +63,7 @@
 
                         <Region HBox.hgrow="ALWAYS" />
 
-                        <TextField onAction="#handleSearch" prefHeight="25.0" prefWidth="306.0" promptText="Tìm kiếm..." style="-fx-pref-width: 150;" />
+                        <TextField fx:id="searchField" onAction="#handleSearch" prefHeight="25.0" prefWidth="306.0" promptText="Tìm kiếm..." style="-fx-pref-width: 150;" />
                     </children>
                 </HBox>
 

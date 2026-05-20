@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<ScrollPane fitToWidth="true" style="-fx-background-color: #f4f6f9; -fx-background: #f4f6f9;"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.controller.CreateAuctionController">
+    <content>
+        <VBox spacing="20" style="-fx-padding: 30;">
+
+            <Label text="TẠO PHIÊN ĐẤU GIÁ MỚI" style="-fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+
+            <!-- Card: Thông tin cơ bản -->
+            <VBox spacing="12" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 8;">
+                <Label text="Thông tin sản phẩm" style="-fx-font-weight: bold; -fx-font-size: 15; -fx-text-fill: #2c3e50;"/>
+
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Loại sản phẩm:" prefWidth="140"/>
+                    <ComboBox fx:id="cmbItemType" prefWidth="200"/>
+                </HBox>
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Tên sản phẩm:" prefWidth="140"/>
+                    <TextField fx:id="txtItemName" prefWidth="400" promptText="Nhập tên sản phẩm"/>
+                </HBox>
+                <HBox spacing="15" alignment="TOP_LEFT">
+                    <Label text="Mô tả:" prefWidth="140"/>
+                    <TextArea fx:id="txtDescription" prefWidth="400" prefHeight="80" wrapText="true"
+                              promptText="Mô tả chi tiết sản phẩm"/>
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Link ảnh:" prefWidth="140"/>
+                    <TextField fx:id="txtImageUrl" prefWidth="330" promptText="Dán link ảnh vào đây (https://...)"/>
+                    <Button text="Xem trước" onAction="#handlePreviewImage"
+                            style="-fx-background-color: #7f8c8d; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+                </HBox>
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label prefWidth="140"/>
+                    <ImageView fx:id="imgPreview" fitWidth="200" fitHeight="150" preserveRatio="true"/>
+                    <Label fx:id="lblImageStatus" text="" wrapText="true" prefWidth="200"/>
+                </HBox>
+
+                <!-- Electronics fields -->
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Thương hiệu:" prefWidth="140"/>
+                    <TextField fx:id="txtBrand" prefWidth="250" promptText="VD: Apple, Samsung..."/>
+                </HBox>
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Bảo hành (tháng):" prefWidth="140"/>
+                    <TextField fx:id="txtWarranty" prefWidth="150" promptText="VD: 12"/>
+                </HBox>
+
+                <!-- Art fields -->
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Nghệ sĩ:" prefWidth="140"/>
+                    <TextField fx:id="txtArtist" prefWidth="250" promptText="Tên tác giả"/>
+                </HBox>
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Năm sáng tác:" prefWidth="140"/>
+                    <TextField fx:id="txtYearCreated" prefWidth="150" promptText="VD: 2020"/>
+                </HBox>
+
+                <!-- Vehicle fields -->
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Hãng xe:" prefWidth="140"/>
+                    <TextField fx:id="txtVehicleBrand" prefWidth="250" promptText="VD: Toyota, Honda..."/>
+                </HBox>
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Năm sản xuất:" prefWidth="140"/>
+                    <TextField fx:id="txtManufactureYear" prefWidth="150" promptText="VD: 2022"/>
+                </HBox>
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Số km:" prefWidth="140"/>
+                    <TextField fx:id="txtMileage" prefWidth="150" promptText="VD: 50000"/>
+                </HBox>
+            </VBox>
+
+            <!-- Card: Cấu hình giá & thời gian -->
+            <VBox spacing="12" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 8;">
+                <Label text="Cấu hình phiên đấu giá" style="-fx-font-weight: bold; -fx-font-size: 15; -fx-text-fill: #2c3e50;"/>
+
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Giá khởi điểm (₫):" prefWidth="160"/>
+                    <TextField fx:id="txtStartPrice" prefWidth="200" promptText="VD: 5000000"/>
+                </HBox>
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Bước giá tối thiểu (₫):" prefWidth="160"/>
+                    <TextField fx:id="txtMinBid" prefWidth="200" promptText="Mặc định: 1000"/>
+                </HBox>
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Bắt đầu lúc:" prefWidth="160"/>
+                    <DatePicker fx:id="dpStartDate" prefWidth="180" promptText="Chọn ngày"/>
+                    <TextField fx:id="txtStartHour" prefWidth="90" promptText="HH:mm (VD: 09:00)"/>
+                </HBox>
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Kết thúc lúc:" prefWidth="160"/>
+                    <DatePicker fx:id="dpEndDate" prefWidth="180" promptText="Chọn ngày"/>
+                    <TextField fx:id="txtEndHour" prefWidth="90" promptText="HH:mm (VD: 18:00)"/>
+                </HBox>
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Gia hạn anti-snipe (giây):" prefWidth="160"/>
+                    <TextField fx:id="txtAntiSnipe" prefWidth="100" promptText="60"/>
+                </HBox>
+            </VBox>
+
+            <!-- Message + Buttons -->
+            <Label fx:id="lblMessage" text="" wrapText="true"/>
+            <HBox spacing="15">
+                <Button text="✅ Tạo phiên đấu giá" fx:id="btnCreate" onAction="#handleCreate" prefHeight="40" prefWidth="200"
+                        style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;"/>
+                <Button text="Hủy" onAction="#handleCancel" prefHeight="40" prefWidth="100"
+                        style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+            </HBox>
+        </VBox>
+    </content>
+</ScrollPane>

@@ -1,0 +1,9 @@
+package com.auction.project.dto;
+
+import jakarta.validation.constraints.*;
+
+public record AutoBidRequest(
+    @NotNull Long auctionId,
+    @NotNull @Min(1000) Long maxBid,
+    @NotNull @Min(1000) Long increment
+) {}

@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mvn compile *)",
+      "Bash(mvn package *)",
+      "PowerShell(New-Item *)",
+      "PowerShell(head *)",
+      "PowerShell(Get-ChildItem -Path \"D:\\\\Dau_gia_ban3\" -Recurse | Where-Object {$_.PSIsContainer} | Select-Object -ExpandProperty FullName | Select-Object -First 30)",
+      "Bash(awk '{print $NF}')"
+    ]
+  }
+}

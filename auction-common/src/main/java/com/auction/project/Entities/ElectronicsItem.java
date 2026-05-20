@@ -2,9 +2,14 @@ package com.auction.project.Entities;
 
 public class ElectronicsItem extends Item {
     private String brand;
-    public ElectronicsItem(String name, double price, String brand) {
-        super(name, price);
+
+    public ElectronicsItem() { super(); }
+
+    public ElectronicsItem(String brand) {
+        super();
         this.brand = brand;
     }
-    @Override public String getDetails() { return " Đồ điện tử " + brand + " " + name; }
+
+    public String getDetails() { return "Đồ điện tử " + brand + " " + getName(); }
+    public String getBrand() { return brand; }
 }
