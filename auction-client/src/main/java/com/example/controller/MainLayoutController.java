@@ -71,7 +71,7 @@ public class MainLayoutController {
             stage.setResizable(false);
             stage.setMaximized(false);
             stage.setWidth(800);
-            stage.setHeight(560);
+            stage.setHeight(600);
             stage.setTitle("Hệ thống Đấu giá");
         } catch (Exception e) {
             e.printStackTrace();
