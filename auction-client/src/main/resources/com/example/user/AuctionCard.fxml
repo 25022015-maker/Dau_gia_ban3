@@ -11,9 +11,9 @@
         <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="300.0" prefWidth="200.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
             <children>
 
-                <AnchorPane prefHeight="140.0" prefWidth="200.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 8;">
+                <AnchorPane prefHeight="140.0" prefWidth="200.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 8; -fx-clip-bounds: true;">
                     <children>
-                        <ImageView fx:id="imgProduct" fitHeight="130.0" fitWidth="190.0" layoutX="5.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="imgProduct" fitHeight="140.0" fitWidth="200.0" layoutX="0.0" layoutY="0.0" pickOnBounds="true" preserveRatio="false" />
                     </children>
                 </AnchorPane>
 
