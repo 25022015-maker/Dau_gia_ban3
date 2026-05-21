@@ -24,6 +24,28 @@
     </properties>
 
     <dependencies>
+        <!-- Chỗ này dành riêng cho phần của Test nha -->
+        <!-- Spring Boot Test Starter -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Spring Security Test -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Awaitility (Hỗ trợ test bất đồng bộ như WebSocket) -->
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Chỗ này kết thúc phần dành riêng cho Test nha -->
+
+
 
         <!-- ===== Spring Boot Core ===== -->
         <dependency>
