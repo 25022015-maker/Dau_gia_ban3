@@ -44,5 +44,16 @@ public class DataInitializer implements CommandLineRunner {
             userRepo.save(admin);
             log.info("=== Tạo tài khoản admin mặc định: admin / admin123 ===");
         }
+        if (!userRepo.existsByUsername("bidder1")) {
+            User bidder = new User(
+                    "bidder1",
+                    encoder.encode("bidder123"),
+                    "bidder1@auction.local",
+                    Role.BIDDER
+            );
+            bidder.setBalance(1_000_000L);
+            userRepo.save(bidder);
+            log.info("=== Tạo tài khoản bidder mặc định: bidder1 / bidder123 ===");
+        }
     }
 }

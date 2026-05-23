@@ -92,13 +92,14 @@ mvn javafx:run -pl auction-client
 
 ## Tài Khoản Test
 
-| Username | Email | Password | Vai trò |
-|----------|-------|----------|---------|
-| `admin` | `admin@auction.local` | `admin123` | Admin |
-| `seller` | `seller123@gmail.com` | `123456` | Seller |
-| `seller1` | `seller1234@gmail.com` | `123456` | Seller |
+| Username | Email | Password | Vai trò | Số dư |
+|----------|-------|----------|---------|-------|
+| `admin` | `admin@auction.local` | `admin123` | Admin | 0 |
+| `bidder1` | `bidder1@auction.local` | `bidder123` | Bidder | 1,000,000 |
+| `seller` | `seller123@gmail.com` | `123456` | Seller | — |
+| `seller1` | `seller1234@gmail.com` | `123456` | Seller | — |
 
-> Tài khoản `admin` được tạo tự động khi server khởi động lần đầu.
+> Tài khoản `admin` và `bidder1` được tạo tự động khi server khởi động lần đầu.
 > Tài khoản seller đăng ký thông qua giao diện ứng dụng với vai trò **Người bán**.
 
 ---
