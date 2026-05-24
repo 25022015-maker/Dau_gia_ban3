@@ -25,6 +25,12 @@
 
     <dependencies>
         <!-- Chỗ này dành riêng cho phần của Test nha -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Spring Boot Test Starter -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
