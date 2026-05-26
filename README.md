@@ -39,35 +39,36 @@ Dau_gia_ban3/
 
 ---
 
-## Cấu Hình Database
+## ⚠️ Trước Khi Chạy — Cấu Hình Database
 
-Tạo database MySQL trước khi khởi động server:
+### Bước 0 — Tạo database
 
 ```sql
 CREATE DATABASE auction_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-Cấu hình kết nối trong `auction-springboot-server/src/main/resources/application.properties`:
+### Bước 0.1 — Kiểm tra password MySQL
+
+Mở file `auction-springboot-server/springboot-server/src/main/resources/application.properties` và **đổi password** cho khớp với MySQL trên máy bạn:
 
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/auction_db
 spring.datasource.username=root
-spring.datasource.password=123456
+spring.datasource.password=123456   ← đổi dòng này nếu password khác
 ```
+
+> Nếu MySQL không có password, để trống: `spring.datasource.password=`
 
 ---
 
 ## Hướng Dẫn Chạy
 
 > **Quan trọng:** Phải khởi động **Server trước**, Client sau.
+> Tất cả lệnh chạy từ **thư mục gốc dự án** (thư mục chứa file `pom.xml` ở ngoài cùng).
 
 ### Bước 1 — Khởi động Server (Spring Boot)
 
-Mở terminal, `cd` vào thư mục server rồi chạy:
-
 ```bash
-cd D:\Dau_gia_ban3\auction-springboot-server\springboot-server
-mvn spring-boot:run
+mvn -pl auction-springboot-server/springboot-server spring-boot:run
 ```
 
 Server chạy tại `http://localhost:8080`.
@@ -79,11 +80,10 @@ Khi khởi động lần đầu, hệ thống tự tạo tài khoản admin mặ
 
 ### Bước 2 — Chạy Client (JavaFX)
 
-Mở **terminal mới** (không tắt server), `cd` vào thư mục gốc rồi chạy:
+Mở **terminal mới** (không tắt server), chạy từ thư mục gốc dự án:
 
 ```bash
-cd D:\Dau_gia_ban3
-mvn javafx:run -pl auction-client
+mvn -pl auction-client javafx:run
 ```
 
 Để chạy nhiều client đồng thời (test real-time), mở thêm terminal và chạy lại lệnh trên.

@@ -7,6 +7,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -19,8 +22,10 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
 import java.io.ByteArrayInputStream;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
@@ -52,6 +57,9 @@ public class AuctionRoomController {
     @FXML private CheckBox   chkEnableAutoBid;
     @FXML private Label      lblAutoBidMessage;
 
+    // ── Countdown ─────────────────────────────────────────────────────────────
+    @FXML private Label       lblCountdown;
+
     // ── Seller panel ──────────────────────────────────────────────────────────
     @FXML private Button     btnCancelAuction;
 
@@ -72,6 +80,9 @@ public class AuctionRoomController {
     private long currentPrice;
     private long minBid;
     private final ObservableList<JsonObject> bidHistory = FXCollections.observableArrayList();
+
+    private LocalDateTime endTimeValue;
+    private Timeline countdownTimeline;
 
     // ── Initialize ────────────────────────────────────────────────────────────
 
@@ -133,6 +144,7 @@ public class AuctionRoomController {
         String endTime = a.get("endTime").getAsString();
         if (lblEndTime != null)
             lblEndTime.setText("Kết thúc: " + endTime.replace("T", " ").substring(0, Math.min(16, endTime.length())));
+        startCountdown(endTime, status);
 
         if (lblTotalBids != null)
             lblTotalBids.setText("Lượt đặt: " + a.get("totalBids").getAsLong());
@@ -184,6 +196,8 @@ public class AuctionRoomController {
             String et = msg.get("endTime").getAsString();
             if (lblEndTime != null)
                 lblEndTime.setText("Kết thúc: " + et.replace("T", " ").substring(0, Math.min(16, et.length())));
+            String currentStatus = getString(msg, "status", "RUNNING");
+            startCountdown(et, currentStatus);
         }
         if (msg.has("totalBids") && lblTotalBids != null)
             lblTotalBids.setText("Lượt đặt: " + msg.get("totalBids").getAsLong());
@@ -316,6 +330,7 @@ public class AuctionRoomController {
 
     @FXML
     public void handleBack() {
+        if (countdownTimeline != null) countdownTimeline.stop();
         StompClient.getInstance().unsubscribe("/topic/auction/" + auctionId);
         MainLayoutController main = MainLayoutController.getInstance();
         if (main != null) main.loadView("/com/example/user/Dashboard.fxml");
@@ -369,6 +384,61 @@ public class AuctionRoomController {
         tableBidHistory.setItems(bidHistory);
     }
 
+    // ── Countdown ─────────────────────────────────────────────────────────────
+
+    private void startCountdown(String endTimeStr, String status) {
+        if (lblCountdown == null) return;
+        if ("FINISHED".equals(status) || "CANCELED".equals(status)) return;
+
+        try {
+            String normalized = endTimeStr.length() > 19 ? endTimeStr.substring(0, 19) : endTimeStr;
+            endTimeValue = LocalDateTime.parse(normalized);
+        } catch (Exception e) {
+            lblCountdown.setText("--:--:--");
+            return;
+        }
+
+        if (countdownTimeline != null) countdownTimeline.stop();
+
+        countdownTimeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateCountdown()));
+        countdownTimeline.setCycleCount(Animation.INDEFINITE);
+        countdownTimeline.play();
+        updateCountdown();
+    }
+
+    private void updateCountdown() {
+        if (endTimeValue == null || lblCountdown == null) return;
+        long remaining = java.time.Duration.between(LocalDateTime.now(), endTimeValue).getSeconds();
+
+        if (remaining <= 0) {
+            lblCountdown.setText("00:00:00");
+            lblCountdown.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold; -fx-font-size: 22;");
+            if (countdownTimeline != null) countdownTimeline.stop();
+            return;
+        }
+
+        long hours   = remaining / 3600;
+        long minutes = (remaining % 3600) / 60;
+        long seconds = remaining % 60;
+        lblCountdown.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
+
+        if (remaining <= 60) {
+            lblCountdown.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold; -fx-font-size: 22;");
+        } else if (remaining <= 300) {
+            lblCountdown.setStyle("-fx-text-fill: #e67e22; -fx-font-weight: bold; -fx-font-size: 22;");
+        } else {
+            lblCountdown.setStyle("-fx-text-fill: #f39c12; -fx-font-weight: bold; -fx-font-size: 22;");
+        }
+    }
+
+    private void stopCountdown(String displayText, String color) {
+        if (countdownTimeline != null) countdownTimeline.stop();
+        if (lblCountdown != null) {
+            lblCountdown.setText(displayText);
+            lblCountdown.setStyle("-fx-text-fill: " + color + "; -fx-font-weight: bold; -fx-font-size: 16;");
+        }
+    }
+
     // ── Helpers ───────────────────────────────────────────────────────────────
 
     private void updateStatus(String status) {
@@ -376,9 +446,15 @@ public class AuctionRoomController {
         switch (status) {
             case "RUNNING"  -> { lblStatus.setText("🔴 Đang diễn ra"); lblStatus.setStyle("-fx-text-fill: #2ecc71;"); }
             case "PENDING"  -> { lblStatus.setText("⏳ Sắp bắt đầu");  lblStatus.setStyle("-fx-text-fill: #f39c12;"); }
-            case "FINISHED" -> { lblStatus.setText("✅ Đã kết thúc");   lblStatus.setStyle("-fx-text-fill: #7f8c8d;"); }
-            case "CANCELED" -> { lblStatus.setText("❌ Đã hủy");        lblStatus.setStyle("-fx-text-fill: #e74c3c;"); }
-            default         -> lblStatus.setText(status);
+            case "FINISHED" -> {
+                lblStatus.setText("✅ Đã kết thúc"); lblStatus.setStyle("-fx-text-fill: #7f8c8d;");
+                stopCountdown("KẾT THÚC", "#7f8c8d");
+            }
+            case "CANCELED" -> {
+                lblStatus.setText("❌ Đã hủy"); lblStatus.setStyle("-fx-text-fill: #e74c3c;");
+                stopCountdown("ĐÃ HỦY", "#e74c3c");
+            }
+            default -> lblStatus.setText(status);
         }
         if (txtBidInput != null) txtBidInput.setDisable(!"RUNNING".equals(status));
     }

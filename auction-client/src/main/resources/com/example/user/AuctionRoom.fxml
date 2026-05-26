@@ -18,6 +18,11 @@
         <Label fx:id="lblAuctionName" text="Tên phiên đấu giá" textFill="WHITE" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
             <font><Font name="System Bold" size="18"/></font>
         </Label>
+        <!-- Countdown timer -->
+        <VBox alignment="CENTER" style="-fx-background-color: rgba(0,0,0,0.25); -fx-background-radius: 6; -fx-padding: 4 14;">
+            <Label text="THỜI GIAN CÒN LẠI" style="-fx-text-fill: #bdc3c7; -fx-font-size: 9;"/>
+            <Label fx:id="lblCountdown" text="--:--:--" style="-fx-text-fill: #f39c12; -fx-font-weight: bold; -fx-font-size: 22;"/>
+        </VBox>
         <Label fx:id="lblStatus" text="⏳" textFill="#2ecc71">
             <font><Font size="14"/></font>
         </Label>
