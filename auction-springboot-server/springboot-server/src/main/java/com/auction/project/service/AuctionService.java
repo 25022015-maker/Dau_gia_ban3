@@ -320,12 +320,23 @@ public class AuctionService {
                 a.setStatus(AuctionStatus.CANCELED);
             } else {
                 a.setStatus(AuctionStatus.FINISHED);
+
+                // Trừ tiền người thắng
+                User winner = a.getCurrentWinner();
+                long winAmount = a.getCurrentPrice();
+                long currentBalance = winner.getBalance() != null ? winner.getBalance() : 0L;
+                winner.setBalance(Math.max(0L, currentBalance - winAmount));
+                userRepo.save(winner);
+                log.info("PAYMENT | auction={} | winner={} | amount={} | balanceBefore={} | balanceAfter={}",
+                        a.getId(), winner.getUsername(), winAmount, currentBalance, winner.getBalance());
+
                 // Gửi thông báo cho người thắng
                 notifRepo.save(new Notification(
-                        a.getCurrentWinner().getId(),
+                        winner.getId(),
                         "🎉 Bạn đã thắng phiên đấu giá!",
                         "Chúc mừng! Bạn đã thắng phiên đấu giá \"" + a.getItem().getName()
-                                + "\" với giá " + String.format("%,d", a.getCurrentPrice()) + " VND."
+                                + "\" với giá " + String.format("%,d", winAmount) + " VND."
+                                + " Số dư còn lại: " + String.format("%,d", winner.getBalance()) + " VND."
                 ));
             }
             auctionRepo.save(a);
