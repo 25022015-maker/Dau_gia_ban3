@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="650.0" prefWidth="900.0" style="-fx-background-color: #f4f6f9;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.controller.DashboardController">
+<AnchorPane prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: #f4f6f9;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.controller.DashboardController">
     <children>
         <VBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -59,7 +59,7 @@
 
                 <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: #f4f6f9; -fx-border-color: transparent;" VBox.vgrow="ALWAYS">
                     <content>
-                        <GridPane fx:id="productGrid" hgap="20.0" vgap="20.0">
+                        <GridPane fx:id="productGrid" hgap="20.0" prefHeight="0.0" prefWidth="980.0" vgap="20.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="ALWAYS" minWidth="220.0" prefWidth="220.0" />
                                 <ColumnConstraints hgrow="ALWAYS" minWidth="220.0" prefWidth="220.0" />

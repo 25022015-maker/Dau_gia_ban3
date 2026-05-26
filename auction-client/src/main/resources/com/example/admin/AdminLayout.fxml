@@ -42,24 +42,6 @@
                     <VBox.margin><Insets top="15.0" /></VBox.margin>
                 </VBox>
 
-                <VBox prefHeight="257.0" prefWidth="219.0" spacing="5.0" style="-fx-background-color: #34495e; -fx-background-radius: 8; -fx-padding: 12;">
-                    <VBox.margin>
-                        <Insets bottom="20.0" left="15.0" right="15.0" />
-                    </VBox.margin>
-                    <children>
-                        <Label text="🔔 Thông báo hệ thống:" textFill="#f1c40f">
-                            <font>
-                                <Font name="System Bold" size="12.0" />
-                            </font>
-                        </Label>
-                        <Label fx:id="lblSidebarNotification" text="Một cuộc đấu giá đang chờ phê duyệt." textFill="WHITE" wrapText="true">
-                            <font>
-                                <Font size="11.0" />
-                            </font>
-                        </Label>
-                    </children>
-                </VBox>
-
                 <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onLogoutClick" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-text-fill: #e74c3c; -fx-cursor: hand;" text="🚪  Đăng xuất">
                     <font><Font name="System Bold" size="14.0" /></font>
                     <padding><Insets left="25.0" /></padding>
