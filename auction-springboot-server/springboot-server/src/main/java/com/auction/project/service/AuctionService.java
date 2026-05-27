@@ -275,6 +275,7 @@ public class AuctionService {
                 autoBidRepo.save(ab);
                 log.info("AUTO_BID_MAXED | user={} | maxBid={}", ab.getUser().getUsername(), ab.getMaxBid());
             }
+
         }
     }
 

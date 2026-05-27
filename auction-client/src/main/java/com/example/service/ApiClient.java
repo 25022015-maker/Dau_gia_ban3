@@ -11,7 +11,7 @@ import java.time.Duration;
 public class ApiClient {
 
     // Đổi thành IP máy chạy server nếu client chạy trên máy khác, VD: "http://192.168.1.10:8080"
-    public static final String BASE_URL = System.getProperty("server.url", "http://10.11.200.115:8080");
+    public static final String BASE_URL = System.getProperty("server.url", "http://10.11.201.190:8080");
     private static final HttpClient HTTP = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(10))
             .build();

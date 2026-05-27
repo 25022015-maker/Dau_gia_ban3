@@ -1,5 +1,5 @@
 module auction.client {
-    requires auction.common;
+
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.graphics;

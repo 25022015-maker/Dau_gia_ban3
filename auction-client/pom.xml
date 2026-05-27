@@ -10,12 +10,7 @@
     <artifactId>auction-client</artifactId>
 
     <dependencies>
-        <!-- Import module common vào client -->
-        <dependency>
-            <groupId>com.auction.project</groupId>
-            <artifactId>auction-common</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+
 
         <!-- JavaFX -->
         <dependency>
