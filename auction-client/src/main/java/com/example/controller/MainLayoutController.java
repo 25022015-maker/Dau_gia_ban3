@@ -1,10 +1,12 @@
 package com.example.controller;
 
 import com.example.service.SessionManager;
+import com.example.service.StompClient;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -24,11 +26,17 @@ public class MainLayoutController {
     @FXML
     public void initialize() {
         instance = this;
+        StompClient.getInstance().setForcedLogoutCallback(this::handleForcedLogout);
         if (SessionManager.isAdmin()) {
             loadView("/com/example/admin/AdminAuctions.fxml");
         } else {
             loadView("/com/example/user/Dashboard.fxml");
         }
+    }
+
+    private void handleForcedLogout() {
+        new Alert(Alert.AlertType.WARNING, "Tài khoản của bạn đã bị khóa bởi Admin.").showAndWait();
+        onLogoutClick();
     }
 
     public static MainLayoutController getInstance() { return instance; }

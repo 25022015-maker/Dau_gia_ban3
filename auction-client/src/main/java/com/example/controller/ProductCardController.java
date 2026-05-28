@@ -94,11 +94,12 @@ public class ProductCardController {
 
     private void updateStatusLabel(String status) {
         switch (status) {
-            case "RUNNING"  -> { lblStatus.setText("🔴 Đang diễn ra"); lblStatus.setStyle("-fx-text-fill: #2ecc71;"); }
-            case "PENDING"  -> { lblStatus.setText("⏳ Sắp bắt đầu");  lblStatus.setStyle("-fx-text-fill: #f39c12;"); }
-            case "FINISHED" -> { lblStatus.setText("✅ Đã kết thúc");   lblStatus.setStyle("-fx-text-fill: #7f8c8d;"); }
-            case "CANCELED" -> { lblStatus.setText("❌ Đã hủy");        lblStatus.setStyle("-fx-text-fill: #e74c3c;"); }
-            default         -> lblStatus.setText(status);
+            case "WAITING_APPROVAL" -> { lblStatus.setText("⏳ Chờ duyệt");    lblStatus.setStyle("-fx-text-fill: #8e44ad;"); }
+            case "RUNNING"          -> { lblStatus.setText("🔴 Đang diễn ra"); lblStatus.setStyle("-fx-text-fill: #2ecc71;"); }
+            case "PENDING"          -> { lblStatus.setText("🕐 Sắp bắt đầu");  lblStatus.setStyle("-fx-text-fill: #f39c12;"); }
+            case "FINISHED"         -> { lblStatus.setText("✅ Đã kết thúc");   lblStatus.setStyle("-fx-text-fill: #7f8c8d;"); }
+            case "CANCELED"         -> { lblStatus.setText("❌ Đã hủy");        lblStatus.setStyle("-fx-text-fill: #e74c3c;"); }
+            default                 -> lblStatus.setText(status);
         }
     }
 

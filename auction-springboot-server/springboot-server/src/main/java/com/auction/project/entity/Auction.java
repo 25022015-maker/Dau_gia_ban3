@@ -85,6 +85,7 @@ public class Auction {
      * RUNNING  → CANCELED  : khi qua endTime mà không có ai bid
      */
     public void refreshStatus() {
+        if (status == AuctionStatus.WAITING_APPROVAL) return;
         LocalDateTime now = LocalDateTime.now();
         if (status == AuctionStatus.PENDING && !now.isBefore(startTime)) {
             status = AuctionStatus.RUNNING;

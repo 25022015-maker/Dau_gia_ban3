@@ -74,6 +74,10 @@ AuthService {
         User user = userRepo.findByUsername(req.username())
                 .orElseThrow(() -> new RuntimeException("User không tồn tại"));
 
+        if ("BANNED".equals(user.getStatus())) {
+            throw new RuntimeException("Tài khoản của bạn đã bị khóa. Vui lòng liên hệ admin.");
+        }
+
         String token = jwtUtil.generateToken(user.getUsername());
         return new AuthResponse(token, user.getId(), user.getUsername(), user.getRole().name());
     }

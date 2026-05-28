@@ -76,6 +76,19 @@ public class AdminController {
         return ResponseEntity.ok(userService.updateStatus(id, status));
     }
 
+    /** Danh sách tất cả phiên đấu giá (kể cả chờ duyệt) */
+    @GetMapping("/auctions")
+    public ResponseEntity<List<com.auction.project.dto.AuctionResponse>> getAllAuctions() {
+        return ResponseEntity.ok(auctionService.getAllForAdmin());
+    }
+
+    /** Duyệt phiên đấu giá chờ duyệt */
+    @PutMapping("/auctions/{id}/approve")
+    public ResponseEntity<String> approveAuction(@PathVariable Long id) {
+        auctionService.approveAuction(id);
+        return ResponseEntity.ok("Phiên đấu giá #" + id + " đã được duyệt.");
+    }
+
     /** Admin hủy phiên đấu giá bất kỳ */
     @PutMapping("/auctions/{id}/cancel")
     public ResponseEntity<String> cancelAuction(@PathVariable Long id,

@@ -3,18 +3,22 @@ package com.auction.project.service;
 import com.auction.project.dto.UserProfileResponse;
 import com.auction.project.entity.User;
 import com.auction.project.repository.UserRepository;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService {
 
-    private final UserRepository userRepo;
+    private final UserRepository        userRepo;
+    private final SimpMessagingTemplate ws;
 
-    public UserService(UserRepository userRepo) {
+    public UserService(UserRepository userRepo, SimpMessagingTemplate ws) {
         this.userRepo = userRepo;
+        this.ws       = ws;
     }
 
     @Transactional(readOnly = true)
@@ -34,7 +38,11 @@ public class UserService {
         User u = userRepo.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User không tồn tại: " + userId));
         u.setStatus(status);
-        return toResponse(userRepo.save(u));
+        UserProfileResponse result = toResponse(userRepo.save(u));
+        if ("BANNED".equals(status)) {
+            ws.convertAndSend("/topic/user/" + userId, Map.of("type", "BANNED"));
+        }
+        return result;
     }
 
     /** Nạp tiền vào tài khoản */

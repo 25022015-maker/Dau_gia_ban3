@@ -1,7 +1,9 @@
 package com.auction.project.entity.enums;
 
 public enum AuctionStatus {
-    /** Chờ đến giờ bắt đầu */
+    /** Chờ admin duyệt - chưa hiển thị cho người dùng */
+    WAITING_APPROVAL,
+    /** Đã duyệt, chờ đến giờ bắt đầu */
     PENDING,
     /** Đang diễn ra - nhận bid */
     RUNNING,

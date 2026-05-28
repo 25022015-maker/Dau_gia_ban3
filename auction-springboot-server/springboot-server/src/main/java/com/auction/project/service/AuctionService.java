@@ -98,8 +98,7 @@ public class AuctionService {
         auction.setEndTime(end);
         auction.setSellerId(seller.getId());
         auction.setAntiSnipeExtSeconds(req.antiSnipeExtSeconds());
-        auction.setStatus(LocalDateTime.now().isBefore(start)
-                ? AuctionStatus.PENDING : AuctionStatus.RUNNING);
+        auction.setStatus(AuctionStatus.WAITING_APPROVAL);
 
         Auction saved = auctionRepo.save(auction);
         log.info("CREATE_AUCTION | id={} | item={} | seller={}", saved.getId(), req.itemName(), sellerUsername);
@@ -113,9 +112,31 @@ public class AuctionService {
     @Transactional(readOnly = true)
     public List<AuctionResponse> getAll() {
         return auctionRepo.findAll().stream()
+                .filter(a -> a.getStatus() != AuctionStatus.WAITING_APPROVAL)
                 .peek(Auction::refreshStatus)
                 .map(this::toResponse)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<AuctionResponse> getAllForAdmin() {
+        return auctionRepo.findAll().stream()
+                .peek(Auction::refreshStatus)
+                .map(this::toResponse)
+                .toList();
+    }
+
+    @Transactional
+    public void approveAuction(Long id) {
+        Auction a = auctionRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Phiên không tồn tại: " + id));
+        if (a.getStatus() != AuctionStatus.WAITING_APPROVAL) {
+            throw new RuntimeException("Phiên không ở trạng thái chờ duyệt");
+        }
+        LocalDateTime now = LocalDateTime.now();
+        a.setStatus(now.isBefore(a.getStartTime()) ? AuctionStatus.PENDING : AuctionStatus.RUNNING);
+        auctionRepo.save(a);
+        log.info("APPROVE_AUCTION | id={} | newStatus={}", id, a.getStatus());
     }
 
     @Transactional(readOnly = true)
@@ -170,7 +191,7 @@ public class AuctionService {
         auction.setCurrentWinner(bidder);
 
         // Anti-sniping
-        applyAntiSnipe(auction);
+        boolean antiSnipped = applyAntiSnipe(auction);
 
         auctionRepo.save(auction);
 
@@ -180,7 +201,7 @@ public class AuctionService {
         log.info("BID | auction={} | bidder={} | amount={}", auction.getId(), bidderUsername, req.amount());
 
         // Observer: broadcast WebSocket
-        broadcastUpdate(auction, "MANUAL");
+        broadcastUpdate(auction, "MANUAL", antiSnipped ? bidderUsername : null);
 
         // Kích hoạt auto-bid người khác
         triggerAutoBids(auction, bidder.getId());
@@ -208,6 +229,9 @@ public class AuctionService {
         if (req.maxBid() <= auction.getCurrentPrice()) {
             throw new InvalidBidException("maxBid phải cao hơn giá hiện tại: " + auction.getCurrentPrice());
         }
+        if (req.increment() < auction.getMinBid()) {
+            throw new InvalidBidException("Bước nhảy auto-bid tối thiểu là " + auction.getMinBid() + " VND (= bước giá tối thiểu của phiên)");
+        }
 
         autoBidRepo.findByAuctionIdAndUserId(auction.getId(), user.getId())
                 .ifPresentOrElse(
@@ -221,6 +245,12 @@ public class AuctionService {
                 );
 
         log.info("AUTO_BID_REGISTER | user={} | auction={} | maxBid={}", username, req.auctionId(), req.maxBid());
+
+        // Kích hoạt ngay nếu có người khác đang dẫn đầu
+        Long currentWinnerId = auction.getCurrentWinner() != null ? auction.getCurrentWinner().getId() : null;
+        if (!user.getId().equals(currentWinnerId)) {
+            triggerAutoBids(auction, currentWinnerId);
+        }
     }
 
     /**
@@ -255,7 +285,7 @@ public class AuctionService {
             if (nextBid <= ab.getMaxBid()) {
                 auction.setCurrentPrice(nextBid);
                 auction.setCurrentWinner(ab.getUser());
-                applyAntiSnipe(auction);
+                boolean antiSnipped = applyAntiSnipe(auction);
                 auctionRepo.save(auction);
 
                 txRepo.save(new BidTransaction(auction, ab.getUser(), nextBid, "AUTO"));
@@ -263,7 +293,7 @@ public class AuctionService {
                 log.info("AUTO_BID | user={} | auction={} | amount={}",
                         ab.getUser().getUsername(), auction.getId(), nextBid);
 
-                broadcastUpdate(auction, "AUTO");
+                broadcastUpdate(auction, "AUTO", antiSnipped ? ab.getUser().getUsername() : null);
 
                 // Đệ quy: trigger auto-bid của người khác tiếp theo
                 triggerAutoBids(auction, abUserId);
@@ -422,13 +452,15 @@ public class AuctionService {
      * Nếu bid xảy ra trong antiSnipeTriggerSeconds giây cuối → gia hạn endTime thêm antiSnipeExtSeconds giây.
      * Ngăn "snipe" = đặt giá vào giây cuối cùng để thắng mà không cho ai phản ứng.
      */
-    private void applyAntiSnipe(Auction auction) {
+    private boolean applyAntiSnipe(Auction auction) {
         LocalDateTime triggerTime = auction.getEndTime().minusSeconds(antiSnipeTriggerSeconds);
         if (LocalDateTime.now().isAfter(triggerTime)) {
             LocalDateTime newEnd = auction.getEndTime().plusSeconds(auction.getAntiSnipeExtSeconds());
             auction.setEndTime(newEnd);
             log.info("ANTI_SNIPE | auction={} | newEndTime={}", auction.getId(), newEnd);
+            return true;
         }
+        return false;
     }
 
     /**
@@ -437,6 +469,10 @@ public class AuctionService {
      * Thay thế hoàn toàn cơ chế loop-qua-ClientHandler của SocketServer cũ.
      */
     private void broadcastUpdate(Auction auction, String bidType) {
+        broadcastUpdate(auction, bidType, null);
+    }
+
+    private void broadcastUpdate(Auction auction, String bidType, String antiSnipeUsername) {
         BidUpdateMessage msg = new BidUpdateMessage(
                 auction.getId(),
                 auction.getCurrentPrice(),
@@ -446,7 +482,9 @@ public class AuctionService {
                 auction.getStatus().name(),
                 bidType,
                 txRepo.countByAuctionId(auction.getId()),
-                java.time.LocalDateTime.now().toString()
+                java.time.LocalDateTime.now().toString(),
+                antiSnipeUsername != null,
+                antiSnipeUsername
         );
         ws.convertAndSend("/topic/auction/" + auction.getId(), msg);
     }

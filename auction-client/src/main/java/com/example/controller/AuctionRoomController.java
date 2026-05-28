@@ -22,14 +22,13 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
 import java.io.ByteArrayInputStream;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Base64;
-import java.util.Collections;
-import java.util.List;
 
 public class AuctionRoomController {
 
@@ -63,6 +62,11 @@ public class AuctionRoomController {
     // ── Seller panel ──────────────────────────────────────────────────────────
     @FXML private Button     btnCancelAuction;
 
+    // ── Admin view ────────────────────────────────────────────────────────────
+    @FXML private HBox       bidAndAutoBidBox;
+    @FXML private TabPane    tabPaneMain;
+    @FXML private Label      lblAntiSnipeNotif;
+
     // ── Bid history table ─────────────────────────────────────────────────────
     @FXML private TableView<JsonObject>          tableBidHistory;
     @FXML private TableColumn<JsonObject,String> colBidTime;
@@ -79,10 +83,12 @@ public class AuctionRoomController {
     private long auctionId;
     private long currentPrice;
     private long minBid;
-    private final ObservableList<JsonObject> bidHistory = FXCollections.observableArrayList();
+    private final ObservableList<JsonObject> bidHistory     = FXCollections.observableArrayList();
+    private final ObservableList<JsonObject> participants   = FXCollections.observableArrayList();
 
     private LocalDateTime endTimeValue;
     private Timeline countdownTimeline;
+    private Timeline antiSnipeHideTimer;
 
     // ── Initialize ────────────────────────────────────────────────────────────
 
@@ -92,6 +98,9 @@ public class AuctionRoomController {
         setupChart();
         if (btnCancelAuction != null) {
             btnCancelAuction.setVisible(SessionManager.isSeller());
+        }
+        if (SessionManager.isAdmin()) {
+            setupAdminView();
         }
     }
 
@@ -171,6 +180,7 @@ public class AuctionRoomController {
         for (JsonElement el : arr) bidHistory.add(el.getAsJsonObject());
         if (tableBidHistory != null) tableBidHistory.setItems(bidHistory);
         rebuildChart();
+        rebuildParticipants();
     }
 
     // ── WebSocket realtime ────────────────────────────────────────────────────
@@ -211,17 +221,25 @@ public class AuctionRoomController {
 
         // Thêm ngay hàng mới vào đầu bảng từ dữ liệu WS — không cần REST
         appendBidRow(msg);
+
+        // Thông báo anti-snipe
+        if (msg.has("antiSnipeTriggered") && msg.get("antiSnipeTriggered").getAsBoolean()) {
+            String who = getString(msg, "antiSnipeUsername", "?");
+            showAntiSnipeNotif(who);
+        }
     }
 
     private void appendBidRow(JsonObject msg) {
         if (!msg.has("newPrice") || !msg.has("winnerUsername")) return;
         JsonObject row = new JsonObject();
         row.addProperty("bidderUsername", getString(msg, "winnerUsername", "?"));
+        row.addProperty("bidderId",       getLong(msg, "winnerId"));
         row.addProperty("amount",         msg.get("newPrice").getAsLong());
         row.addProperty("bidType",        getString(msg, "bidType", "MANUAL"));
         String t = getString(msg, "bidTime", "");
         row.addProperty("bidTime", t.isEmpty() ? SessionManager.serverNow().toString() : t);
         bidHistory.add(0, row);
+        rebuildParticipants();
         if (tableBidHistory != null) tableBidHistory.scrollTo(0);
 
         // Thêm điểm mới vào cuối chart (real-time)
@@ -280,6 +298,11 @@ public class AuctionRoomController {
             }
             long maxBid    = Long.parseLong(maxText);
             long increment = Long.parseLong(stepText);
+            if (increment < minBid) {
+                if (lblAutoBidMessage != null)
+                    lblAutoBidMessage.setText("Bước nhảy phải >= bước giá tối thiểu (" + formatPrice(minBid) + ")");
+                return;
+            }
 
             new Thread(() -> {
                 try {
@@ -471,5 +494,101 @@ public class AuctionRoomController {
     private long getLong(JsonObject o, String key) {
         JsonElement el = o.get(key);
         return (el == null || el.isJsonNull()) ? 0L : el.getAsLong();
+    }
+
+    // ── Admin view ────────────────────────────────────────────────────────────
+
+    private void setupAdminView() {
+        if (bidAndAutoBidBox != null) {
+            bidAndAutoBidBox.setVisible(false);
+            bidAndAutoBidBox.setManaged(false);
+        }
+        if (tabPaneMain != null) {
+            Tab tab = new Tab("👥 NGƯỜI THAM GIA");
+            tab.setClosable(false);
+            tab.setContent(buildParticipantsTable());
+            tabPaneMain.getTabs().add(0, tab);
+            tabPaneMain.getSelectionModel().select(0);
+        }
+    }
+
+    private TableView<JsonObject> buildParticipantsTable() {
+        TableView<JsonObject> table = new TableView<>(participants);
+
+        TableColumn<JsonObject, String> cUser = new TableColumn<>("Người dùng");
+        cUser.setCellValueFactory(c -> new SimpleStringProperty(getString(c.getValue(), "bidderUsername", "")));
+        cUser.setPrefWidth(160);
+
+        TableColumn<JsonObject, String> cBid = new TableColumn<>("Giá cao nhất");
+        cBid.setCellValueFactory(c -> new SimpleStringProperty(formatPrice(getLong(c.getValue(), "amount"))));
+        cBid.setPrefWidth(150);
+
+        TableColumn<JsonObject, String> cAction = new TableColumn<>("Thao tác");
+        cAction.setPrefWidth(110);
+        cAction.setCellFactory(col -> new TableCell<>() {
+            final Button btn = new Button("🚫 Ban");
+            {
+                btn.setStyle("-fx-background-color: #c0392b; -fx-text-fill: white; -fx-cursor: hand;");
+                btn.setOnAction(e -> {
+                    JsonObject row = getTableView().getItems().get(getIndex());
+                    long uid  = getLong(row, "bidderId");
+                    String un = getString(row, "bidderUsername", "?");
+                    banUser(uid, un);
+                });
+            }
+            @Override protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : btn);
+            }
+        });
+
+        table.getColumns().setAll(cUser, cBid, cAction);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        return table;
+    }
+
+    private void rebuildParticipants() {
+        if (!SessionManager.isAdmin()) return;
+        Map<Long, JsonObject> best = new LinkedHashMap<>();
+        for (JsonObject b : bidHistory) {
+            long uid = getLong(b, "bidderId");
+            if (uid == 0) continue;
+            if (!best.containsKey(uid) || getLong(b, "amount") > getLong(best.get(uid), "amount")) {
+                best.put(uid, b);
+            }
+        }
+        participants.setAll(best.values());
+    }
+
+    private void banUser(long userId, String username) {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                "Ban người dùng \"" + username + "\"?", ButtonType.YES, ButtonType.NO);
+        confirm.showAndWait().ifPresent(btn -> {
+            if (btn == ButtonType.YES) {
+                new Thread(() -> {
+                    try {
+                        ApiClient.updateUserStatus(userId, "BANNED");
+                        Platform.runLater(() ->
+                                new Alert(Alert.AlertType.INFORMATION, "Đã ban " + username + ".").show());
+                    } catch (Exception e) {
+                        Platform.runLater(() ->
+                                new Alert(Alert.AlertType.ERROR, e.getMessage()).show());
+                    }
+                }).start();
+            }
+        });
+    }
+
+    private void showAntiSnipeNotif(String username) {
+        if (lblAntiSnipeNotif == null) return;
+        lblAntiSnipeNotif.setText("⚠  " + username + " đã kích hoạt anti-snipping — thời gian được gia hạn");
+        lblAntiSnipeNotif.setVisible(true);
+        lblAntiSnipeNotif.setManaged(true);
+        if (antiSnipeHideTimer != null) antiSnipeHideTimer.stop();
+        antiSnipeHideTimer = new Timeline(new KeyFrame(Duration.seconds(12), e -> {
+            lblAntiSnipeNotif.setVisible(false);
+            lblAntiSnipeNotif.setManaged(false);
+        }));
+        antiSnipeHideTimer.play();
     }
 }

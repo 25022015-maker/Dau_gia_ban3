@@ -22,6 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                         .withUsername(user.getUsername())
                         .password(user.getPassword())
                         .roles(user.getRole().name())
+                        .accountLocked("BANNED".equals(user.getStatus()))
                         .build())
                 .orElseThrow(() -> new UsernameNotFoundException("User không tìm thấy: " + username));
     }

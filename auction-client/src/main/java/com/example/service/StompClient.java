@@ -1,5 +1,7 @@
 package com.example.service;
 
+import javafx.application.Platform;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.WebSocket;
@@ -30,6 +32,8 @@ public class StompClient implements WebSocket.Listener {
     /** topic → sub-id (để gửi UNSUBSCRIBE đúng) */
     private final Map<String, String> subIds = new ConcurrentHashMap<>();
 
+    private volatile Runnable forcedLogoutCallback;
+
     private StompClient() {}
 
     public static StompClient getInstance() { return INSTANCE; }
@@ -58,12 +62,17 @@ public class StompClient implements WebSocket.Listener {
                 });
     }
 
+    public void setForcedLogoutCallback(Runnable callback) {
+        this.forcedLogoutCallback = callback;
+    }
+
     public void disconnect() {
         connected  = false;
         connecting = false;
         handlers.clear();
         subIds.clear();
         subCounter.set(0);
+        forcedLogoutCallback = null;
         if (ws != null) {
             ws.sendClose(WebSocket.NORMAL_CLOSURE, "bye");
             ws = null;
@@ -150,6 +159,14 @@ public class StompClient implements WebSocket.Listener {
                 for (String topic : handlers.keySet()) {
                     if (!subIds.containsKey(topic)) sendSubscribe(topic);
                 }
+                // Subscribe topic cá nhân để nhận thông báo bị ban
+                Long userId = SessionManager.getUserId();
+                if (userId != null) {
+                    String userTopic = "/topic/user/" + userId;
+                    handlers.computeIfAbsent(userTopic, k -> new CopyOnWriteArrayList<>())
+                            .add(this::handleUserStatusMessage);
+                    sendSubscribe(userTopic);
+                }
 
             } else if ("MESSAGE".equals(command)) {
                 String destination = null;
@@ -182,4 +199,12 @@ public class StompClient implements WebSocket.Listener {
     }
 
     public boolean isConnected() { return connected; }
+
+    private void handleUserStatusMessage(String body) {
+        if (body != null && body.contains("BANNED")) {
+            LOG.warning("[STOMP] Tài khoản bị khóa — buộc đăng xuất");
+            Runnable cb = forcedLogoutCallback;
+            if (cb != null) Platform.runLater(cb);
+        }
+    }
 }
