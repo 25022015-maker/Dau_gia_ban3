@@ -37,6 +37,7 @@ public class DashboardController {
 
     @FXML
     public void initialize() {
+        syncServerTime();
         startClock();
         StompClient.getInstance().connect();
         loadAuctions();
@@ -44,15 +45,22 @@ public class DashboardController {
 
     // ── Clock ─────────────────────────────────────────────────────────────────
 
+    private void syncServerTime() {
+        new Thread(() -> {
+            java.time.LocalDateTime serverTime = ApiClient.getServerTime();
+            SessionManager.syncServerOffset(serverTime);
+        }, "SyncTimeThread").start();
+    }
+
     private void startClock() {
         Timeline tl = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime now = SessionManager.serverNow();
             if (lblClock != null) lblClock.setText(now.format(TIME_FMT));
             if (lblDate  != null) lblDate.setText(now.format(DATE_FMT));
         }));
         tl.setCycleCount(Animation.INDEFINITE);
         tl.play();
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = SessionManager.serverNow();
         if (lblClock != null) lblClock.setText(now.format(TIME_FMT));
         if (lblDate  != null) lblDate.setText(now.format(DATE_FMT));
     }

@@ -40,7 +40,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/auctions", "/api/auctions/{id}",
-                        "/api/auctions/{id}/bids").permitAll()
+                        "/api/auctions/{id}/bids", "/api/time").permitAll()
                 .requestMatchers("/ws/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auctions").hasAnyRole("SELLER", "ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/auctions/**").hasAnyRole("SELLER", "ADMIN")

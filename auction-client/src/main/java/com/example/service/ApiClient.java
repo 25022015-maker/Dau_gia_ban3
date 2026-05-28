@@ -11,7 +11,7 @@ import java.time.Duration;
 public class ApiClient {
 
     // Đổi thành IP máy chạy server nếu client chạy trên máy khác, VD: "http://192.168.1.10:8080"
-    public static final String BASE_URL = System.getProperty("server.url", "http://10.11.201.190:8080");
+    public static final String BASE_URL = System.getProperty("server.url", "http:// 10.11.201.1:8080");
     private static final HttpClient HTTP = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(10))
             .build();
@@ -36,6 +36,19 @@ public class ApiClient {
     }
 
     // ── Auction ───────────────────────────────────────────────────────────────
+
+    public static java.time.LocalDateTime getServerTime() {
+        try {
+            HttpRequest req = anonBuilder("/api/time").GET().build();
+            HttpResponse<String> resp = HTTP.send(req, HttpResponse.BodyHandlers.ofString());
+            String raw = resp.body();
+            String timeStr = JsonParser.parseString(raw).getAsJsonObject().get("serverTime").getAsString();
+            timeStr = timeStr.length() > 19 ? timeStr.substring(0, 19) : timeStr;
+            return java.time.LocalDateTime.parse(timeStr);
+        } catch (Exception e) {
+            return java.time.LocalDateTime.now();
+        }
+    }
 
     public static JsonArray getAuctions() {
         String raw = get("/api/auctions");

@@ -1,12 +1,16 @@
 package com.example.service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public class SessionManager {
 
-    private static String token;
-    private static Long   userId;
-    private static String username;
-    private static String role;
-    private static long   balance;
+    private static String   token;
+    private static Long     userId;
+    private static String   username;
+    private static String   role;
+    private static long     balance;
+    private static Duration serverOffset = Duration.ZERO;
 
     public static void setSession(String token, Long userId, String username, String role, long balance) {
         SessionManager.token    = token;
@@ -18,7 +22,18 @@ public class SessionManager {
 
     public static void clear() {
         token = null; userId = null; username = null; role = null; balance = 0;
+        serverOffset = Duration.ZERO;
         StompClient.getInstance().disconnect();
+    }
+
+    /** Lưu độ lệch (server time − client time) để dùng serverNow(). */
+    public static void syncServerOffset(LocalDateTime serverTime) {
+        serverOffset = Duration.between(LocalDateTime.now(), serverTime);
+    }
+
+    /** Trả về thời gian hiện tại theo đồng hồ server. */
+    public static LocalDateTime serverNow() {
+        return LocalDateTime.now().plus(serverOffset);
     }
 
     public static void setBalance(long b) { balance = b; }

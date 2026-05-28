@@ -220,7 +220,7 @@ public class AuctionRoomController {
         row.addProperty("amount",         msg.get("newPrice").getAsLong());
         row.addProperty("bidType",        getString(msg, "bidType", "MANUAL"));
         String t = getString(msg, "bidTime", "");
-        row.addProperty("bidTime", t.isEmpty() ? java.time.LocalDateTime.now().toString() : t);
+        row.addProperty("bidTime", t.isEmpty() ? SessionManager.serverNow().toString() : t);
         bidHistory.add(0, row);
         if (tableBidHistory != null) tableBidHistory.scrollTo(0);
 
@@ -408,7 +408,7 @@ public class AuctionRoomController {
 
     private void updateCountdown() {
         if (endTimeValue == null || lblCountdown == null) return;
-        long remaining = java.time.Duration.between(LocalDateTime.now(), endTimeValue).getSeconds();
+        long remaining = java.time.Duration.between(SessionManager.serverNow(), endTimeValue).getSeconds();
 
         if (remaining <= 0) {
             lblCountdown.setText("00:00:00");
