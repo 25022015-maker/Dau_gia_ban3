@@ -382,6 +382,17 @@ public class AuctionService {
     // ─────────────────────────────────────────────────────────────────────────
 
     @Transactional
+    public void deleteAuction(Long id) {
+        if (!auctionRepo.existsById(id)) {
+            throw new RuntimeException("Phiên không tồn tại: " + id);
+        }
+        txRepo.deleteByAuctionId(id);
+        autoBidRepo.deleteByAuctionId(id);
+        auctionRepo.deleteById(id);
+        log.info("DELETE_AUCTION | id={}", id);
+    }
+
+    @Transactional
     public void cancelAuction(Long auctionId, String requestingUsername) {
         Auction a = auctionRepo.findById(auctionId)
                 .orElseThrow(() -> new RuntimeException("Phiên không tồn tại: " + auctionId));

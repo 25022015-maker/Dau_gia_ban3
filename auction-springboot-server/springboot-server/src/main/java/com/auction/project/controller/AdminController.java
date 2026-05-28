@@ -89,6 +89,13 @@ public class AdminController {
         return ResponseEntity.ok("Phiên đấu giá #" + id + " đã được duyệt.");
     }
 
+    /** Admin xóa vĩnh viễn phiên đấu giá */
+    @DeleteMapping("/auctions/{id}")
+    public ResponseEntity<String> deleteAuction(@PathVariable Long id) {
+        auctionService.deleteAuction(id);
+        return ResponseEntity.ok("Phiên đấu giá #" + id + " đã bị xóa vĩnh viễn.");
+    }
+
     /** Admin hủy phiên đấu giá bất kỳ */
     @PutMapping("/auctions/{id}/cancel")
     public ResponseEntity<String> cancelAuction(@PathVariable Long id,

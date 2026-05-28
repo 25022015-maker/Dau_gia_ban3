@@ -49,11 +49,13 @@ public class AdminAuctionsController {
                 final Button btnApprove = new Button("✔ Duyệt");
                 final Button btnEnter   = new Button("▶ Vào phòng");
                 final Button btnCancel  = new Button("✖ Hủy");
-                final HBox box = new HBox(6, btnApprove, btnEnter, btnCancel);
+                final Button btnDelete  = new Button("🗑 Xóa");
+                final HBox box = new HBox(5, btnApprove, btnEnter, btnCancel, btnDelete);
                 {
                     btnApprove.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-size: 11; -fx-cursor: hand;");
                     btnEnter  .setStyle("-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-size: 11; -fx-cursor: hand;");
-                    btnCancel .setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 11; -fx-cursor: hand;");
+                    btnCancel .setStyle("-fx-background-color: #e67e22; -fx-text-fill: white; -fx-font-size: 11; -fx-cursor: hand;");
+                    btnDelete .setStyle("-fx-background-color: #7f0000; -fx-text-fill: white; -fx-font-size: 11; -fx-cursor: hand;");
 
                     btnApprove.setOnAction(e -> {
                         JsonObject row = getTableView().getItems().get(getIndex());
@@ -67,6 +69,10 @@ public class AdminAuctionsController {
                         JsonObject row = getTableView().getItems().get(getIndex());
                         cancelAuction(row.get("id").getAsLong());
                     });
+                    btnDelete.setOnAction(e -> {
+                        JsonObject row = getTableView().getItems().get(getIndex());
+                        deleteAuction(row.get("id").getAsLong(), str(row, "itemName"));
+                    });
                 }
 
                 @Override protected void updateItem(String item, boolean empty) {
@@ -74,13 +80,18 @@ public class AdminAuctionsController {
                     if (empty) { setGraphic(null); return; }
                     JsonObject row = getTableView().getItems().get(getIndex());
                     String status = str(row, "status");
-                    btnApprove.setVisible("WAITING_APPROVAL".equals(status));
-                    btnApprove.setManaged("WAITING_APPROVAL".equals(status));
-                    btnCancel.setVisible("WAITING_APPROVAL".equals(status)
-                            || "PENDING".equals(status) || "RUNNING".equals(status));
-                    btnCancel.setManaged(btnCancel.isVisible());
-                    btnEnter.setVisible(!"WAITING_APPROVAL".equals(status));
-                    btnEnter.setManaged(btnEnter.isVisible());
+                    boolean waiting  = "WAITING_APPROVAL".equals(status);
+                    boolean active   = "PENDING".equals(status) || "RUNNING".equals(status);
+                    boolean inactive = "FINISHED".equals(status) || "CANCELED".equals(status);
+
+                    btnApprove.setVisible(waiting);
+                    btnApprove.setManaged(waiting);
+                    btnEnter.setVisible(!waiting);
+                    btnEnter.setManaged(!waiting);
+                    btnCancel.setVisible(waiting || active);
+                    btnCancel.setManaged(waiting || active);
+                    btnDelete.setVisible(inactive || waiting);
+                    btnDelete.setManaged(inactive || waiting);
                     setGraphic(box);
                 }
             });
@@ -116,6 +127,31 @@ public class AdminAuctionsController {
                 Platform.runLater(() -> new Alert(Alert.AlertType.ERROR, e.getMessage()).show());
             }
         }).start();
+    }
+
+    private void deleteAuction(long id, String name) {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                "Xóa vĩnh viễn phiên \"" + name + "\" (#" + id + ")?\n"
+                + "Thao tác này không thể hoàn tác, toàn bộ lịch sử đặt giá sẽ bị xóa.",
+                ButtonType.YES, ButtonType.NO);
+        confirm.setTitle("Xác nhận xóa phiên đấu giá");
+        confirm.showAndWait().ifPresent(btn -> {
+            if (btn == ButtonType.YES) {
+                new Thread(() -> {
+                    try {
+                        ApiClient.adminDeleteAuction(id);
+                        Platform.runLater(() -> {
+                            loadAuctions();
+                            new Alert(Alert.AlertType.INFORMATION,
+                                    "Đã xóa phiên đấu giá #" + id + " thành công.").show();
+                        });
+                    } catch (Exception e) {
+                        Platform.runLater(() ->
+                                new Alert(Alert.AlertType.ERROR, e.getMessage()).show());
+                    }
+                }).start();
+            }
+        });
     }
 
     private void cancelAuction(long id) {

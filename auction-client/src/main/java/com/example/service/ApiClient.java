@@ -139,6 +139,10 @@ public class ApiClient {
         putRaw("/api/admin/auctions/" + auctionId + "/cancel");
     }
 
+    public static void adminDeleteAuction(long auctionId) {
+        delete("/api/admin/auctions/" + auctionId);
+    }
+
     // ── HTTP helpers ──────────────────────────────────────────────────────────
 
     private static String get(String path) {
