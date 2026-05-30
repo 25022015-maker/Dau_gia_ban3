@@ -1,6 +1,7 @@
 package com.auction.project.service;
 
 import com.auction.project.dto.*;
+import com.auction.project.entity.User;
 import com.auction.project.entity.enums.Role;
 import com.auction.project.repository.AuctionRepository;
 import com.auction.project.repository.UserRepository;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
@@ -42,8 +44,12 @@ class AuctionSystemIntegrationTest {
     @Autowired
     private AuctionRepository auctionRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private String sellerToken;
     private String bidderToken;
+    private String adminToken;
     private Long bidderId;
 
     @BeforeEach
@@ -62,6 +68,13 @@ class AuctionSystemIntegrationTest {
         ResponseEntity<AuthResponse> bidderRes = restTemplate.postForEntity("/api/auth/register", bidderReg, AuthResponse.class);
         bidderToken = bidderRes.getBody().token();
         bidderId = bidderRes.getBody().userId();
+
+        // 3. Tạo admin trực tiếp vào DB (AuthService chặn đăng ký ADMIN qua API)
+        User admin = new User("admin01", passwordEncoder.encode("password123"), "admin@test.com", Role.ADMIN);
+        userRepository.save(admin);
+        ResponseEntity<AuthResponse> adminRes = restTemplate.postForEntity(
+                "/api/auth/login", new LoginRequest("admin01", "password123"), AuthResponse.class);
+        adminToken = adminRes.getBody().token();
     }
 
     @Test
@@ -103,6 +116,16 @@ class AuctionSystemIntegrationTest {
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         Long auctionId = createResponse.getBody().id();
         assertThat(auctionId).isNotNull();
+
+        // BƯỚC 1b: Admin duyệt phiên → status chuyển sang RUNNING (startTime đã qua)
+        HttpHeaders adminHeaders = new HttpHeaders();
+        adminHeaders.setBearerAuth(adminToken);
+        ResponseEntity<String> approveResponse = restTemplate.exchange(
+                "/api/admin/auctions/" + auctionId + "/approve",
+                org.springframework.http.HttpMethod.PUT,
+                new HttpEntity<>(adminHeaders),
+                String.class);
+        assertThat(approveResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         // BƯỚC 2: Thiết lập kết nối WebSocket (STOMP Client) giả lập Bidder lắng nghe thay đổi
         WebSocketStompClient stompClient = new WebSocketStompClient(new StandardWebSocketClient());

@@ -263,3 +263,6 @@ taskkill /PID <PID> /F
 
 **Xóa phiên báo lỗi**
 > Đảm bảo đã build lại Server (`mvn package -DskipTests`) và **restart** Server sau khi build.
+
+**Báo cáo dự án**
+>https://drive.google.com/file/d/1x0wnndyIWgaTtp1K0N4PnV7rK5emOEmr/view?usp=sharing
