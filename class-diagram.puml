@@ -1,0 +1,464 @@
+@startuml ClassDiagram
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor White
+  BorderColor Black
+  ArrowColor Black
+}
+skinparam package {
+  BackgroundColor AliceBlue
+  BorderColor SteelBlue
+}
+
+' ============================
+'          ENUMS
+' ============================
+enum Role {
+  BIDDER
+  SELLER
+  ADMIN
+}
+
+enum AuctionStatus {
+  WAITING_APPROVAL
+  PENDING
+  RUNNING
+  FINISHED
+  PAID
+  CANCELED
+}
+
+' ============================
+'         ENTITIES
+' ============================
+package "Entity Layer" {
+
+  class User {
+    - Long id
+    - String username
+    - String password
+    - String email
+    - Long balance
+    - Role role
+    - String status
+    - LocalDateTime createdAt
+    + getters / setters()
+  }
+
+  abstract class Item {
+    - Long id
+    - Long ownerId
+    - String name
+    - String description
+    - String imageBase64
+    - String itemType
+    - LocalDateTime createdAt
+    + {abstract} String getDetails()
+  }
+
+  class ElectronicsItem {
+    - String brand
+    - Integer warrantyMonths
+    + String getDetails()
+  }
+
+  class ArtItem {
+    - String artist
+    - Integer yearCreated
+    + String getDetails()
+  }
+
+  class VehicleItem {
+    - String vehicleBrand
+    - Integer manufactureYear
+    - Integer mileageKm
+    + String getDetails()
+  }
+
+  class Auction {
+    - Long id
+    - Long startPrice
+    - Long minBid
+    - Long currentPrice
+    - Long sellerId
+    - AuctionStatus status
+    - LocalDateTime startTime
+    - LocalDateTime endTime
+    - Integer antiSnipeExtSeconds
+    - LocalDateTime createdAt
+    + void refreshStatus()
+  }
+
+  class BidTransaction {
+    - Long id
+    - Long amount
+    - LocalDateTime bidTime
+    - String bidType
+  }
+
+  class AutoBid {
+    - Long id
+    - Long maxBid
+    - Long increment
+    - Boolean isActive
+    - LocalDateTime createdAt
+  }
+
+  class Notification {
+    - Long id
+    - Long userId
+    - String title
+    - String content
+    - Boolean isRead
+    - LocalDateTime createdAt
+  }
+}
+
+' Inheritance
+Item <|-- ElectronicsItem
+Item <|-- ArtItem
+Item <|-- VehicleItem
+
+' Entity associations
+User "1" --> "0..*" Auction        : sells >
+User "1" --> "0..*" BidTransaction : places >
+User "1" --> "0..*" AutoBid        : registers >
+User "1" --> "0..*" Notification   : receives >
+
+Auction "1" *--> "1" Item          : contains >
+Auction "1" --> "0..*" BidTransaction : has >
+Auction "1" --> "0..*" AutoBid     : has >
+Auction "0..*" --> "0..1" User     : currentWinner >
+
+User       --> Role
+Auction    --> AuctionStatus
+
+' ============================
+'        REPOSITORIES
+' ============================
+package "Repository Layer" {
+
+  interface UserRepository {
+    + Optional<User> findByUsername(String)
+    + boolean existsByUsername(String)
+    + boolean existsByEmail(String)
+  }
+
+  interface AuctionRepository {
+    + List<Auction> findByStatus(AuctionStatus)
+    + Optional<Auction> findByIdWithLock(Long)
+    + List<Auction> findAuctionsToStart(LocalDateTime)
+    + List<Auction> findExpiredAuctions(LocalDateTime)
+  }
+
+  interface BidTransactionRepository {
+    + List<BidTransaction> findByAuctionIdOrderByBidTimeDesc(Long)
+    + long countByAuctionId(Long)
+    + boolean existsByAuctionIdAndBidderId(Long, Long)
+    + void deleteByAuctionId(Long)
+  }
+
+  interface AutoBidRepository {
+    + List<AutoBid> findByAuctionIdAndIsActiveTrueOrderByCreatedAtAsc(Long)
+    + Optional<AutoBid> findByAuctionIdAndUserId(Long, Long)
+    + void deleteByAuctionId(Long)
+  }
+
+  interface ItemRepository {
+    + List<Item> findByOwnerId(Long)
+  }
+
+  interface NotificationRepository {
+    + List<Notification> findByUserIdOrderByCreatedAtDesc(Long)
+    + long countByUserIdAndIsReadFalse(Long)
+  }
+}
+
+' ============================
+'     FACTORY + SERVICES
+' ============================
+package "Service Layer" {
+
+  class ItemFactory {
+    + {static} Item create(CreateAuctionRequest, Long ownerId)
+  }
+
+  class AuctionService {
+    + AuctionResponse createAuction(CreateAuctionRequest, String)
+    + AuctionResponse placeBid(PlaceBidRequest, String)
+    + void registerAutoBid(AutoBidRequest, String)
+    + List<BidTransactionResponse> getBidHistory(Long)
+    - void processAutoBids(Auction)
+    - void applyAntiSnipe(Auction)
+  }
+
+  class AuthService {
+    + AuthResponse register(RegisterRequest)
+    + AuthResponse login(LoginRequest)
+  }
+
+  class UserService {
+    + UserProfileResponse getProfile(String)
+    + List<UserProfileResponse> getAllUsers()
+    + UserProfileResponse updateStatus(Long, String)
+    + UserProfileResponse topUp(String, Long)
+  }
+
+  class AuctionScheduler {
+    + void startPending()
+    + void closeExpired()
+  }
+}
+
+ItemFactory ..> ElectronicsItem : <<creates>>
+ItemFactory ..> ArtItem         : <<creates>>
+ItemFactory ..> VehicleItem     : <<creates>>
+
+AuctionService --> AuctionRepository
+AuctionService --> BidTransactionRepository
+AuctionService --> AutoBidRepository
+AuctionService --> UserRepository
+AuctionService --> ItemRepository
+AuctionService --> NotificationRepository
+AuctionService ..> ItemFactory
+
+AuthService --> UserRepository
+UserService --> UserRepository
+AuctionScheduler --> AuctionService
+
+' ============================
+'        CONTROLLERS
+' ============================
+package "Controller Layer" {
+
+  class AuthController {
+    + ResponseEntity<AuthResponse> register(RegisterRequest)
+    + ResponseEntity<AuthResponse> login(LoginRequest)
+  }
+
+  class AuctionController {
+    + ResponseEntity<List<AuctionResponse>> getAll()
+    + ResponseEntity<AuctionResponse> getById(Long)
+    + ResponseEntity<AuctionResponse> create(CreateAuctionRequest, UserDetails)
+    + ResponseEntity<AuctionResponse> placeBid(Long, PlaceBidRequest, UserDetails)
+    + ResponseEntity<String> registerAutoBid(Long, AutoBidRequest, UserDetails)
+    + ResponseEntity<List<BidTransactionResponse>> getBidHistory(Long)
+  }
+
+  class AdminController {
+    + ResponseEntity<Map> getStats()
+    + ResponseEntity<List<UserProfileResponse>> getAllUsers()
+    + ResponseEntity<UserProfileResponse> updateUserStatus(Long, String)
+    + ResponseEntity<List<AuctionResponse>> getAllAuctions()
+  }
+
+  class UserController {
+    + ResponseEntity<UserProfileResponse> getProfile(UserDetails)
+    + ResponseEntity<UserProfileResponse> topUp(Long, UserDetails)
+  }
+
+  class TimeController {
+    + ResponseEntity<String> getServerTime()
+  }
+}
+
+AuthController    --> AuthService
+AuctionController --> AuctionService
+AdminController   --> UserService
+AdminController   --> AuctionService
+UserController    --> UserService
+
+' ============================
+'         SECURITY
+' ============================
+package "Security Layer" {
+
+  class JwtUtil {
+    + String generateToken(String username)
+    + String getUsername(String token)
+    + boolean validate(String token)
+  }
+
+  class UserDetailsServiceImpl {
+    + UserDetails loadUserByUsername(String)
+  }
+
+  class JwtAuthFilter {
+    # void doFilterInternal(request, response, chain)
+  }
+
+  class SecurityConfig {
+    + SecurityFilterChain filterChain(HttpSecurity)
+    + PasswordEncoder passwordEncoder()
+    + CorsConfigurationSource corsSource()
+  }
+}
+
+UserDetailsServiceImpl --> UserRepository
+JwtAuthFilter --> JwtUtil
+JwtAuthFilter --> UserDetailsServiceImpl
+SecurityConfig --> JwtAuthFilter
+
+' ============================
+'   DTOs (Key Records)
+' ============================
+package "DTO Layer" {
+  class AuctionResponse <<record>> {
+    + Long id
+    + String itemName
+    + String itemType
+    + Long currentPrice
+    + String currentWinnerUsername
+    + AuctionStatus status
+    + long totalBids
+  }
+
+  class CreateAuctionRequest <<record>> {
+    + String itemName
+    + String itemType
+    + Long startPrice
+    + Long minBid
+    + LocalDateTime startTime
+    + LocalDateTime endTime
+  }
+
+  class AuthResponse <<record>> {
+    + String token
+    + Long userId
+    + String username
+    + String role
+  }
+
+  class PlaceBidRequest <<record>> {
+    + Long auctionId
+    + Long amount
+  }
+
+  class AutoBidRequest <<record>> {
+    + Long auctionId
+    + Long maxBid
+    + Long increment
+  }
+
+  class BidUpdateMessage <<record>> {
+    + Long auctionId
+    + Long newPrice
+    + String winnerUsername
+    + AuctionStatus status
+    + boolean antiSnipeTriggered
+    + long totalBids
+  }
+}
+
+' ============================
+'     CLIENT (JavaFX)
+' ============================
+package "Client Layer (JavaFX)" {
+
+  class ApiClient {
+    - {static} String BASE_URL
+    + {static} JsonObject login(String, String)
+    + {static} JsonObject register(String, String, String, String)
+    + {static} LocalDateTime getServerTime()
+    + {static} JsonArray getAuctions()
+    + {static} JsonObject placeBid(long, long)
+    + {static} void registerAutoBid(long, long, long)
+    + {static} JsonObject createAuction(JsonObject)
+    + {static} JsonObject getProfile()
+    + {static} JsonObject topUp(long)
+  }
+
+  class SessionManager {
+    - {static} String token
+    - {static} Long userId
+    - {static} String username
+    - {static} String role
+    - {static} long balance
+    - {static} Duration serverOffset
+    + {static} void setSession(String, Long, String, String, long)
+    + {static} void clear()
+    + {static} LocalDateTime serverNow()
+    + {static} boolean isLoggedIn()
+    + {static} boolean isAdmin()
+    + {static} boolean isSeller()
+  }
+
+  class StompClient {
+    - WebSocket ws
+    - Map<String, List<Consumer<String>>> handlers
+    - Map<String, String> subIds
+    + void connect()
+    + void disconnect()
+    + void subscribe(String, Consumer<String>)
+    + void unsubscribe(String)
+    + void setForcedLogoutCallback(Runnable)
+  }
+
+  class LoginRegisterController {
+    + void handleLogin()
+    + void handleRegister()
+    - void goToDashboard()
+  }
+
+  class DashboardController {
+    + void initialize()
+    + void loadAuctions()
+    + void renderGrid(List<JsonObject>)
+    + void handleSearch(String)
+    - void startClock()
+    - void syncServerTime()
+  }
+
+  class AuctionRoomController {
+    + void initialize()
+    + void handlePlaceBid()
+    + void handleRegisterAutoBid()
+    + void handleCancelAuction()
+    - void updateAuctionDisplay()
+    - void startCountdown()
+  }
+
+  class CreateAuctionController {
+    + void handleCreate()
+    - void toggleItemFields(String itemType)
+  }
+
+  class AdminAuctionsController {
+    + void initialize()
+    + void handleApprove(Long)
+    + void handleCancel(Long)
+  }
+
+  class AdminUsersController {
+    + void initialize()
+    + void handleBanUser(Long)
+    + void handleUnbanUser(Long)
+  }
+
+  class AccountController {
+    + void initialize()
+    + void handleTopUp()
+  }
+}
+
+LoginRegisterController  --> ApiClient
+LoginRegisterController  --> SessionManager
+
+DashboardController      --> ApiClient
+DashboardController      --> StompClient
+DashboardController      --> SessionManager
+
+AuctionRoomController    --> ApiClient
+AuctionRoomController    --> StompClient
+AuctionRoomController    --> SessionManager
+
+CreateAuctionController  --> ApiClient
+CreateAuctionController  --> SessionManager
+
+AdminAuctionsController  --> ApiClient
+AdminUsersController     --> ApiClient
+AccountController        --> ApiClient
+AccountController        --> SessionManager
+
+@enduml
